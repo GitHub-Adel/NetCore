@@ -1,0 +1,19 @@
+
+Ejecuta un bloque de codigo, un numero de veces desconocido, hasta que se cumpla una condicion.
+
+
+AQUI PRIMERO EVALUA LA OPCION Y SI SE CUMPLE, LEE LA OPCION:
+--------------------------------------------------------
+while(caja!="exit"){...}
+
+
+
+AQUI PRIMERO LEE LA OPCION Y DESPUES LA EVALUA.
+------------------------------------------------------------
+            do
+            {
+                caja=leer();
+
+            } while (caja!="exit");
+
+

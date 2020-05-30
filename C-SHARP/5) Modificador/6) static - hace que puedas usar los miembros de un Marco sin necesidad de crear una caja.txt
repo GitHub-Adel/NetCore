@@ -1,0 +1,14 @@
+
+hace que puedas usar los miembros de un Marco sin necesidad de crear una caja
+
+ejemplo
+---------------------
+
+        class Carro
+        {
+            public static sbyte Ruedas { get; set; } = 7;
+        }
+
+
+Carro.Ruedas=5;
+

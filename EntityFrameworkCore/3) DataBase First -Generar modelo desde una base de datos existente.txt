@@ -1,0 +1,17 @@
+Generar clase DBContext y Entidades
+----------------------------
+1) Tener las tablas creadas en su db
+
+2) Crear carpeta llamada Models, sino existe.
+
+3) Buscar y copiar  la cadena de conexion desde su base de datos
+
+4) Correr el comando: dotnet ef dbcontext scaffold "CadenaConexion" Microsoft.EntityFrameworkCore.SqlServer -o Models
+
+fin
+
+Nota:
+-----------------------
+CadenaConexion sql server azure: Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password={Amauris809};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
+Comando:  dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Models

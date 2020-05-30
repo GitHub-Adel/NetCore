@@ -1,0 +1,24 @@
+
+un metodo virtual de la caja padre, debe ser sobreescrito en la caja hija
+
+
+ejemplo usando clase abstractas:
+--------------------------
+
+//se recomienda llevar los metodos a interface.
+   abstract class Vehiculo
+    {
+        public string Placa { get; set; }
+
+        abstract void Correr();
+    }
+
+
+class Carro:Vehiculo
+{
+   override void Correr();
+   {
+
+   }
+
+}

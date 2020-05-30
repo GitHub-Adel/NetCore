@@ -1,0 +1,5 @@
+1) insertar en una caja el estado de lo que se está haciendo, entrar un valor
+   por default "original",  luego entre "convirtiendo", ahora entre en una caja
+   de entero una "r", luego entre "original" en la caja de estado. utilice 
+   exceptions. ojo, la caja de estado debe contener "original" al terminar
+   pase lo que pase.

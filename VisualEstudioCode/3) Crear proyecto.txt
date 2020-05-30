@@ -1,0 +1,13 @@
+
+1) Crear un directorio con el nombre del proyecto
+
+2) abrir una terminal
+
+3) cd /D RutaDirectorioProyecto,  cambia a ese directorio
+
+4) proyecto consola:  dotnet new console
+     proyecto mvc : dotnet new mvc
+
+5) ir al directorio, click derecho vscode
+
+fin

@@ -1,0 +1,6 @@
+1) realizar la operacion para sumar y restar dos numero en el main, 
+   luego refactorizar en bloques de codigo mas pequeño.
+
+2) Metodo que permita sumar dos o hasta 4 numero.
+
+3) Metodo para sumar 2 numero, otro para sumar 3, y otro para sumar 4

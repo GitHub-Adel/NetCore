@@ -1,0 +1,39 @@
+
+caja agrupadora de otras cajitas.
+
+ejemplo
+--------------------
+class Vehiculo
+{
+  short Ano;
+  string Modelo
+           
+}
+
+
+puede tener un constructor para dar una forma inicial a la caja que se cree
+--------------------
+public Vehiculo(short ano, string Modelo)
+{
+  Ano=ano;
+  Modelo=modelo;
+           
+}
+
+
+//otro por defecto, que no requiere contenido
+-------------------------
+public Vehiculo()
+{
+  Ano=ano;
+  Modelo=modelo;
+           
+}
+
+
+puede heredarlo de otro marco o tipo
+---------------------------
+public Carro(short ano, string Modelo):base(ano,modelo)
+{
+}
+

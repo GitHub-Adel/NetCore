@@ -1,0 +1,16 @@
+
+
+podran tener acceso el propio marco y los marcos que hereden.
+
+
+ejemplo:
+
+class Vehiculo
+{
+  protected string Nombre;
+}
+
+class Carro:Vehiculo
+{
+  //este marco tiene acceso a Nombre, porque nombre pertenece al marco padre o base
+}

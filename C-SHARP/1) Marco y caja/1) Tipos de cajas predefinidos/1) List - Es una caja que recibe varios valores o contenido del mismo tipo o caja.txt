@@ -1,0 +1,28 @@
+
+Es una caja que recibe varios valores o contenido del mismo tipo o caja
+asi:
+-----------------
+numero
+{
+	1,
+	2,
+	3,
+}
+
+su sintasis es : List<T>
+
+EJEMPLO:
+-----------------------
+List<int> numero = new List<int>();  //creamos la caja
+numero.Add(5); //agregamos contenido a la caja
+numero.Remove(5); //sacamos contenido de la caja;
+numero.RemoveAt(0); //sacamos contenido de la caja por el indice
+numero.Clear(); //sacamos todo de la caja;
+numero.Contains(5); //buscamos en contenido en la caja
+numero.Exists(x => x==0); //comprobamos si la caja contiene una cajita que tenga ese contenido
+var items = numero.Count; //indica cuanta cajita contiene la caja en forma de linea.
+
+
+
+y muchas cosas mas que podemos hacer con esta caja especial
+

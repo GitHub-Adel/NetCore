@@ -1,0 +1,18 @@
+
+ejecuta un bloque de codigo si se cumple una condicion.
+
+Lo sig. evaluará cada instruccion una por una hasta que se cumpla una condicion, 
+donde se cumpla ahi se para de evaluar.
+
+EJEMPLO
+-------------------------------
+if (edad < 18) "es menor"
+else if (edad < 30) "es joven"
+else if (edad < 60) "es adulto"
+else if (edad < 80) "es viejo"
+else if (edad < 125) "es anciano"
+
+
+EJEMPLO CORTO PARA UNA SOLA EXPRESION:
+--------------------------------
+edad < 18 ? "es menor":"es mayor"

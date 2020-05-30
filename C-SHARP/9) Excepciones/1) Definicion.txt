@@ -1,0 +1,27 @@
+Hay errores que se generan en tiempo de ejecucion
+haciendo que el programa quede frisado, con las excepciones se
+evita esto..
+
+EJEMPLO
+--------------------------------
+
+string estado = "original";
+try
+{
+    //al guardar los datos
+    estado = "convirtiendo";
+    //no se puede convertir r en int, se genera la exception
+    int a = int.Parse("r");
+    //estado = "original";  esto ya no se ejecuta
+    //entonces se debe llevar al bloque finally                                
+}
+catch (Exception e)
+{
+    //almacenar o mostrar un log de errores.
+    Console.WriteLine($"Error {e.Message} linea: {e.StackTrace}");
+}
+finally
+{
+    //aqui ponemos aquello que se debe ejecutar falle o no el try.
+    estado = "original";
+}

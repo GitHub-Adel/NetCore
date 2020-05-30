@@ -1,0 +1,25 @@
+
+1) Consultar modelos relacionados (proyecion)
+---------------------------------------------
+            PruebaDBContext db =new PruebaDBContext();
+
+            List<Orden> Ordenes= db.Orden.Where(x => x.ClienteId==1)
+                               .Include(x=>x.Cliente)
+                               .ThenInclude(x=>x.Vendedor)
+                               .ToList();
+
+nota:
+(
+obtenemos un listado de ordenes con sus relacionados
+
+x => x.ClienteId :es la forma de aceder a las propiedades del modelo se llama expresion lambda
+
+Where : condiciona la consulta 
+
+.Include : incluye un objeto de Orden, en este caso cliente, orden tiene un cliente
+
+ThenInclude: incluye una tabla relacionada con Cliente, el cliente tiene un vendedor
+
+ToList() : Devuelve un listado de orden
+
+)

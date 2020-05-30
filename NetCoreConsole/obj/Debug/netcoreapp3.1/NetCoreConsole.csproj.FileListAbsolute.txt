@@ -1,0 +1,96 @@
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.exe
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.deps.json
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.runtimeconfig.json
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.runtimeconfig.dev.json
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.pdb
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.csprojAssemblyReference.cache
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.AssemblyInfoInputs.cache
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.AssemblyInfo.cs
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.csproj.CoreCompileInputs.cache
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.dll
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.pdb
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.genruntimeconfig.cache
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
+G:\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.csproj.CopyComplete
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Security.Permissions.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
+G:\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.exe
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.deps.json
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.runtimeconfig.json
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.runtimeconfig.dev.json
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\NetCoreConsole.pdb
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\System.Security.Permissions.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
+G:\Net Core\NetCoreConsole\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.csprojAssemblyReference.cache
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.AssemblyInfoInputs.cache
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.AssemblyInfo.cs
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.csproj.CoreCompileInputs.cache
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.csproj.CopyComplete
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.dll
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.pdb
+G:\Net Core\NetCoreConsole\obj\Debug\netcoreapp3.1\NetCoreConsole.genruntimeconfig.cache

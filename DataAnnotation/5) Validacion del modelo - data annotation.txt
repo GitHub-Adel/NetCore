@@ -1,0 +1,30 @@
+Es para validar las propiedades del modelo, se pone justo enzima de la propiedad.
+--------------------------------------------------------------------------------------------
+using System.ComponentModel.DataAnotations;
+
+[Required(ErrorMessage="El nombre no puede quedar vacio")]
+propiedad nombre
+
+[] : encierra los atributos.
+Required(mensaje) : valida vacio o nullo
+MinLength(LargoMin,mensaje): valida el largo minimo y si no es el indicado, muestra el mensaje
+MaxLength(LargoMax,mensaje) :valida el largo max y si no es el indicado, muestra el mensaje.
+RegularExpression("^[]{}$",mensaje) : valida que se cumpla lo que esta en []{}, sino muestra el mensaje
+                                                                  en caso de una cedula 012-0110350-2 seria [0-9]{3}-[0-9]{7}-[0-9]{1}
+                                                                  [0-9] indica que solo va a recibir digito del 0 al 9, {3}indica que debe
+                                                                  poner 3 digito, -  es el separador de digito.
+EmailAddress(mensaje) : valida si el correo es valido.
+StringLength(Max, Min=5 ,mensaje) : valida que la cadena tenga el largo minimo y maximo valido.
+Range(Min, Max, Mensaje) = debe estar entre el minimo y el maximo.
+
+ErrorMessage="El {0} debe ser mayor o igual a {1}" : Mensaje a mostrar al usuario, en este caso seria:
+ 	       ej: El precio debe ser mayor o igual a 100.
+
+
+Nota:
+-----------------------------------
+para mas visite: http://www.puntonetalpunto.net/2013/10/validaciones-con-dataannotations.html
+
+
+
+

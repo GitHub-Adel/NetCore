@@ -1,0 +1,14 @@
+
+1) Crear un marco que agrupe cajitas y que permita dar un estado 
+   iniciar a cada cajita.
+
+2) Crear un marco para los meses del año, crear una caja de 
+   ella, asignarle valores, recorrer la caja por numero, 
+   entrar el nombre de un elemento de la caja en una cajita.
+
+3) Hacer un metodo que pueda recibir tanto a suma como a resta,
+   Crear un marco para la suma y otro para la resta, 
+   usar herencia y polimorfismo.
+
+
+   

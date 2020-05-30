@@ -1,0 +1,47 @@
+
+1) copiar la cadena de conexion de sql server.
+2) Ir al Startup.cs
+3) Crear clase DbContext en la carpeta model
+--------------------------------
+using Microsoft.EntityFrameworkCore;
+
+namespace proyecto.Models
+{
+    public class PruebaDbContext : DbContext
+    {
+        public PruebaDbContext(DbContextOptions<PruebaDbContext> options) : base(options)
+        {
+        }        
+        //declaro una propiedad de tipo DbSet<T> para cada modelo
+        public DbSet<Modelo> Modelo {get;set;}
+    }
+}
+
+4) Poner la cadena de conexion en una variable dentro del metodo ConfigureServices.
+---------------------------------------------
+     using proyecto.Models;
+
+     string conexion="Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+     services.AddDbContext<PruebaDbContext>(a =>  a.UseSqlServer(conexion));
+
+5) Agregar el DbContext al controlador, atraves del constructor, para tener acceso a los modelos y datos de la 
+    base de datos, en este caso en el controlador de la carpeta Home.
+-----------------------------------------------------
+    public class HomeController : Controller
+    {
+        private readonly PruebaDbContext db;
+        public HomeController(PruebaDbContext db)
+        {
+            this.db = db;
+        }
+
+        public IActionResult Index()
+        {
+            List<Modelo> modelos=db.Modelo.ToList();
+            ViewBag.modelo=modelos.FirstOrDefault();
+            return View(modelos);
+        }
+  }
+
+
+

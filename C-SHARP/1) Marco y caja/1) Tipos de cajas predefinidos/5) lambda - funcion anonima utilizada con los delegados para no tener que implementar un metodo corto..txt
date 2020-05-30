@@ -1,0 +1,12 @@
+
+La expresiones lambdas son valores que se le entra a una caja de tipo delegado o predicado delegate.
+
+Ejemplo:
+---------------------------------
+
+//DEFINO UN DELEGADO CON LA FIRMA DE UN METODO QUE SUME DOS NUMEROS
+delegate  int OperacionDelegate(int b, int a);
+
+//creamos la caja que recibira el metodo, en este caso le paso un metodo lambda.
+OperacionDelegate suma=(a,b)=>a+b;
+

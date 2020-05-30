@@ -1,0 +1,26 @@
+
+Tipo:
+------------------
+es un marco para crear cajas.
+
+hay marcos que ya estan creados y otros que debemos crear nosotros.
+---------------------------------
+ya creados: int,short,list,action,func,predicate.
+creado por nosotros: class, struct, enum.
+
+
+marcos para cajitas
+------------------------------------
+ sbyte,
+ short,
+ int,
+ float,
+ double,
+ string
+
+marcos para agrupar muchas cajitas
+------------------------------------
+class,
+struct,
+enum
+ 

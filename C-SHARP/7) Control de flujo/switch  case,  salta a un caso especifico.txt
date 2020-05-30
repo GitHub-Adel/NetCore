@@ -1,0 +1,26 @@
+
+Evalua una unica expresion y segun una condicion salta a un caso especifico.
+
+En el sig. caso salta al bloque blanco directamente, sin evaluar los demas casos.
+
+solo se utilizan int, char, string.
+
+EVALUA UNA UNICA EXPRESION:
+----------------------------------
+
+            string color = "blanco";
+            switch (color)
+            {
+                case "rojo":
+                    Console.WriteLine("tiene un 10% de descuento");
+                    break;
+                case "blanco":
+                    Console.WriteLine("tiene un 5% de descuento");
+                    break;
+                default: //si no es ninguno de los casos anteriores, ej: negro.
+                    Console.WriteLine("No tiene descuento");
+                    break;
+            }
+
+
+

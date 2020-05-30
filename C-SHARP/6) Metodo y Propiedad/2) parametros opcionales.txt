@@ -1,0 +1,10 @@
+
+se usa para la compactibilidad con algunos lenguajes que no admiten sobrecarga.
+esto es lo mismo que la sobrecarga pero con un solo metodo.
+
+EJEMPLO:
+--------------------------------------------
+        void Metodo(int edad, string nombre="")
+        {
+           ...
+        }

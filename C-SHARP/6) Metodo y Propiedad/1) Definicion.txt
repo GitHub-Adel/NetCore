@@ -1,0 +1,29 @@
+Metodo
+------------------
+Es el comportamiento que tiene un marco
+utilizar para refactorizar un bloque de codigo muy largo en muchos pequeños.
+
+
+public void Calcular()
+{
+    //suma
+    int resultado = a + b;
+    //resta
+    resultado = a - b;
+}
+
+//sacamos la suma a un metodo a parte y asi vamos haciendo el codigo mas entendible y pequeno
+--------------------------
+public int Sumar(int a, int b)
+{
+    return a + b;
+}
+
+
+
+
+propiedad
+-------------
+Es el estado y la forma que se le da a un marco.
+
+int Numero{get; set;}=5;

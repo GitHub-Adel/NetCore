@@ -1,0 +1,22 @@
+
+
+hace que una caja pueda recibir diferente tipo de contenido
+
+Le ponemos <T> al lado derecho del marco modelo que estamos disenando 
+class<T>, struct<T>, esto indica que la caja que saquemos de este marco
+podra almacenar contenido del tipo que le indiquemos.  
+
+EJEMPLO
+=====================================
+
+class Caja<T> //con esto podemos agregar a la caja contenido generico(int,string,cliente,proveedor).
+{
+   List<T> ListadoCaja; // creamos una caja1 listadora que almacenará 
+                           el mismo tipo de contenido que caja.
+}
+
+SACANDO CAJAS DE ESTE MODELO:
+-----------------------------
+Caja<string> caja1=new Caja<string>();
+caja1="saludos";
+caja1.ListadoCaja.Add("hola soy un nuevo contenido");

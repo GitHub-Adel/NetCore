@@ -1,0 +1,22 @@
+Por defecto los metodos en c# son sealed, para poder sobreescribirlo hay que hacerlo virtual.
+
+1) impide que se herede o amplie el marco
+
+//esta clase se podra heredar
+abstract class Vehiculo
+    {
+        public string Placa { get; set; }
+       //este metodo no se podra sobreescribir
+      //porque por defecto es sealed
+       void Metodo(){}
+      //pero este en cambio si.
+       virtual void Metodo(){}
+    }
+
+//Pero esta en cambio no deseo que se herede.
+    sealed class Carro:Vehiculo
+    {
+        public string Placa { get; set; }
+    }
+
+   

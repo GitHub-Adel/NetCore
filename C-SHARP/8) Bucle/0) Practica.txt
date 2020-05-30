@@ -1,0 +1,6 @@
+1) entrar los dias de semana en una caja: recorra cada dia y muestrelo.
+
+2) entrar 5 edades en una caja: recorrer y mostrar las mayores.
+
+3) entrar numero en una caja y mientras no se entre el numero 0 
+   seguir entrando.

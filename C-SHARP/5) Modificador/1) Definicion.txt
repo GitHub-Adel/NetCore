@@ -1,0 +1,1 @@
+Modifican el acceso y la forma de utilizar el marco y sus miembros.

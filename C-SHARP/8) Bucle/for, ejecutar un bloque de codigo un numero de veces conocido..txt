@@ -1,0 +1,14 @@
+
+ejecuta el bloque de codigo n cantidad de veces, las vueltas se deben conocer.
+
+eje: para mostrar los meses del año, los dias de la semana, recorrer array etc.
+
+SE CONOCE LA CANTIDAD DE REPETICIONES:
+----------------------------------
+
+            for (int i = 0; i < 7; i++)
+            {
+                //muestra el nombre del dia de la semana correspondiente al numero de i.
+                Console.WriteLine((DayOfWeek)i);
+            }
+            Console.ReadLine();

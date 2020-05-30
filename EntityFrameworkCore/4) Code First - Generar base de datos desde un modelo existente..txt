@@ -1,0 +1,87 @@
+Generar base de datos desde clase DBContext y Entidades
+----------------------------
+1) Crear la carpeta Models
+
+2) Crear los modelos
+
+    public class Orden
+    { 
+        	public int OrdenID { get; set; } 
+	public string Detalle { get; set; }
+	public int ClienteID { get; set; }
+	public virtual Cliente Cliente { get; set; }
+    }
+
+    public class Cliente
+    { 
+        	public int ClienteID { get; set; } 
+	public string Nombre { get; set; }
+	public virtual List<Orden> Ordenes { get; set; }
+    }
+
+
+3)  Crear DBContex y configurar conexion.
+ 
+     clase  pública SchoolContext : DbContext
+    {
+         public  DbSet < Cliente> Cliente{get; set; }
+         public  DbSet < Orden> Orden{get; set; }
+
+        protegida  override  void OnConfiguring ( DbContextOptionsBuilder optionsBuilder)
+        { 
+            optionsBuilder.UseSqlServer ( @ "CadenaConexion" );
+        }
+    }
+
+
+4) Agregar migracion
+
+	dotnet ef migrations add NombreDataBase
+
+5) Crear database
+
+	dotnet ef database update
+
+6) Eliminar migracion
+
+	dotnet ef migrations remove
+
+
+
+
+fin
+
+Nota:
+-----------------------
+
+relaciones del modelo
+=============================
+Relacion uno a uno(una orden tiene un cliente):
+(
+public int ClienteID { get; set; }
+public virtual Cliente Cliente { get; set; }
+
+Esto va a la tabla Cliente y verifica si hay una clave primaria que se llama ClienteID
+para obtener el Cliente, de esta manera se hace la relacion, si no existe el campo
+en Cliente, se genera un error y no se realiza la relacion.
+)
+
+Relacion uno a mucho(un cliente tiene mucha orden):
+(
+public virtual List<Orden> Ordenes { get; set; }
+
+Esto va a la tabla Orden y verifica si hay un campo que se llama ClienteID
+para obtener el listado de Ordenes, de esta manera se hace la relacion, si no existe el campo
+en Orden, se genera un error y no se realiza la relacion, aqui no debe poner OrdenID, ya que se
+generaria una referencia cruzada, causando error.
+)
+
+migracion
+=======================
+cada vez que necesitemos agregar un modelo o actualizar uno ya existente, debemos actualizar la
+base de datos sql ejecutando paso 4 y 5, esto borrara cualquier registro insertado previamente.
+
+
+
+
+

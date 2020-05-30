@@ -1,0 +1,15 @@
+1) ir a : https://www.nuget.org/packages
+
+2) Escribir en la busqueda : Microsoft.EntityFrameworkCore
+    		        Microsoft.EntityFrameworkCore.SqlServer  
+		        Microsoft.EntityFrameworkCore.Tool 
+		        Microsoft.EntityFrameworkCore.Design
+		        dotnet-ef
+
+4) Ir a la opcion Version History y hacer click en la ultima version estable.
+
+5)  copiar y pegar en la terminal lo que hay en .NET CLI
+
+Nota:
+-----------------------------
+Esto se debe instalar por cada proyecto nuevo que se cre

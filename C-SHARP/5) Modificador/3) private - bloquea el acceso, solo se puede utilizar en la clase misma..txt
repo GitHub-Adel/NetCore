@@ -1,0 +1,17 @@
+
+hace que las cajas solo sean accesible desde la caja a la que pertenecen. 
+por defecto todas son private.
+
+ejemplo
+---------------
+class Vehiculo
+{
+  private string Nombre;
+
+}
+
+class Carro:Vehiculo
+{
+   esta clase no puede tener acceso a Nombre
+
+}

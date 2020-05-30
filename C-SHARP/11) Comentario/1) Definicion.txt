@@ -1,0 +1,16 @@
+
+es comentar el codigo para que en el mañana podamos entender nuestro codigo
+y que otros tambien lo entienda.
+
+
+EJEMPLO:
+--------------------------------
+
+// 	: comentario normal
+///	: comentario para metodos que cuando hagas una llamada al mismo te lo muestre,
+	  es como una ayuda.
+//TODO	: Esto es para indicar en que punto, te quedaste si te va a casa, o de viaje.
+     	  imagina que tienes 20 clases y en una de ellas estas creando un metodo y solo 
+	  has creado la mitad. se hara incomodo encontrar en que clase y metodo te 
+	  quedaste. esto se llama lista de tarea  menu ver-tasklist, le da doble click y 
+	  te lleva al metodo.

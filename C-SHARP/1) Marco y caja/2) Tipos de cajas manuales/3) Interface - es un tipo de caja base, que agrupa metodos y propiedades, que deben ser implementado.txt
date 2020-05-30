@@ -1,0 +1,34 @@
+
+marco de caja que agrupa comportamiento y propiedades.
+si crea una caja, esta podrá almacenar los marcos que la hereden o implementen.
+
+ejemplo:
+----------------------------
+
+//creamos el marco
+-------------------------
+interface IOperacion
+{
+    void Calcular(); //esto puede ser una propiedad
+}
+
+
+//heredamos el marco
+---------------------
+class Suma : IOperacion
+class Resta : IOperacion
+
+
+//creamos una caja
+---------------------
+IOperacion caja;
+     
+
+//agregamos contenido a la caja
+-----------------------
+caja =new Suma(); 
+caja =new Resta();
+
+//Ponemos el metodo a funcionar
+--------------------
+caja.Calcular();

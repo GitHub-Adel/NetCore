@@ -1,0 +1,18 @@
+
+
+ ++caja,--caja 	: incrementa y descrementa 1,  ++caja ( caja=caja+1 )
+
+   new 		:Crea objeto, llama al constructor de una clase.
+
+     ! 		: Negacion ,  Verdad=!Verdad -> verdad=false;
+
+ (Marco)caja 	: explicit casting (manual), sbyte<-short<-int<-long<-float<-double<-decimal, int=(int)long.
+		  con metodo:  int=int.parse(long),  int=Convert.toint(long);
+
+    && 		: and, if( (a)&&(b) ) si a y b
+
+    || 		: or,  if( (a)||(b) ) si a o b
+
+     ?:		: devuelve una caja segun una condicion, caja2 = (caja>50)?caja:0;
+
+   +-*/= 	: agrega 20, caja+=20   ( caja=caja+20 );

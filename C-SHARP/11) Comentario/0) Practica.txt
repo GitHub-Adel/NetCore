@@ -1,0 +1,8 @@
+1) crear un marco para 2 numeros y que realice la suma, comentar el codigo
+   para poder entenderlo mejor.
+
+2) crear un marco para 2 numeros y que realice la resta, comentar el codigo
+   de tal manera que al llamar al metodo en otro lado, se muestre este comentario,
+   dejarlo por mitad y agregar un comentario que me permita seguir justo donde me
+   quedé, buscandolo en la lista de tarea.
+   

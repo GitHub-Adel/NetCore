@@ -1,0 +1,14 @@
+Utilizar delegado y lambda en todo lo posible.
+-----------------------------------------------------
+
+1) Crear una caja que almacene edades, 3 mayores y 2 menores.
+
+2) Crear una caja que reciba una edad por parametro 
+   y retorne true si es mayor.
+
+3) Crear una caja que reciba un entero y lo muestre.
+
+4) Crear una caja que reciba dos entero y retorne la suma.
+
+6) Crear un marco con una cajita que permita almacenar cualquier 
+   tipo de valor.

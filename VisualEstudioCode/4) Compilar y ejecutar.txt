@@ -1,0 +1,11 @@
+
+1) dotnet build  : compila 
+
+2) dotnet run : ejecuta
+
+3) ctrol + c  :  detiene la ejecucion.
+
+
+fin
+
+

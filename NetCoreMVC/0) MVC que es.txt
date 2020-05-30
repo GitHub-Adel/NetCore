@@ -1,0 +1,18 @@
+es un patron de diseño  modelo-vista-controlador
+
+funciona asi:
+-----------------------
+usuario -> controlador <-> modelo 
+usuario <- vista <- controlador
+
+1) el usuario le solicita los datos al controlador
+2) el controlador busca los datos en el modelo y le devuelve una vista al usuaro con ellos.
+
+a) el controlador necesita una vista y un modelo
+b) el modelo no necesita a ninguno
+c) la vista necesita un modelo.
+
+
+
+
+fin

@@ -1,0 +1,15 @@
+1) crear una cajita y hacer que su contenido no pueda ser cambiado.
+
+2) teniendo un marco de cliente ya creado con propiedades y metodos, 
+   dividir las propiedades en un archivo y los metodos en otro, 
+   ambos deben funcionar con el mismo marco.
+
+3) hacer que una propiedad de un marco, no pueda ser tocada 
+   desde fuera.
+
+4) hacer que una propiedad de un marco, solo pueda ser tocada 
+   por el marco mismo y por los que hereden de este.
+
+5) hacer que un marco no se pueda heredar.
+
+6) hacer que el contenido de un marco, solo pueda ser tocado por el.

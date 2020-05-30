@@ -1,0 +1,26 @@
+
+Hace que un marco silva de base, que solo se pueda heredar.
+las cajas que la hereden deben estar relacionadas entre ellas.
+
+no utilizar, en su lugar usar interface.
+
+ejemplo:
+--------------------------
+
+//se recomienda llevar los metodos a interface.
+   abstract class Vehiculo
+    {
+        public string Placa { get; set; }
+
+        abstract void Correr();
+    }
+
+
+class Carro:Vehiculo
+{
+   override void Correr();
+   {
+
+   }
+
+}

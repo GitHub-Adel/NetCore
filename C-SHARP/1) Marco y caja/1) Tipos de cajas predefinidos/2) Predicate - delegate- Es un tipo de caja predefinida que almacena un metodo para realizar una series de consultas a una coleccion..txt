@@ -1,0 +1,20 @@
+
+Es un tipo de caja predefinida que su funcion es consultar sobre una lista de caja.
+
+Ejemplo:
+---------------------------------
+
+//LISTA DE CAJA QUE CONTIENE LAS DIFERENTES EDADES.
+List<byte> edades = new List<byte>() { 20, 5, 30, 60, 20, 10 };
+
+//CREO UN METODO QUE RECIBA UNA EDAD Y ME DEVUELVA TRUE= SI ES MAYOR, FALSE=SI ES MENOR.
+bool GetMayor(byte edad)
+{
+	return edad >= 18 ? true : false;
+}
+
+
+//FindAll, LE PASO EL METODO Y EL RETORNA UNA LISTA DE CAJA QUE CONTENGAN EDADES MAYORES
+List<byte> mayores= edades.FindAll(GetMayor);
+
+

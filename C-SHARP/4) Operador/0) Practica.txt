@@ -1,0 +1,20 @@
+
+1) crear una cajita que almacene un entero, sumarle uno, luego 
+   restarselo nuevamente.
+
+2) construir una caja de un marco;
+
+3) crear una cajita que almacene un boleano, meterle true y luego 
+   negar su valor.
+
+4) crear una cajita luego meter su valor en una cajita mas pequeña.
+
+5) evaluar a y b dentro de un if.
+
+6) evaluar a o b dentro de un if.
+
+7) evaluar a y b, si son iguales o no, crear una cajita y entrarle una
+   nota que indique si lo son o no lo son.
+
+8) crear una cajita de entero y agregarle 10, sacarle 5, 
+   multiplicar lo que tenga por 3 y dividir lo que tenga por 2.

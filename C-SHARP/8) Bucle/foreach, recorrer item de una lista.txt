@@ -1,0 +1,9 @@
+
+recorre una caja de tipo lista, hasta terminar cada valor
+
+ejemplo: clientes es una caja de tipo lista, que contiene varios items en su interior
+----------------------------------
+foreach (var item in clientes)
+{
+     ...
+}

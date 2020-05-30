@@ -1,0 +1,17 @@
+Para reutilizar el codigo y no tener que programar lo mismo una y otra vez.
+
+EJEMPLO:
+--------------------------------
+
+carro tendra Ruedas y Color. y no será necesario volver a escribir las propiedades.
+
+    class Vehiculo
+    {
+        public sbyte Ruedas { get; set; }
+        public Color Color { get; set; }
+    }
+
+    class Carro:Vehiculo
+    {
+    }
+

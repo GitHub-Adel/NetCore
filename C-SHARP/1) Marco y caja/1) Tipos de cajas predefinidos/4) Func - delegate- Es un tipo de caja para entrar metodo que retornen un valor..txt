@@ -1,0 +1,18 @@
+
+Es un tipo de caja generic, para entrar un metodo que sí retornen un valor.
+EL PRIMER PARAMETRO ES LA SALIDA, LOS DEMAS ENTRADAS.
+-------------------------------------------------
+EJEMPLO:
+--------------
+	Func<int,int, int> Imprimir = (a, b) => a + b;
+	var resultado= Imprimir(10, 5);
+
+
+CON VARIAS EXPRESIONES EN EL CUERPO
+------------------------------------
+	Func<double, double> operacion = (a) => 
+        {
+	     	a += 5;
+	     	a -= 2;
+		Return a; 			
+	 };

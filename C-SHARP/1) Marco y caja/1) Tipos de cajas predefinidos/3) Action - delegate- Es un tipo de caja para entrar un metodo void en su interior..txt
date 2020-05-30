@@ -1,0 +1,26 @@
+
+Es un tipo de caja generic, para entrar un metodo void.
+sustituye el delegado normal, ya que no requiere definir un tipo delegado:
+-------------------------------------------------
+CREAR UN METODO PARA IMPRIMIR LA SUMA DE DOS NUMEROS POR CONSOLA:
+CON DELEGADO
+--------------
+		static void Main(string[] args)
+		{
+			ImprimeSumaDelegate ImprimirSuma = (a, b) => Write(a + b);
+			ImprimirSuma(15, 5);
+		}
+
+		delegate void ImprimeSumaDelegate(int a, int b);
+
+
+
+CON ACTION:
+---------------------------------
+		static void Main(string[] args)
+		{
+			Action<int, int> ImprimirSuma = (a, b) => Write(a + b);
+			ImprimirSuma(15, 5);
+		}
+
+

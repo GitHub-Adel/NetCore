@@ -1,0 +1,31 @@
+
+marco de Caja que agrupa Elementos constante, asignandole un indixe, esta caja
+es static por default.
+ej:
+-------------------
+	enum Caja
+	{
+		DOMINGO = 0,
+		LUNES = 1,
+		MARTES = 2,
+		MIERCOLES = 3,
+		JUEVES = 4,
+		VIERNES = 5,
+		SABADO = 6
+	}
+
+podemos manipularla atraves del nombre o a traves del numero.
+
+ej:
+-------------------
+Caja.MARTES retorna MARTES.
+(Caja)2 retorna MARTES.
+
+
+y como es un tipo podemos crar variables:  
+----------------------------------
+Caja Lunes = Caja.LUNES; 
+
+caja.DOMINGO.ToString()  => esto retorna 'DOMINGO'
+
+

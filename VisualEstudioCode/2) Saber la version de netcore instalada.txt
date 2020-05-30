@@ -1,0 +1,12 @@
+version:
+--------------------
+para saber con que version de netcore estamos trabajando
+--------------------
+1) abrir la terminal
+1) dotnet --version
+
+
+C:\Users\Adelson>dotnet --version
+3.1.300
+
+

@@ -1,0 +1,2 @@
+1) Instalar entity framework core
+2) 

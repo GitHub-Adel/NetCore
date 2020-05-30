@@ -1,0 +1,26 @@
+
+es dividir un marco grande en muchos marcos mas pequeño,
+por ejemplo poner los constructores en uno,
+las propiedades en otro y los metodos en otro.
+
+serian 3 Split. con partial. cada marco debe tener partial
+
+ejemplo
+--------------------------------
+    //marco para constructor
+    partial class Coche
+    {        
+        ....
+    }
+
+    //marco para propiedades y campos
+    partial class Coche
+    {
+       ...
+    }
+
+    //marco para Metodos
+    partial class Coche
+    {
+        ...
+    }

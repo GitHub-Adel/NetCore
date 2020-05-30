@@ -1,0 +1,4 @@
+
+es hacer que el flujo del programa se vaya por un lado o por el otro.
+si se cumple una o mas condiciones.
+

@@ -1,0 +1,9 @@
+1) Pon una edad en una cajita, evalua cuando sea joven, 
+   adulto,viejo,o anciano y entra el resultado en otra cajita.
+
+2) Entra "menor" o "mayor" en una cajita,cuando la edad sea menor o
+   mayor.
+
+3) Pon un dia de semana en una cajita y evalua segun el dia, entra 
+   una "descripcion" en otra cajita, que diga "hoy es " mas el dia 
+   que tiene la cajita.

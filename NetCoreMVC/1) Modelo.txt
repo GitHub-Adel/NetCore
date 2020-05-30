@@ -1,0 +1,17 @@
+es un tipo que permite agrupar varias propiedades y metodos para luego formar objetos,
+representara la información (los datos) y las reglas del negocio.
+
+A) Implementacion
+--------------------------
+    public class Cliente
+    { 
+        	public int ClienteID { get; set; } 
+	public string Nombre { get; set; }
+    }
+
+
+
+
+fin
+
+

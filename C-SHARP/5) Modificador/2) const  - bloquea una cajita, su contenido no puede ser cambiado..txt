@@ -1,0 +1,10 @@
+
+bloquea una caja, permite utilizar el contenido.
+
+ejemplo
+----------------------------
+const int caja=100;
+
+int caja2=caja1;
+
+

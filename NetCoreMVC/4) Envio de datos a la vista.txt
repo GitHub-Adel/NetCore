@@ -1,0 +1,34 @@
+
+clase Modelo
+{
+     Precio;
+     Cantidad;
+}
+
+
+metodo Index()
+{
+   	ViewBag.lista=lista de modelo;
+	ViewBag.Total=modelo.Precio * modelo.Cantidad;
+               	
+	return View(modelo);
+}
+
+
+Vista
+-----------
+<h1>Precio: modelo.Precio<h1>
+<h1>Cantidad: modelo.Cantidad<h1>
+<h1>Total: ViewBag.Total<h1>
+
+
+como se aprecia, lo que debemos enviar a la vista es un modelo, pero hay algunos campos que este no tiene
+y hay que enviarla a la vista atraves de un ViewBag.
+
+ViewBag: crea propiedades de cualquier tipo en tiempo de compilacion ahi mismo al definirla.
+
+asi es como el controlador le pasa los datos a las vistas atraves del metodo.
+
+Nota
+-----------------------
+ViewBag se pierde cuando el usuario le solicita otra informacion al controlador.

@@ -1,0 +1,12 @@
+
+se llama sobrecarga cuando creamos dos o mas metodos con el mismo nombre
+-----------------------------------
+1) cuando un marco deba hacer los mismo de diferente forma
+
+los metodos deben tener parametros diferentes, tanto en tipo como en cantidad.
+         
+tenemos un marco SUMA que tendra un metodo que sumaras 2 numero y otro que sumara 3
+
+        private int Sumar(int a, int b){};
+
+        private double Sumar(int a, int b, int c){};
