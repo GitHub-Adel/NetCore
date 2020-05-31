@@ -1,9 +1,9 @@
 
-1) Consultar modelos relacionados (proyecion)
+1) CONSULTAR MODELO RELACIONADO, UTILIZANDO Include (proyecion)
 ---------------------------------------------
             PruebaDBContext db =new PruebaDBContext();
 
-            List<Orden> Ordenes= db.Orden.Where(x => x.ClienteId==1)
+            var Ordenes= db.Orden.Where(x => x.ClienteId==1)
                                .Include(x=>x.Cliente)
                                .ThenInclude(x=>x.Vendedor)
                                .ToList();
@@ -11,15 +11,42 @@
 nota:
 (
 obtenemos un listado de ordenes con sus relacionados
+orden tiene un cliente y este tiene un vendedor
 
-x => x.ClienteId :es la forma de aceder a las propiedades del modelo se llama expresion lambda
+x => x.ClienteId : x representa a orden, es la forma de aceder a las propiedades del modelo 
+                              se llama expresion lambda.
 
 Where : condiciona la consulta 
 
-.Include : incluye un objeto de Orden, en este caso cliente, orden tiene un cliente
+.Include : incluye un modelo que este relacionado con Orden, en este caso cliente, orden tiene un cliente
 
-ThenInclude: incluye una tabla relacionada con Cliente, el cliente tiene un vendedor
+ThenInclude: incluye un modelo que este relacionado con Cliente, en este caso vendedor, 
+	el cliente tiene un vendedor
 
 ToList() : Devuelve un listado de orden
 
 )
+
+
+
+2) CONSULTAR MODELO RELACIONADO, UTILIZANDO SELECT (proyecion)
+---------------------------------------------------------------------------------
+
+var Ordenes= db.Orden.Where(x => x.ClienteId==1)
+.Select(x=> new
+{
+    Orden=x,
+    Cliente=x.Cliente,
+    Vendedor=x.Cliente.Vendedor
+}).ToList();
+
+Nota:
+(
+con esto se obtiene el mismo resultado que con Include.
+
+recordar que la x, representa a orden.
+Crea 3 objeto dentro de Ordenes, llamado Orden, Cliente y Vendedor
+a cada uno le pasa la entidad correspondiente.
+la idea de esto es obtener los modelos relacionados
+)
+
