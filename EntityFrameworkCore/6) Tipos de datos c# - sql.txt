@@ -1,0 +1,15 @@
+C# Type	SQL Type
+int	int
+string	nvarchar(Max)
+decimal	decimal(18,2)
+float	real
+byte[]	varbinary(Max)
+datetime	datetime
+bool	bit
+byte	tinyint
+short	smallint
+long	bigint
+double	float
+char	No mapping
+sbyte	No mapping (throws exception)
+object	No mapping
