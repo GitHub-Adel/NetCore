@@ -18,5 +18,5 @@ DOS FORMA DE USARLO
 1 - Sintaxis de consulta
 2 - Sintaxis del metodo.
 
-utilizaremos la segunda.
+utilizaremos la segunda porque la primera el compilador termina conviertiendola en la segunda.
 

@@ -1,22 +1,40 @@
-¿Qué es LINQ?
-------------------------------------
-LINQ (Language Integrated Query) es una sintaxis de consulta uniforme en C # y VB.NET 
-una única interfaz de consulta para recuperar datos de diferentes fuentes de datos, como:
-colecciones,  ADO.Net DataSet, XML Docs, servicio web y MS SQL Server y otras bases de datos.
+La sintaxis de método (también conocida como sintaxis fluida) utiliza métodos de extensión 
+incluidos en la clase estática Enumerable o Queryable.
 
-QUE DEVUELVE?
--------------------------------------
-Las consultas LINQ devuelven resultados como objetos. Le permite utilizar un enfoque orientado 
-a objetos.
+El compilador convierte la sintaxis de consulta en sintaxis de método en tiempo de compilación
+por lo que es recomendable utilizar la sintaxis de metodo, esta es la que veremos.
 
-PORQUE USARLO?
-------------------------------------
-para no tener que usar foreach y for, para recorrer una lista o arreglo en busca de un dato.
+Extructura:
+----------------------------------
+var resultado = objeto.Metodo();
+var resultado = objeto.Metodo(parametro);
 
-DOS FORMA DE USARLO
----------------------------------
-1 - Sintaxis de consulta
-2 - Sintaxis del metodo.
+ejemplo:
+----------------------
+var cliente = db.Cliente.Where(  parametro  )
+var cliente = db.Cliente.Where(  Func<TipoEntrada,TipoSalida>  )
+var cliente = db.Cliente.Where(  Func<Cliente,bool> )
+var cliente = db.Cliente.Where(  valorEntrada  => valorSalida )
+var cliente = db.Cliente.Where(  cliente => cliente.Nombre=="Adelson"  )
+var cliente = db.Cliente.Where(  cliente=> true)
+var cliente = db.Cliente.Where(  cliente=> false)
 
-utilizaremos la segunda.
+Func<Cliente,bool> )  si encuentra un cliente con ese nombre la salida es true sino false
 
+
+nota:
+(
+parametros:  puede ser de tipo int, string, Func<Entrada,Salida>  o puede ser que el metodo no tenga parametro.
+
+los tipos raros debes estudiarlo para saber como funcionan en este caso Func<Entrada,Salida> es un tipo que recibe
+un valor lambda. algo asi:   entrada => salida 
+
+Lambda expresion:
+---------------------------
+a)  (entrada1,salida2...)   =>  { expresion1; expresion2; ... return salida; }
+b)  entrada   =>  { expresion1; expresion2; ... return salida; }
+c)  entrada   =>  salida
+d)  ()   =>  { expresion1; expresion2;  }
+e)  ()   =>  expresion1
+
+)

@@ -1,6 +1,6 @@
 
 Es un tipo de caja generic, para entrar un metodo que sí retornen un valor.
-EL PRIMER PARAMETRO ES LA SALIDA, LOS DEMAS ENTRADAS.
+el parametro de la derecha es la salida.
 -------------------------------------------------
 EJEMPLO:
 --------------
