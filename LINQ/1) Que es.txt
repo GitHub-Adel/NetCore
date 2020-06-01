@@ -1,0 +1,22 @@
+¿Qué es LINQ?
+------------------------------------
+LINQ (Language Integrated Query) es una sintaxis de consulta uniforme en C # y VB.NET 
+una única interfaz de consulta para recuperar datos de diferentes fuentes de datos, como:
+colecciones,  ADO.Net DataSet, XML Docs, servicio web y MS SQL Server y otras bases de datos.
+
+QUE DEVUELVE?
+-------------------------------------
+Las consultas LINQ devuelven resultados como objetos. Le permite utilizar un enfoque orientado 
+a objetos.
+
+PORQUE USARLO?
+------------------------------------
+para no tener que usar foreach y for, para recorrer una lista o arreglo en busca de un dato.
+
+DOS FORMA DE USARLO
+---------------------------------
+1 - Sintaxis de consulta
+2 - Sintaxis del metodo.
+
+utilizaremos la segunda.
+
