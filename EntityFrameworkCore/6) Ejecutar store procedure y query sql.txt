@@ -1,0 +1,49 @@
+
+1) Crear objeto ConsultaSql
+2) Poner script a la consulta
+3) Ejecutar consulta
+4) Recorrer resultado 
+5) Hacer algo con el resultado
+
+
+
+a) Crear esta clase:
+------------------------------------------------
+public class ConsultaSql
+    {
+        DbContext contexto;
+        public string Script {private get; set; }
+        public DbDataReader Valores { get; private set; }
+        public ConsultaSql( DbContext contexto)
+        {
+            this.contexto = contexto;
+        }
+
+        public void Ejecutar()
+        {
+            using (var comando = contexto.Database.GetDbConnection().CreateCommand())
+            {
+                comando.CommandText = Script;
+                contexto.Database.CloseConnection();
+                contexto.Database.OpenConnection();
+                Valores=comando.ExecuteReader();
+            }
+        }
+        public bool Recorre()
+        {
+           return Valores.Read();
+        }
+
+    }
+
+
+
+b) Modo de uso:
+--------------------------------------
+           var consulta=new ConsultaSql(new PruebaDBContext());
+           consulta.Script=$"exec OrdenByCliente 1";
+           consulta.Ejecutar();
+           while(consulta.Recorre()){
+               WriteLine($"valor[{consulta.Valores[0]}] valor[{consulta.Valores[1]}] valor[{consulta.Valores[2]}]");
+           }
+

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Net Core\\NetCoreConsole\\NetCoreConsole.csproj": {}
+    "G:\\NetCore\\NetCoreConsole\\NetCoreConsole.csproj": {}
   },
   "projects": {
-    "G:\\Net Core\\NetCoreConsole\\NetCoreConsole.csproj": {
+    "G:\\NetCore\\NetCoreConsole\\NetCoreConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Net Core\\NetCoreConsole\\NetCoreConsole.csproj",
+        "projectUniqueName": "G:\\NetCore\\NetCoreConsole\\NetCoreConsole.csproj",
         "projectName": "NetCoreConsole",
-        "projectPath": "G:\\Net Core\\NetCoreConsole\\NetCoreConsole.csproj",
+        "projectPath": "G:\\NetCore\\NetCoreConsole\\NetCoreConsole.csproj",
         "packagesPath": "C:\\Users\\Adelson\\.nuget\\packages\\",
-        "outputPath": "G:\\Net Core\\NetCoreConsole\\obj\\",
+        "outputPath": "G:\\NetCore\\NetCoreConsole\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

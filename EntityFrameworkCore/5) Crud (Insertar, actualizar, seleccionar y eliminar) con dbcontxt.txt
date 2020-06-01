@@ -1,0 +1,97 @@
+
+a)  Seleccionar objeto
+-------------------------------
+1 - Crear objeto dbcontext (a)
+2 - Seleccionar objeto (d)
+
+b)  Insertar objeto
+-----------------------------------
+1 - Crear objeto dbcontext (a)
+2 - Crear objetos a insertar (b)
+3 - Insertar objeto (c)
+4 - Guardar objeto (g)
+
+c) Actualizar objeto
+------------------------------
+1 - Crear objeto dbcontext (a)
+2 - Seleccionar objeto (b)
+3 - Actualizar objeto (e)
+4 - Guardar objeto (g)
+
+d) Eliminar objeto
+------------------------------
+1 - Crear objeto dbcontext (a)
+2 - Seleccionar objeto (b)
+3 - Eliminar objeto (f)
+4 - Guardar objeto (g)
+
+ 
+
+=============================================================
+a) Crear objeto dbcontext
+------------------------------------
+           using (var db = new PruebaDBContext())   //permite manipular la database
+           {
+           }
+
+b) Crear objetos a insertar
+------------------------------------
+            var cliente1 = new Cliente   //se crea una instancia de un modelo
+            {
+                Nombre = "Rosmarlin sanchez perez"
+            };
+
+c) Insertar objeto
+-------------------------------------
+	db.Cliente.Add(cliente1);  //crea una consulta insert en el dbcontext
+
+d) Seleccionar objeto
+---------------------------------------------
+	//crea una consulta select no relacionada (de un solo objeto)
+	var cliente=db.Cliente.Find(3);  //busca el cliente con la clave 3
+
+	//crea una consulta select relacionada (de varios objetos)
+            	var Ordenes= db.Orden.Where(x => x.ClienteId==1)  //esto es el where, con x manipula las propiedades de Orden
+                               .Include(x=>x.Cliente) //incluye un objeto relacionado con Orden, con x manipula las propiedades de Orden
+                               .ThenInclude(x=>x.Vendedor) //incluye un objeto relacionado con Cliente, con x manipula las propiedades del Cliente
+                               .ToList(); //devuelve una lista de Orden
+
+	//crea una consulta select relacionada (de varios objetos) segunda forma
+	var Ordenes= db.Orden.Where(x => x.ClienteId==1) 
+	.Select(x=> new {Orden=x, Cliente=x.Cliente, Vendedor=x.Cliente.Vendedor} )  //Crea prop. dinamica, con x manipula las propiedades de Orden
+                   .ToList();
+
+e) Actualizar objeto
+---------------------------------------------
+	cliente.VendedorId=3;  //crea una consulta update
+
+f) Eliminar objeto
+--------------------------------------------
+	db.Cliente.Remove(cliente);  //pone el dbcontext en modo delete
+
+g) Guardar objeto  (Ejecutar consulta)
+--------------------------------------------
+	db.SaveChanges();  //Ejecuta la consulta sql.
+
+nota:
+--------------------------------
+un objeto, representa un registro en sql
+una lista de objeto : representa una tabla en sql
+
+si en vez de un objeto quiere guardar una lista de objeto agregue la palabra range al final del metodo
+asi: AddRange, UpdateRange,  RemoveRange etc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

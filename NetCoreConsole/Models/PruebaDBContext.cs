@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace NetCoreConsole.Models
 {
@@ -10,8 +11,7 @@ namespace NetCoreConsole.Models
         {
         }
 
-        public PruebaDBContext(DbContextOptions<PruebaDBContext> options)
-            : base(options)
+        public PruebaDBContext(DbContextOptions<PruebaDBContext> options): base(options)
         {
         }
 
@@ -19,6 +19,7 @@ namespace NetCoreConsole.Models
         public virtual DbSet<Orden> Orden { get; set; }
         public virtual DbSet<Vendedor> Vendedor { get; set; }
 
+ 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
