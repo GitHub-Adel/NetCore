@@ -76,6 +76,10 @@ g) Guardar objeto  (Ejecutar consulta)
 nota:
 --------------------------------
 un objeto, representa un registro en sql
+una lista de objeto : representa una tabla en sql
+
+si en vez de un objeto quiere guardar una lista de objeto agregue la palabra range al final del metodo
+asi: AddRange, UpdateRange,  RemoveRange etc.
 
 
 
