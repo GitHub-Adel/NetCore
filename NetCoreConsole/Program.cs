@@ -10,17 +10,16 @@ namespace NetCoreConsole
 
     class Program
     {
+        static PruebaDBContext db = new PruebaDBContext();        
         static void Main(string[] args)
-        {
-            var consulta=new ConsultaSql(new PruebaDBContext());
-           consulta.Script=$"exec OrdenByCliente 1";
-           consulta.Ejecutar();
-           while(consulta.Recorre()){
-               WriteLine($"valor[{consulta.Valores[0]}] valor[{consulta.Valores[1]}] valor[{consulta.Valores[2]}]");
-           }
-            //consulta.Valores.Close();
-        }
+        {                   
+            var resultado = db.Cliente.OrderByDescending(entrada => entrada.Nombre).ToList(); // entrada => entrada.Nombre );
+            foreach (var item in resultado)
+            {
+                WriteLine(item.Nombre);
+            }
 
+        }
 
 
     }

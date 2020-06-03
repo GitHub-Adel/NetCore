@@ -6,35 +6,12 @@ por lo que es recomendable utilizar la sintaxis de metodo, esta es la que veremo
 
 Extructura:
 ----------------------------------
-var resultado = objeto.Metodo();
-var resultado = objeto.Metodo(parametro);
+var objetoDevuelto = objeto.Metodo(parametro).TipoObjetoDevuelto();
+1) debe operar sobre un objeto
+2) debe llamar un metodo
+3) debe retornar un tipo espesifico
+4) debe recibir el tipo espesifico en una variable.
 
 ejemplo:
 ----------------------
-var cliente = db.Cliente.Where(  parametro  )
-var cliente = db.Cliente.Where(  Func<TipoEntrada,TipoSalida>  )
-var cliente = db.Cliente.Where(  Func<Cliente,bool> )
-var cliente = db.Cliente.Where(  valorEntrada  => valorSalida )
-var cliente = db.Cliente.Where(  cliente => cliente.Nombre=="Adelson"  )
-var cliente = db.Cliente.Where(  cliente=> true)
-var cliente = db.Cliente.Where(  cliente=> false)
-
-Func<Cliente,bool> )  si encuentra un cliente con ese nombre la salida es true sino false
-
-
-nota:
-(
-parametros:  puede ser de tipo int, string, Func<Entrada,Salida>  o puede ser que el metodo no tenga parametro.
-
-los tipos raros debes estudiarlo para saber como funcionan en este caso Func<Entrada,Salida> es un tipo que recibe
-un valor lambda. algo asi:   entrada => salida 
-
-Lambda expresion:
----------------------------
-a)  (entrada1,salida2...)   =>  { expresion1; expresion2; ... return salida; }
-b)  entrada   =>  { expresion1; expresion2; ... return salida; }
-c)  entrada   =>  salida
-d)  ()   =>  { expresion1; expresion2;  }
-e)  ()   =>  expresion1
-
-)
+var cliente = db.Cliente.Where(  parametro  ).ToList();

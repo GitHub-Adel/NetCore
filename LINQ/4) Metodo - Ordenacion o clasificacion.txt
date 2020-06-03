@@ -1,0 +1,31 @@
+organiza los elementos de la colección en orden ascendente o descendente.
+
+OrderBy, ThenBy  
+==============
+
+coleccion de cliente
+----------------------------	
+| ID	| Nombre 	|
+----------------------------
+|1	|Adelson  	|
+|2	|Rosalis	|
+|3	|Amauris	|
+----------------------------
+
+Ordena los elementos de la colección en función de los campos especificados, .
+
+var objeto = coleccion.OrderBy( Func<Cliente, TKey> );
+var objeto = db.Cliente.OrderBy( entrada => salida );
+var objeto = db.Cliente.OrderBy( cliente => cliente.Nombre )
+		.ThenBy( cliente => cliente.ClienteID );
+
+TKey : recibe de lambda el campo por el que va a ordenar.
+
+
+ThenBy()
+===================
+por si se requiere ordenar por mas de un campo
+
+NOTA:
+----------------------
+para ordenar descendentemente solo agregue Descending al metodo
