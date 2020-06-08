@@ -13,10 +13,16 @@ namespace NetCoreConsole
         static PruebaDBContext db = new PruebaDBContext();        
         static void Main(string[] args)
         {                   
-            var resultado = db.Cliente.OrderByDescending(entrada => entrada.Nombre).ToList(); // entrada => entrada.Nombre );
-            foreach (var item in resultado)
+            var resultado = db.Cliente.ToLookup(cliente => cliente.VendedorId);
+            foreach (var grupo in resultado)
             {
-                WriteLine(item.Nombre);
+                WriteLine($"vendedor:{grupo.Key} {db.Vendedor.Find(grupo.Key).Nombre}");
+                WriteLine("========================");
+                foreach (var cliente in grupo)
+                {
+                    WriteLine($"{cliente.Nombre}");
+                }
+                WriteLine($"");
             }
 
         }
