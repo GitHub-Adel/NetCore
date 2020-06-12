@@ -1,6 +1,6 @@
 
 ==================
-Where:
+Where() y OfType():
 ==================
 filtra una coleccion, en funcion de una condicion o predicate retornando otra coleccion con el resultado
 
@@ -22,7 +22,7 @@ Notas
 
 Func  
 -----------------------
-es un tipo de dato que entrega un objeto a lambda y recibe un resultado de lambda.
+es un tipo de dato que entrega un objeto a lambda, lambda lo procesa y le devuelve el resultado.
 Func<Entrega,Recibe>    // entrega a lambda y recibe de lambda;
 
 Lambda: => 
@@ -38,7 +38,7 @@ esto deberia retornar una coleccion con el cliente 1.
 
 La parte derecha de lambda es igual al cuerpo de un metodo, si solo hay una entrada 
 entonces se eliminan los (), si solo hay una salida sin expresion, entonces se eliminan los {return ;} 
-quedando asi:  cliente => cliente.Nombre=="Adelson"
+quedando asi:  cliente => cliente.Nombre=="Adelson" esto devolveria un bool a func
 
 )
 
@@ -56,8 +56,7 @@ Coleccion de objetos
 "Ana"
 "Pedro"
 true
-
-            var coleccion=new List<object>{1, 2, "uno", "dos", true};             
+          
             var resultado = coleccion.OfType<string>();
 
 
