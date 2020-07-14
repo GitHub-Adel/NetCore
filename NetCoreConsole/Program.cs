@@ -10,17 +10,42 @@ namespace NetCoreConsole
 
     class Program
     {
+        static PruebaDBContext db = new PruebaDBContext();        
         static void Main(string[] args)
-        {
-            var consulta=new ConsultaSql(new PruebaDBContext());
-           consulta.Script=$"exec OrdenByCliente 1";
-           consulta.Ejecutar();
-           while(consulta.Recorre()){
-               WriteLine($"valor[{consulta.Valores[0]}] valor[{consulta.Valores[1]}] valor[{consulta.Valores[2]}]");
-           }
-            //consulta.Valores.Close();
-        }
+        {                   
+            var vendedores=new List<Vendedor>(){
+                new Vendedor{Nombre="Angel"} ,
+                new Vendedor{Nombre="Nolasco"} ,
+                new Vendedor{Nombre="Angelo"}
+                
+                };
 
+            var clientes=new List<Cliente>(){
+                new Cliente(){Nombre="Adelson",VendedorId=1},
+                new Cliente(){Nombre="Rosalis",VendedorId=1},
+                new Cliente(){Nombre="Jeuris",VendedorId=2},
+                new Cliente(){Nombre="Juan",VendedorId=2}
+
+            }   ; 
+
+            
+               
+            var resultado= vendedores.Join(clientes, 
+                                        cliente => cliente.VendedorId,
+                                        vendedor => vendedor.VendedorId,
+                                        (cliente,vendedor) => new{
+                                            clienteNombre=cliente.Nombre,
+                                            vendedorNombre = vendedor.
+                                        });
+
+            foreach (var item in resultado)
+            {
+                 WriteLine($"Cliente nombre:{item.clienteNombre}");
+                 WriteLine($"Vendedor nombre:{item.vendedorNombre}");
+            }   
+            WriteLine(vendedores.Count());                              
+            WriteLine(clientes.Count());                              
+        }
 
 
     }

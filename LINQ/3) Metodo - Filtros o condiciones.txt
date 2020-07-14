@@ -1,0 +1,74 @@
+
+==================
+Where() y OfType():
+==================
+filtra una coleccion, en funcion de una condicion o predicate retornando otra coleccion con el resultado
+
+Coleccion de cliente
+-----------------------
+ID 	Nombre
+-----------------------
+1	Adelson
+2	Pedro
+3	Rosalis
+
+var objeto = coleccion.Where(  Condicion   ).TipoADevolver();
+
+var objeto = db.Cliente.Where(   Func<Cliente,bool>  predicate ).ToList();
+
+
+Notas
+(
+
+Func  
+-----------------------
+es un tipo de dato que entrega un objeto a lambda, lambda lo procesa y le devuelve el resultado.
+Func<Entrega,Recibe>    // entrega a lambda y recibe de lambda;
+
+Lambda: => 
+-----------------------
+lambda es un operador, que recibe un objeto de Func, lo procesa y le devuelve un resultado a Func.
+(recibe)  => {procesa; return devuelve;}      
+
+Func = lambda;
+
+Func<Cliente,bool> predicate  =  
+(cliente) => { bool resultado = cliente.Nombre=="Adelson";  return resultado;}
+esto deberia retornar una coleccion con el cliente 1.
+
+La parte derecha de lambda es igual al cuerpo de un metodo, si solo hay una entrada 
+entonces se eliminan los (), si solo hay una salida sin expresion, entonces se eliminan los {return ;} 
+quedando asi:  cliente => cliente.Nombre=="Adelson" esto devolveria un bool a func
+
+)
+
+
+
+=====================
+OfType :
+=====================
+Filtra una coleccion, en funcion de un tipo, retorna todos los que sean de ese tipo. retornando 
+otra coleccion con el resultado, en este caso con todos los que sean string.
+
+Coleccion de objetos
+--------------------------
+10
+"Ana"
+"Pedro"
+true
+          
+            var resultado = coleccion.OfType<string>();
+
+
+
+
+
+
+
+
+
+
+
+
+
+

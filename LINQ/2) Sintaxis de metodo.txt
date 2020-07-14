@@ -1,0 +1,17 @@
+La sintaxis de método (también conocida como sintaxis fluida) utiliza métodos de extensión 
+incluidos en la clase estática Enumerable o Queryable.
+
+El compilador convierte la sintaxis de consulta en sintaxis de método en tiempo de compilación
+por lo que es recomendable utilizar la sintaxis de metodo, esta es la que veremos.
+
+Extructura:
+----------------------------------
+var objetoDevuelto = objeto.Metodo(parametro).TipoObjetoDevuelto();
+1) debe operar sobre un objeto
+2) debe llamar un metodo
+3) debe retornar un tipo espesifico
+4) debe recibir el tipo espesifico en una variable.
+
+ejemplo:
+----------------------
+var cliente = db.Cliente.Where(  parametro  ).ToList();

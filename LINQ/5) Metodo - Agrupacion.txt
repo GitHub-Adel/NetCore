@@ -1,0 +1,37 @@
+Los operadores de agrupación crean un grupo de elementos basados ??en la clave dada.
+
+
+GroupBy|()  y ToLookup()
+----------------------------------------
+Devuelve una coleccion maestro que contiene otra coleccion detalle, por cada registro, 
+no usar ToList().GroupBy, en su lugar usar ToLookup, para que no antecedas ToList().
+
+coleccion de cliente
+----------------------------	
+| ID	| Nombre 	|
+----------------------------
+|1	|Adelson  	|
+|2	|Rosalis	|
+|3	|Amauris	|
+----------------------------
+
+            var resultado= db.Cliente.ToLookup(Func<entrada,salida>);
+	var resultado= db.Cliente.ToLookup(entrada,entrada.Propiedad);
+	var resultado= db.Cliente.ToLookup(cliente,cliente.VendedorID);
+
+             //recorro la coleccion maestra
+            foreach (var maestro in resultado)
+            { 
+                WriteLine($"vendedor:{maestro.Key}");
+               //recorro la coleccion detalle	
+                foreach (var detalle in maestro)
+                {   
+                    WriteLine($"{detalle.Nombre}");
+                }
+            }
+
+
+Nota(
+Tkey: campo por el que se desea agrupar.
+en este caso agrupamos todos los clientes por vendedor.
+)
