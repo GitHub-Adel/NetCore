@@ -1,7 +1,0 @@
-1) crear db
-2) crear proyecto api
-3) migrar db a carpeta Models
-4) validar modelos
-5) crear Controllers
-6) crear roles y permisos
-7) probar api con postman

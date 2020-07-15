@@ -12,6 +12,4 @@ fin
 
 Nota:
 -----------------------
-CadenaConexion sql server azure: Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password={Amauris809};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-
 Comando:  dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Models
