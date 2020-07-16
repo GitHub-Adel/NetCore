@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "KUoMOqrTT9qLRutusWcSnAE/+CJQw5lzFfg0uc7UyLWapI1XbsCJBsu5A9avQl5CpK8KO0hLOstg2M/OJipHUw==",
+  "dgSpecHash": "PMLFUrFHz+/XYQ7AOihCzr6gS5ds3esK874eQjVWc8bfbI73QU8rwvy6goSslhfnqIhK5N6k6PUzXt8xSStHeQ==",
   "success": true,
-  "projectFilePath": "G:\\NetCore\\RESTFul\\SocialMedia.Core\\SocialMedia.Core.csproj",
+  "projectFilePath": "D:\\NetCore\\RESTFul\\SocialMedia.Core\\SocialMedia.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\adelson sanchez\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\adelson sanchez\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

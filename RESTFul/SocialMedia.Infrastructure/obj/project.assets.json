@@ -25,6 +25,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "SocialMedia.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/SocialMedia.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SocialMedia.Core.dll": {}
+        }
       }
     }
   },
@@ -171,31 +181,33 @@
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "SocialMedia.Core/1.0.0": {
+      "type": "project",
+      "path": "../SocialMedia.Core/SocialMedia.Core.csproj",
+      "msbuildProject": "../SocialMedia.Core/SocialMedia.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
-      "NETStandard.Library >= 2.0.3"
+      "NETStandard.Library >= 2.0.3",
+      "SocialMedia.Core >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Adelson\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\adelson sanchez\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\NetCore\\RESTFul\\SocialMedia.Infrastructure\\SocialMedia.Infrastructure.csproj",
+      "projectUniqueName": "D:\\NetCore\\RESTFul\\SocialMedia.Infrastructure\\SocialMedia.Infrastructure.csproj",
       "projectName": "SocialMedia.Infrastructure",
-      "projectPath": "G:\\NetCore\\RESTFul\\SocialMedia.Infrastructure\\SocialMedia.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\Adelson\\.nuget\\packages\\",
-      "outputPath": "G:\\NetCore\\RESTFul\\SocialMedia.Infrastructure\\obj\\",
+      "projectPath": "D:\\NetCore\\RESTFul\\SocialMedia.Infrastructure\\SocialMedia.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\adelson sanchez\\.nuget\\packages\\",
+      "outputPath": "D:\\NetCore\\RESTFul\\SocialMedia.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Adelson\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\adelson sanchez\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"
@@ -205,7 +217,11 @@
       },
       "frameworks": {
         "netstandard2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\NetCore\\RESTFul\\SocialMedia.Core\\SocialMedia.Core.csproj": {
+              "projectPath": "D:\\NetCore\\RESTFul\\SocialMedia.Core\\SocialMedia.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -234,7 +250,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

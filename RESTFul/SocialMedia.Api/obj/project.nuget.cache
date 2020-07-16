@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Cod4joJ7x4nUC03UJQoi6k2vTaLFN7X7+27NP8VGZ6gDroiRAb02ZY0/L00y/peWqgFfCi/7D34Xy2I2NdsPpA==",
+  "dgSpecHash": "VuOz8KjtjYCuoFuG17mMngAygtG5xn1M99cJKsSjOMmZ/OUexG1E3QQHdc7UvZIxMkhgS2YdSQrCtYoBvnLUhQ==",
   "success": true,
-  "projectFilePath": "G:\\NetCore\\RESTFul\\SocialMedia.Api\\SocialMedia.Api.csproj",
+  "projectFilePath": "D:\\NetCore\\RESTFul\\SocialMedia.Api\\SocialMedia.Api.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
