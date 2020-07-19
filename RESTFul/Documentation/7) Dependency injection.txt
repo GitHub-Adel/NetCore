@@ -1,0 +1,19 @@
+(SOLUTION EXPLORER)(SocialMedia.Api)(startup.cs)
+-------------------------------------------------------
+1) go to ConfigureServices method
+2) add services.AddTransient<IPostRepository,PostRepository>();
+3) with this conseguimos que la interface apunte al repository que le indiquemos.
+
+
+dependency injection :  to be inject in controller constructor.
+			la idea es, que ningun object create object dependiente into, sino inyectado,
+			every object debe tener an interface and a repository que implement la interface.
+
+			1) ICalculadora, CalculadoraRepository:ICalculadora
+			   //Startup.cs
+			4)  services.AddTransient<ICalculadora,CalculadoraRepository>();
+
+			5) ahora tenemos que hacer algunos cambios a la calculadora, crearemos 
+			   CalculadoraRepository2 sin tocar CalculadoraRepository y apuntamos la 
+			   interface al nuevo repository.
+			   services.AddTransient<ICalculadora,CalculadoraRepository2>();

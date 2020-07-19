@@ -1,0 +1,56 @@
+https://www.nuget.org/packages
+----------------------------
+1) tener instalado en SocialMedia.Api:
+	Microsoft.EntityFrameworkCore.SqlServer
+	Microsoft.EntityFrameworkCore.Design
+	dotnet-ef
+
+   tener instalado en SocialMedia.Infrastructure:
+        Microsoft.EntityFrameworkCore.SqlServer
+	Microsoft.EntityFrameworkCore
+
+2) Asegurarse que el project compile sin error con: dotnet build
+
+3) run command: dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -context-dir CARPETA_DESTINO_CONTEXTO -o CARPETA_DESTINO_MODELOS
+
+4) to delete OnConfiguring method from dbcontext.
+
+5) to config. connectionString into appsettings.json
+
+6) to say al context que use la connectionString que esta en el appsetting.json, a traves del Startup.cs
+   services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
+
+fin
+
+
+Nota:
+-----------------------
+https://docs.microsoft.com/es-es/ef/core/miscellaneous/cli/dotnet 
+
+TO CONFIG CONNECTIONSTRING WITH SQL CREDENTIALS:
+------------------------
+dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o ..\SocialMedia.Core\Entity  --context-dir ..\SocialMedia.Infrastructure\Data
+
+TO CONFIG CONNECTIONSTRING WITH WINDOWS CREDENTIALS:
+-----------------------
+dotnet ef dbcontext scaffold "Server=C2VYW72\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true;" Microsoft.EntityFrameworkCore.SqlServer -o ..\SocialMedia.Core\Entity  --context-dir ..\SocialMedia.Infrastructure\Data
+
+agregar --no-onconfiguring al comando anterior, para que no agregue el metodo OnConfiguring en el context generado.
+solo valido en la version 5.0.0 de ef core en adelante, mientras quitarlo manualmente.
+
+appsettings.json:
+-------------------
+{
+  "ConnectionStrings":{
+    "SocialMedia":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}
+

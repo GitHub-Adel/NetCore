@@ -1,0 +1,10 @@
+pasos:
+--------------------
+1) create database (sql server)
+2) to do database first
+3) create interface
+4) create repository 
+5) create dependency injection
+6) create controller
+7) postman to test controller's methods
+

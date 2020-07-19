@@ -1,10 +1,10 @@
 
 --SQL DOCUMENT https://www.w3schools.com/sql/sql_foreignkey.asp
 
--- USE [master]; DROP DATABASE [PostsDB];
--- CREATE DATABASE [PostsDB];
+-- USE [master]; DROP DATABASE [SocialMediaDB];
+-- CREATE DATABASE [SocialMediaDB];
 
-USE [PostsDB];
+USE [SocialMediaDB];
 
 --DROP CONSTRAINTS 'F'=FORREIGN KEY
 IF OBJECT_ID('FK_PostUser','F') IS NOT NULL ALTER TABLE [Posts] DROP CONSTRAINT FK_PostUser;

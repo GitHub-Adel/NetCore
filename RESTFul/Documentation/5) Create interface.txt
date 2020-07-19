@@ -1,0 +1,10 @@
+(SOLUTION EXPLORER)(SocialMedia.Core/Interface) (entityframeworkcore)
+-------------------------------------------------------
+interface: define los object method, solo la firma. (abstraction)
+
+1) create file
+2) INameRepository.cs
+3) elegir interface
+4) to put methods's firm to abstract
+
+

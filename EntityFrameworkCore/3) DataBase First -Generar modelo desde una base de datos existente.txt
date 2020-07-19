@@ -1,15 +1,29 @@
-Generar clase DBContext y Entidades
+https://www.nuget.org/packages
 ----------------------------
-1) Tener las tablas creadas en su db
+1) tener instalado en SocialMedia.Api:
+	Microsoft.EntityFrameworkCore.SqlServer
+	Microsoft.EntityFrameworkCore.Design
+	dotnet-ef
 
-2) Crear carpeta llamada Models, sino existe.
+   tener instalado en SocialMedia.Infrastructure:
+	Microsoft.EntityFrameworkCore
 
-3) Buscar y copiar  la cadena de conexion desde su base de datos
+2) Asegurarse que el project compile sin error con: dotnet build
 
-4) Correr el comando: dotnet ef dbcontext scaffold "CadenaConexion" Microsoft.EntityFrameworkCore.SqlServer -o Models
+3) Correr el comando: dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -o CARPETA_DESTINO
 
 fin
 
+
 Nota:
 -----------------------
-Comando:  dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Models
+Comandos:  
+
+TO CONFIG CONNECTIONSTRING WITH SQL CREDENTIALS:
+------------------------
+dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o ..\SocialMedia.Infrastructure\Data
+
+TO CONFIG CONNECTIONSTRING WITH WINDOWS CREDENTIALS:
+-----------------------
+dotnet ef dbcontext scaffold "Server=C2VYW72\SQLEXPRESS;Initial Catalog=PostsDB;integrated security=true;" Microsoft.EntityFrameworkCore.SqlServer -o ..\SocialMedia.Infrastructure\Data
+
