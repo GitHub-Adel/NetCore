@@ -11,12 +11,13 @@
 	1) create Entity directory     
 	2) create Enumeration directory
 	3) create Interface directory
-	4) create DTO directory   "maping"
+	4) create DTO directory  
 	5) create Exception
-8) create class library project "SocialMedia.Infrastructure" -> database
-	1) create Data directory   "database"
-	2) create Repository directory "database methods"
+8) create class library project "SocialMedia.Infrastructure" -> automapper
+	1) create Data directory   "dbcontext"
+	2) create Repository directory "interface methods"
 	3) create Filter directory  "global exceptions"
+	4) create Mapping directory "register Entity and DTO"
 	.) add  "SocialMedia.Core" references
 9) create xUnit test project "SocialMedia.UnitTest"
 10) create xUnit test project "SocialMedia.IntegrationTest"

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SocialMedia.Api
 {
-    public partial class Comments
+    public partial class Comment
     {
         public int CommentId { get; set; }
         public int PostId { get; set; }
@@ -12,7 +12,7 @@ namespace SocialMedia.Api
         public DateTime Date { get; set; }
         public bool Active { get; set; }
 
-        public virtual Posts Post { get; set; }
-        public virtual Users User { get; set; }
+        public virtual Post Post { get; set; }
+        public virtual User User { get; set; }
     }
 }

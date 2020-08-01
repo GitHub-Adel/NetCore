@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SocialMedia.Core.Interface;
+using SocialMedia.Infrastructure.Repositoy;
 
 namespace SocialMedia.Api
 {
@@ -24,7 +26,7 @@ namespace SocialMedia.Api
             services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
 
             //definir en el startup, el repository que usara la interface. 
-           // services.AddTransient<IPostRepository,PostRepository>();
+           services.AddTransient<IUserRepository,UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

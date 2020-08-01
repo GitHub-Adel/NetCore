@@ -1,3 +1,0 @@
-aqui encontrara todo sobre sql server
-
-https://www.w3schools.com/sql/sql_notnull.asp

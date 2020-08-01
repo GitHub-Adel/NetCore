@@ -20,8 +20,6 @@ https://www.nuget.org/packages
 6) to say al context que use la connectionString que esta en el appsetting.json, a traves del Startup.cs
    services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
 
-fin
-
 
 Nota:
 -----------------------

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace SocialMedia.Api
 {
@@ -13,17 +15,15 @@ namespace SocialMedia.Api
         {
         }
 
-        public virtual DbSet<Comments> Comments { get; set; }
-        public virtual DbSet<Posts> Posts { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Comment> Comment { get; set; }
+        public virtual DbSet<Post> Post { get; set; }
+        public virtual DbSet<User> User { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Comments>(entity =>
+            modelBuilder.Entity<Comment>(entity =>
             {
-                entity.HasKey(e => e.CommentId)
-                    .HasName("PK__Comments__C3B4DFCAE9BC4CAD");
-
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
                 entity.Property(e => e.Description)
@@ -36,23 +36,20 @@ namespace SocialMedia.Api
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.HasOne(d => d.Post)
-                    .WithMany(p => p.Comments)
+                    .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.PostId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CommentPost");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Comments)
+                    .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CommentUser");
             });
 
-            modelBuilder.Entity<Posts>(entity =>
+            modelBuilder.Entity<Post>(entity =>
             {
-                entity.HasKey(e => e.PostId)
-                    .HasName("PK__Posts__AA126038AF37F608");
-
                 entity.Property(e => e.PostId).HasColumnName("PostID");
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
@@ -69,27 +66,24 @@ namespace SocialMedia.Api
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Posts)
+                    .WithMany(p => p.Post)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PostUser");
             });
 
-            modelBuilder.Entity<Users>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__1788CCACB7FF39A4");
-
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.Property(e => e.Datebirth).HasColumnType("datetime");
+                entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Firsname)
+                entity.Property(e => e.Firstname)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);

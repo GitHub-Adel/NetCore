@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace SocialMedia.Api
 {
-    public partial class Posts
+    public partial class Post
     {
-        public Posts()
+        public Post()
         {
-            Comments = new HashSet<Comments>();
+            Comment = new HashSet<Comment>();
         }
 
         public int PostId { get; set; }
@@ -16,7 +16,7 @@ namespace SocialMedia.Api
         public string Description { get; set; }
         public string Image { get; set; }
 
-        public virtual Users User { get; set; }
-        public virtual ICollection<Comments> Comments { get; set; }
+        public virtual User User { get; set; }
+        public virtual ICollection<Comment> Comment { get; set; }
     }
 }

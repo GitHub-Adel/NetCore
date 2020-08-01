@@ -1,5 +1,0 @@
-Create database NoteDB
-
-nota:
-----------------------
-1) this database store customer related data
