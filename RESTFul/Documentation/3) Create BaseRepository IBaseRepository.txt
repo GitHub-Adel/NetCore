@@ -1,0 +1,61 @@
+
+interface: define los method, solo la firma. (abstraction)
+=========================================
+Esta interface contiene los metodos base del crud y de aquellos que se repiten, sera hereda por todas 
+aquellas interfaces que la necesitan como: IPostRepository, pero no será implementada.
+
+-------------------------------------------------------
+
+1) create file
+2) IBaseRepository.cs
+3) elegir interface
+
+
+namespace SocialMedia.Core.Interface
+{
+    //generic interface
+    public interface IBaseRepository<T> where T: class
+    {       
+        Task Add(T entity);
+    }
+
+
+
+
+
+
+
+repository: implement interface methods.(encapsulation) 
+===============================================
+este repository tendra todo los metodos del crud asi como aquellos que se repiten y sera heredado por 
+aquellos que los utilizan, debe ser abstract y no será inyectada por la startup.cs.
+
+
+1) create file
+2) BaseRepository.cs
+3) show class
+
+
+namespace SocialMedia.Infrastructure.Repository
+{
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T: class
+    {
+        private readonly SocialmediaDBContext _context;
+        protected readonly DbSet<T> _entity; 
+        public BaseRepository(SocialmediaDBContext _context)
+        {
+            this._context = _context;
+            _entity=_context.Set<T>();
+        }
+
+        public async Task Add(T entity)
+        {
+            _entity.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+
+    }
+
+
+
+}

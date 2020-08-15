@@ -1,0 +1,29 @@
+La idea es no crear o instanciar object dentro de una clase, sino que se debe inyectar una interface
+para usar sus metodos, esto nos facilita el mantenimiento.
+
+1) create interface
+2) create repository
+2) add la configuration in startup.cs class.
+
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //definir en el startup, el repository que usara la interface. 
+	    //sin generic.
+           services.AddTransient<IUserRepository, UserRepository>();
+	   services.AddTransient<IUserService, UserService>();
+	   //con generic. y el patron repository
+           services.AddScoped( typeof(IBaseRepository<>), typeof(BaseRepository<>) );                 
+        }
+
+	imaginas que ahora te solicitan realizar algunos cambios a la implementacion de User
+	solo tienes que crear nuevas implementaciones UserRepository2 y UserService2 y hacer  
+	que la interface apunte a estas nuevas implementacion, sin tocar las ya existentes asi:
+	services.AddTransient<IUserRepository, UserRepository2>();
+	services.AddScoped( typeof(IUserService<>), typeof(UserService2<>) );
+	si pasa cualquier problemas solo debemos hacer que la interface apunte a UserService de nuevo.
+	services.AddScoped( typeof(IUserService<>), typeof(UserService<>) );	 
+		 

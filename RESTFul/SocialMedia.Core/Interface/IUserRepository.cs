@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
-using SocialMedia.Api;
 
 namespace SocialMedia.Core.Interface
 {
-    public interface IUserRepository
+    public interface IUserRepository:IBaseRepository<User>
     {
-        Task AddUser(User user);
-        Task UpdateUser(User user);
-        Task<User> GetUser(int id);
-        Task<IEnumerable<User>> GetUsers();
-
+        User GetByPhone(string phone);
     }
 }

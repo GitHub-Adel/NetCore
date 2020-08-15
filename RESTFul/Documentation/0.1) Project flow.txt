@@ -4,20 +4,22 @@
 4) crear DB
 
 --CLEAN ARCHITECTURE
-5) create blank soluction "SocialMedia"
-6) create web api project  "SocialMedia.Api"  > presentation
+5) create blank soluction SocialMedia
+6) create web api project  SocialMedia.Api  "presentation"
+	1) create Response directory  "para devolver un standard object al client"
 	.) add  "SocialMedia.Core" and "SocialMedia.Infrastructure"  references
-7) create class library project "SocialMedia.Core"  >
+7) create class library project SocialMedia.Core  "Domain" (business logic)
 	1) create Entity directory     
 	2) create Enumeration directory
 	3) create Interface directory
 	4) create DTO directory  
 	5) create Exception
-8) create class library project "SocialMedia.Infrastructure" -> automapper
+8) create class library project SocialMedia.Infrastructure  "Data access" (Data access logic)
 	1) create Data directory   "dbcontext"
 	2) create Repository directory "interface methods"
 	3) create Filter directory  "global exceptions"
 	4) create Mapping directory "register Entity and DTO"
+	5) create Validator directory  "para los fluent validation"
 	.) add  "SocialMedia.Core" references
 9) create xUnit test project "SocialMedia.UnitTest"
 10) create xUnit test project "SocialMedia.IntegrationTest"

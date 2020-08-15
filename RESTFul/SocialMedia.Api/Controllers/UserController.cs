@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SocialMedia.Api.Response;
+using SocialMedia.Core;
+using SocialMedia.Core.DTO;
 using SocialMedia.Core.Interface;
 
 namespace SocialMedia.Api.Controllers
@@ -9,39 +14,63 @@ namespace SocialMedia.Api.Controllers
     [Route("api/[Controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository repo;
-        public UserController(IUserRepository repo)
-        {
-            this.repo = repo;
-        }
+        private readonly IUserService _service;
+        private readonly IMapper mapper;
 
-        [HttpGet("{id}")]
-       public  async Task<IActionResult> GetUser(int id)
+        public UserController(IUserService _service, IMapper mapper)
         {
-            var model = await repo.GetUser(id);
-            return Ok(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
-        {
-            var model = await repo.GetUsers();
-            return Ok(model);
+            this._service = _service;
+            this.mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(User user)
+        public async Task<IActionResult> AddUser(UserDTO userDTO)
         {
-            await repo.AddUser(user);
-            return Ok(user);
+            //mapeo, guardo, recupero, mapeo, creo respuesta y la retorno
+            var user = mapper.Map<User>(userDTO);
+            var result = await _service.Add(user);
+                userDTO = mapper.Map<UserDTO>(result);
+            var response = new ApiResponse<UserDTO>(userDTO);
+            return Ok(response);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateUser(User user)
-        {
-            await repo.UpdateUser(user);
-            return Ok(user);
-        }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
+        // {
+        //     //mapeo, actualizo y respondo
+        //     var user = mapper.Map<User>(userDTO);
+        //     user.UserId = id;
+        //     var result = await _service.UpdateUser(user);
+        //         userDTO=mapper.Map<UserDTO>(result);
+        //     var response = new ApiResponse<UserDTO>(userDTO);
+        //     return Ok(response);
+        // }
+
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> GetUser(int id)
+        // {
+        //     //recupero, mapeo y devuelvo
+        //     var result = await _service.GetUser(id);
+        //     var userDTO = mapper.Map<UserDTO>(result);
+        //     var response= new ApiResponse<UserDTO>(userDTO);
+        //     return Ok(response);
+        // }
+
+        // [HttpGet]
+        // public async Task<IActionResult> GetUsers()
+        // {
+        //     var result = await _service.GetUsers();
+        //     var usersDTO = mapper.Map<IEnumerable<UserDTO>>(result);
+        //     var response= new ApiResponse<IEnumerable<UserDTO>>(usersDTO);
+        //     return Ok(response);
+        // }
+
+
+
+
 
     }
+
+
+    
 }

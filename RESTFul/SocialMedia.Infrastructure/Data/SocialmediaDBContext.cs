@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using SocialMedia.Core;
 
-namespace SocialMedia.Api
+namespace SocialMedia.Infrastructure
 {
     public partial class SocialmediaDBContext : DbContext
     {

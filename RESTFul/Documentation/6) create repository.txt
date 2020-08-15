@@ -1,8 +1,0 @@
-(SOLUTION EXPLORER)(SocialMedia.Infrastructure/Repository) (encapsulation)
--------------------------------------------------------
-repository: implement interface methods.(encapsulation) can to implement an interface differently.
-
-1) create file
-2) NameRepository.cs
-4) Inherited interface
-5) ctrl + .  to add using and auto implement.

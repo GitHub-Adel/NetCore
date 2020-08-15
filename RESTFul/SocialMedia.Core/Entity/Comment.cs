@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SocialMedia.Api
+namespace SocialMedia.Core
 {
     public partial class Comment
     {

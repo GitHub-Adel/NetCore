@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "Qlngh03XhELpG2rpric09nHyipNP74hLUH6Karnuef9CNDFpTZQY0N7V+gKcMrNGYoagYmWhO+mRNdE7Y8MrCQ==",
+  "dgSpecHash": "7BSoZzXWEq3jZObJvIxu66PWsdr9wiiZXO/JmiP8VZbSOMEFsI0EjV2DsjqA/bKfx6+aOpw5znDOFuDPFE0GwA==",
   "success": true,
   "projectFilePath": "D:\\NetCore\\RESTFul\\SocialMedia.Api\\SocialMedia.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\adelson sanchez\\.nuget\\packages\\automapper\\10.0.0\\automapper.10.0.0.nupkg.sha512",
     "C:\\Users\\adelson sanchez\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.0.1\\automapper.extensions.microsoft.dependencyinjection.8.0.1.nupkg.sha512",
+    "C:\\Users\\adelson sanchez\\.nuget\\packages\\fluentvalidation\\8.6.2\\fluentvalidation.8.6.2.nupkg.sha512",
+    "C:\\Users\\adelson sanchez\\.nuget\\packages\\fluentvalidation.aspnetcore\\8.6.2\\fluentvalidation.aspnetcore.8.6.2.nupkg.sha512",
+    "C:\\Users\\adelson sanchez\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\8.6.2\\fluentvalidation.dependencyinjectionextensions.8.6.2.nupkg.sha512",
     "C:\\Users\\adelson sanchez\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.0\\microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
     "C:\\Users\\adelson sanchez\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
     "C:\\Users\\adelson sanchez\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

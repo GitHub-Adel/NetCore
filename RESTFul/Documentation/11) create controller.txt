@@ -1,0 +1,42 @@
+(SOLUTION EXPLORER)(SocialMedia.Api/Controllers)
+--------------------------------
+se comunica with views a traves de la interfaces
+
+1) define la Route
+2) Inherited ControllerBase
+3) inject la interface to use su methods.
+4) create los methods with su Http verb.
+5) alway return any code. Ok() = 200
+
+
+    [ApiController]
+    [Route("api/[Controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserRepository repo;
+        private readonly IMapper mapper;
+
+        public UserController(IUserRepository repo, IMapper mapper)
+        {
+            this.repo = repo;
+            this.mapper = mapper;
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            //recupero, mapeo y devuelvo
+            var user = await repo.GetUser(id);
+            var userVM = mapper.Map<UserDTO>(user);
+            return Ok(userVM);
+        }
+   }
+
+
+nota:
+------------------------------------
+[ApiController] : valida los data anotations del modelo automaticamente. ya no hay que hacer esto
+		if(modelstate.isvalid) en el metodo del controller.
+		  
+

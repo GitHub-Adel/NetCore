@@ -1,3 +1,6 @@
+using System;
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,7 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SocialMedia.Core.Interface;
-using SocialMedia.Infrastructure.Repositoy;
+using SocialMedia.Core.Services;
+using SocialMedia.Infrastructure;
+using SocialMedia.Infrastructure.Repository;
 
 namespace SocialMedia.Api
 {
@@ -21,12 +26,19 @@ namespace SocialMedia.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(x=>{
+                x.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            })  ;
 
             services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
-
+            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //definir en el startup, el repository que usara la interface. 
-           services.AddTransient<IUserRepository,UserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();           
+            //para interface generica.
+            //services.AddScoped( typeof(IBaseRepository<>), typeof(BaseRepository<>) );
+                   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

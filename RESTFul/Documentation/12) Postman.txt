@@ -1,0 +1,20 @@
+1) download and install postman
+2) run api
+3) open postman
+4) add a new request in postaman
+5) show a request type (Get,Post) etc.
+6) copy url https://localhost:5001
+4) add Route to url https://localhost:5001/api/ControllerName
+
+
+convert 
+------------------------
+1) c# to json:   go to https://csharp2json.io/
+2) json to c#:   https://toolslick.com/generation/code/json-to-csharp-class
+
+
+nota:
+---------------------
+{} : object: para recibirlo en c#, create a class and create a object que reciba el json.
+[] : collection: para recibirla en c#, create a class and create a collection de esta que reciba el json.
+     ojo las propiedades de las class en c# deben ser iguales que la del json.

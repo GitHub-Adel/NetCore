@@ -1,0 +1,49 @@
+Esta interfaces hereda los metodos comunes de la interface base y define aquellos que son especifico de User.
+======================================================
+interface: define los method, solo la firma. (abstraction)
+
+1) create file
+2) IUserRepository.cs
+3) elegir interface
+
+
+
+namespace SocialMedia.Core.Interface
+{
+    public interface IUserRepository:IBaseRepository<User>
+    {
+        User GetByPhone(string phone);
+    }
+}
+
+
+
+
+
+
+
+
+hereda el baserepository e implementa los metodos de la IUserRepository, metodos que son espesificos de esta.
+======================================================
+
+1) create file
+2) UserRepository.cs
+3) elegir class
+
+
+namespace SocialMedia.Infrastructure.Repository
+{
+    public class UserRepository : BaseRepository<User>, IUserRepository
+    {
+        public UserRepository(SocialmediaDBContext _context) : base(_context)
+        {
+        }
+
+        public User GetByPhone(string phone)
+        {
+            var user = _entity.FirstOrDefault(x=>x.Phone.Equals(phone));
+            return  user;
+        }
+    }
+}
+
