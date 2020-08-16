@@ -1,0 +1,61 @@
+Idea: El cliente puede enviar su request con lo que quiera, pero el servidor solo debe recibir aquellas 
+properties que necesitamos. esto se logra recibiendo en el metodo del controller un UserDTO, en ves de
+un User.
+
+imaginemos esto: tenemos un Post with 3 properties : Id, Detail, User.
+que pasaria se envia un request con Post que tenga la property User llena? 
+exacto se crearía un User en la database. pero y si lo que queremos es crear solamente un Post sin User? 
+exacto se debe crear un PostDTO, sin la User property y sin aquellas properties que no necesitamos.
+aqui entra en juego automapper.
+----------------------------------------------------------
+
+
+1) create class PostDTO 
+2) create class AutomapperProfile
+3) register automapper en startup.cs
+4) modo de uso
+
+
+Nota:
+-----------------------------------------------
+UserDTO: clase hecha por nosotros con solo las propiedades que necesitamos.
+User : clase de dominio autogenerada por entity framework desde database.
+
+1) 
+namespace SocialMedia.Core.DTO
+{
+    public class UserDTO
+    {
+        public string Firstname { get; set; }
+    }
+}
+
+
+2)
+public class AutomapperProfile:Profile
+{
+	public AutomapperProfile()
+	{
+		CreateMap<Post,PostDTO>(); 
+		CreateMap<PostDTO,Post>(); 
+	}	
+}
+
+3)  services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+4) 
+        public UserController(IMapper _mapper)
+        {
+            this._mapper = _mapper;
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Save(UserDTO userDTO)
+        {
+            //mapeo, guardo y recupero, mapeo respuesta y la devuelvo
+            var user = mapper.Map<User>(userDTO);
+            var result =  await _service.AddUserAsync(user);
+            var response = new ApiResponse<User>(result);
+            return Ok(response);
+        }

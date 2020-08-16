@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SocialMedia.Core.Interface;
+using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.Services;
-using SocialMedia.Infrastructure;
-using SocialMedia.Infrastructure.Repository;
+using SocialMedia.Infrastructure.Datas;
+using SocialMedia.Infrastructure.Filters;
+using SocialMedia.Infrastructure.Repositories;
 
 namespace SocialMedia.Api
 {
@@ -26,7 +27,11 @@ namespace SocialMedia.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation(x=>{
+            services.AddControllers(x=>
+            {
+                x.Filters.Add<GlobalExceptionFilter>();
+            }).AddFluentValidation(x=>
+            {
                 x.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             })  ;
 
@@ -34,10 +39,8 @@ namespace SocialMedia.Api
             
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //definir en el startup, el repository que usara la interface. 
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserService, UserService>();           
-            //para interface generica.
-            //services.AddScoped( typeof(IBaseRepository<>), typeof(BaseRepository<>) );
+            services.AddTransient<IUnitOfWork, UnitOfWork>();           
+            services.AddTransient<IUserService, UserService>(); 
                    
         }
 

@@ -2,19 +2,14 @@ pasos:
 --------------------
 1) create database
 2) create database first
-3) create BaseRepository:IBaseRepository
-7) create PostRepository:IPostRepository
-9) create PostService:IPostService
-11)create UnitOfWork:IUnitOfWork 
-
-10) create dependency injection
-
-
-3) Automapper and DTO(Data transfer object)
-
-7) create controller
-8) postman to test controller's methods.
-9) Automapper and DTO(Data transfer object)
-10) Fluent validation
-11) Standard response
-
+3) create dependency injection
+4) create BaseRepository:IBaseRepository
+5) create UserRepository:IUserRepository
+6) create UnitOfWork:IUnitOfWork 
+7) create UserService:IUserService
+8) create Automapper and DTO(Data transfer object)
+9) create controller
+10) postman
+11) create Fluent validation
+12) create Standard response
+13) custom exception

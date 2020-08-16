@@ -29,6 +29,15 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "C/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/C.dll": {}
+        },
+        "runtime": {
+          "lib/C.dll": {}
+        }
+      },
       "FluentValidation/8.6.2": {
         "type": "package",
         "dependencies": {
@@ -1348,7 +1357,8 @@
           "FluentValidation.AspNetCore": "8.6.2",
           "Microsoft.EntityFrameworkCore": "3.1.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.3",
-          "SocialMedia.Core": "1.0.0"
+          "SocialMedia.Core": "1.0.0",
+          "c": "2.0.0"
         },
         "compile": {
           "bin/placeholder/SocialMedia.Infrastructure.dll": {}
@@ -1387,6 +1397,18 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
+      ]
+    },
+    "C/2.0.0": {
+      "sha512": "cUB7bbeEQRLA5zxJEPucXKyJym7Ol+RUtjXXdypxGV2bOz4e/v6gxqAzbllxcVimx99NFU3k+8QiusmMuz/yxQ==",
+      "type": "package",
+      "path": "c/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "c.2.0.0.nupkg.sha512",
+        "c.nuspec",
+        "lib/C.dll"
       ]
     },
     "FluentValidation/8.6.2": {
@@ -5244,5 +5266,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'C 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "C",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

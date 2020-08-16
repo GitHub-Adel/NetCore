@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SocialMedia.Api.Response;
-using SocialMedia.Core;
-using SocialMedia.Core.DTO;
-using SocialMedia.Core.Interface;
+using SocialMedia.Api.Responses;
+using SocialMedia.Core.DTOs;
+using SocialMedia.Core.Entities;
+using SocialMedia.Core.Interfaces;
 
 namespace SocialMedia.Api.Controllers
 {
@@ -24,13 +22,12 @@ namespace SocialMedia.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(UserDTO userDTO)
+        public async Task<IActionResult> Save(UserDTO userDTO)
         {
-            //mapeo, guardo, recupero, mapeo, creo respuesta y la retorno
+            //mapeo, guardo, recupero, mapeo respuesta y la devuelvo
             var user = mapper.Map<User>(userDTO);
-            var result = await _service.Add(user);
-                userDTO = mapper.Map<UserDTO>(result);
-            var response = new ApiResponse<UserDTO>(userDTO);
+            var result =  await _service.AddUserAsync(user);
+            var response = new ApiResponse<User>(result);
             return Ok(response);
         }
 

@@ -1,0 +1,20 @@
+Todas las interface que se inyectan via constructor(SocialMediaDBContext), deben ser configurada en el startup.cs
+Su utilidad es usar interface por si hay que cambiar algo, hacerlo implementando la interface en 
+otra class sin tocar la implementacion existente, y hacer que la interface apunte a la nueva implementacion.
+------------------------------------------
+
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+	   services.AddTransient<IUserService, UserService>();                
+        }
+
+	imaginas que ahora te solicitan realizar algunos cambios a la implementacion de User
+	solo tienes que crear nuevas implementaciones UserService2 y hacer  
+	que la interface apunte a estas nuevas implementacion, sin tocar la ya existentes asi:
+	services.AddScoped( typeof(IUserService<>), typeof(UserService2<>) );
+	 
+		 

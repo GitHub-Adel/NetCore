@@ -1,0 +1,53 @@
+
+
+1) click en solution
+2) click derecho en controllers
+3) create file
+4) name.cs
+
+
+ namespace SocialMedia.Api.Controllers
+{
+    [ApiController]
+    [Route("api/[Controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _service;
+        private readonly IMapper mapper;
+
+        public UserController(IUserService _service, IMapper mapper)
+        {
+            this._service = _service;
+            this.mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(UserDTO userDTO)
+        {
+            //mapeo, guardo, recupero, mapeo respuesta y la devuelvo
+            var user = mapper.Map<User>(userDTO);
+            var result =  await _service.AddUserAsync(user);
+            var response = new ApiResponse<User>(result);
+            return Ok(response);
+        }
+}
+}
+
+
+nota:
+------------------------------------
+[ApiController] : valida los data anotations del modelo automaticamente. ya no hay que hacer esto
+		if(modelstate.isvalid) en el metodo del controller.
+
+[Route("api/[Controller]")] : Indica la ruta por donde entrará el request api/User/Get/2, donde Get es el 
+metodo y 2 el parametro del metodo
+
+[HttpPost]  : verbo que maneja el request:
+
+[HttpGet("{id}")]  : recibir parametro
+metodo(int id)
+
+POST: requestBady
+PUT: requestString and requestBady
+GET,DELETE:requestString  
+

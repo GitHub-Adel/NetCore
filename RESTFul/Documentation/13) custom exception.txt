@@ -1,0 +1,122 @@
+La utilizamos para generar exception personalizada, para que el cliente vea las exception con un mejor 
+formato y no con tantas cosas.
+
+
+exception sin personalizar
+---------------------------
+System.Exception: Error, no se pudo insertar el User System.Exception: Ya hay un User con ese Phone
+   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) in D:\NetCore\RESTFul\SocialMedia.Core\Services\UserService.cs:line 23
+   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) in D:\NetCore\RESTFul\SocialMedia.Core\Services\UserService.cs:line 31
+   at SocialMedia.Api.Controllers.UserController.Save(UserDTO userDTO) in D:\NetCore\RESTFul\SocialMedia.Api\Controllers\UserController.cs:line 31
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+
+
+exception personalizada
+----------------------
+{
+    "errors": [
+        {
+            "status": 400,
+            "title": "Bad Request",
+            "detail": "Ya hay un User con ese Phone"
+        }
+    ]
+}
+
+
+
+
+solution:
+--------------------------------
+
+namespace SocialMedia.Core.Exceptions
+{
+    public class CustomException : Exception
+    {
+        public CustomException(string message) : base(message) { }
+    }
+}
+
+
+
+namespace SocialMedia.Infrastructure.Filters
+{
+    public class GlobalExceptionFilter : IExceptionFilter
+    {
+        public void OnException(ExceptionContext context)
+        {
+            if(context.Exception.GetType()==typeof(CustomException)){
+                var exception = (CustomException)context.Exception;
+                var validation=new{
+                    Status=400,
+                    Title="Bad Request",
+                    Detail=exception.Message
+                };
+
+                var json=new{
+                    Errors=new[]{validation}
+                };
+
+                context.Result=new BadRequestObjectResult(json);
+                context.HttpContext.Response.StatusCode=(int)HttpStatusCode.BadRequest;
+                context.ExceptionHandled=true; //exception personalizada
+
+            }
+        }
+    }
+}
+
+
+
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers(x=>
+            {
+                x.Filters.Add<GlobalExceptionFilter>();
+            })
+
+
+
+
+ejemplo de uso:
+-------------------
+
+namespace SocialMedia.Core.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        public UserService(IUnitOfWork _unitOfWork)
+        {
+            this._unitOfWork = _unitOfWork;
+        }
+
+        public async Task<User> AddUserAsync(User user)
+        {
+            try
+            {
+                //logica de negocio: no se puede insertar un usuario si ya existe.
+                var _user = _unitOfWork.UserRepo.GetByPhone(user.Phone);
+                if (_user != null) throw new CustomException("Ya hay un User con ese Phone");
+
+                _unitOfWork.UserRepo.Add(user);
+                await _unitOfWork.SaveChangeAsync();
+                return user;
+            }
+            catch (Exception ex )
+            {
+                //registramos error en un log.
+                //le mostramos error al usuario.
+                if(ex.GetType()==typeof(CustomException))  
+                    throw new CustomException($"{ex.Message}");
+                else
+                    throw new Exception($"{ex.Message}");
+            }
+
+
+        }
+    }
+}
+

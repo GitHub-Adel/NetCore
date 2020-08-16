@@ -1,0 +1,67 @@
+esta interface es para la logica de negocio(validaciones con los repository).
+sera inyectada por startup en los controller y se utilizara en los controllers.
+
+-------------------------------------------------------
+interface: define los method, solo la firma. (abstraction)
+
+1) create file
+2) IUserService.cs
+3) elegir interface
+
+
+namespace SocialMedia.Core.Interface
+{
+    public interface IUserService
+    {
+        Task<User> AddUserAsync(User user);
+    }
+}
+
+
+
+
+
+===============================================
+implementa la interface IUserService e inyecta IUnitOfWork (es una interface con todas las demas interface),
+esta se usara para la logica de negocio.
+
+1) create file
+2) UserService.cs
+3) elegir class
+
+
+namespace SocialMedia.Core.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        public UserService(IUnitOfWork _unitOfWork)
+        {
+            this._unitOfWork = _unitOfWork;
+        }
+
+        public async Task<User> AddUserAsync(User user)
+        {
+            try
+            {
+                //logica de negocio: no se puede insertar un usuario si ya existe.
+                var _user = _unitOfWork.UserRepo.GetByPhone(user.Phone);
+                if (_user != null) throw new Exception("Ya hay un User con ese Phone");
+
+                _unitOfWork.UserRepo.Add(user);
+                await _unitOfWork.SaveChangeAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                //registramos error en un log.
+                //le mostramos error al usuario.
+                throw new Exception($"Error, no se pudo insertar el User {ex}");
+            }
+
+
+        }
+    }
+}
+
+
