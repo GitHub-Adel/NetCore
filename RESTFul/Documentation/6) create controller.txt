@@ -1,9 +1,10 @@
-
+Los request del cliente llegan a un controller y este a traves de [HTTPGET],[HTTPPOST] etc.
+envia el request a un Metodo() del controller y este devulve una respuesta al cliente.
 
 1) click en solution
 2) click derecho en controllers
 3) create file
-4) name.cs
+4) NameController.cs
 
 
  namespace SocialMedia.Api.Controllers
@@ -44,10 +45,11 @@ metodo y 2 el parametro del metodo
 
 [HttpPost]  : verbo que maneja el request:
 
+api/2
 [HttpGet("{id}")]  : recibir parametro
 metodo(int id)
 
-POST: requestBady
-PUT: requestString and requestBady
-GET,DELETE:requestString  
+api/?id=2&phone=8295295454
+[HttpGet]  : recibir parametro
+metodo(int? id,string phone)
 

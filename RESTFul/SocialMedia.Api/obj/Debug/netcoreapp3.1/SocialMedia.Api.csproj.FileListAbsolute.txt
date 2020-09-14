@@ -80,4 +80,4 @@ D:\NetCore\RESTFul\SocialMedia.Api\bin\Debug\netcoreapp3.1\FluentValidation.dll
 D:\NetCore\RESTFul\SocialMedia.Api\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
 D:\NetCore\RESTFul\SocialMedia.Api\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
 D:\NetCore\RESTFul\SocialMedia.Api\obj\Debug\netcoreapp3.1\SocialMedia.Api.MvcApplicationPartsAssemblyInfo.cs
-D:\NetCore\RESTFul\SocialMedia.Api\bin\Debug\netcoreapp3.1\C.dll
+D:\NetCore\RESTFul\SocialMedia.Api\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

@@ -1,0 +1,28 @@
+aqui crearemos todas las variables globales de codigo halcodeado, por si luego queremos cambiar su valor,
+hacerlo desde este archivo de configuracion llamado appsettings.json 
+------------------------------------
+
+1) crear la variable.
+-----------------------------
+{  
+  
+  "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
+  
+}
+
+
+2) Inyectar por el constructor de la clase la interface 
+-----------------------------------------------
+	private readonly IConfiguration configuration;
+	public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+        
+
+3) usar la variable
+-----------------------------
+connection= configuration["SocialMediaConnection"];
+
+
+

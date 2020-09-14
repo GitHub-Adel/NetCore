@@ -1,0 +1,115 @@
+Al devolver un listado si hay mucho registros, se pone muy lento, para evitar esta lentitud
+tenemos que paginar, dandole la opcion al usuario, de que pueda indicar el numero de registro por pagina
+y la pagina que quiere ver. 
+------------------------------------
+
+1) crear la clase Paged:
+-----------------------------
+esta será construida y expuesta por la clase PagedList, a traves del constructor.
+
+namespace SocialMedia.Core.CustomEntities
+{
+    public class Paged
+    {
+        public int TotalItem { get; internal set; }
+        public int ItemByPage { get; internal set; }
+        public int Pages { get; internal set; }
+        public int Current { get; internal set; }
+        public int Next { get; internal set; }
+        public int Previous { get; internal set; }
+    }
+}
+
+
+2) crear la clase PagedList
+-----------------------------------------
+esta contiene la logica de paginacion y expone una propiedad llamada Pagination(objeto con propiedades de paginado)
+
+namespace SocialMedia.Core.CustomEntities
+{
+    public class PagedList<T> : List<T>
+    {
+        public Paged Pagination{ get; }
+        public PagedList(List<T> list, int itemByPage, int currentPage)
+        {
+            var pages = list.Count / itemByPage;
+            pages = pages > 1 ? pages : 1;
+            var current = currentPage > pages ? pages : currentPage;
+            var next = current < pages ? current + 1 : current;
+            var previous = current > 1 ? current - 1 : current;
+
+
+            Pagination = new Paged
+            {
+                TotalItem = list.Count,
+                ItemByPage = itemByPage,
+                Pages = pages,
+                Current = current,
+                Next = next,
+                Previous = previous
+            };
+
+            list = list.Skip((currentPage - 1) * itemByPage).Take(itemByPage).ToList(); //skip=omitir, take=tomar            
+            AddRange(list);
+        }        
+
+    }
+
+
+3) Agregar propiedad Paginacion a ApiResponse: 
+----------------------------------
+esto con el fin de devolver al cliente otra propiedad estarndar con las propiedades de paginacion.
+si la propiedad no se indica, devolvera un default(Paged).
+
+namespace SocialMedia.Api.Responses
+{
+    //convierte a Data en el object que reciba por el constructor
+    //debe crear un object y pasarlo ApiResponse<Object>    
+    public class ApiResponse<T>
+    {
+        public T Data { get; }
+        public Paged Pagination { get; }
+        public ApiResponse(T data, Paged pagination = null)
+        {
+            this.Data = data;
+            this.Pagination = pagination == null ? default(Paged) : pagination;
+        }
+
+    }
+}
+
+
+4)  indicar los parametros en el servicio:
+----------------------------------------
+namespace SocialMedia.Core.Services
+{
+    public class UserService : IUserService
+    {
+        public PagedList<User> GetByFilters(UserQueryFilter filters)
+        {
+            var users = _context.User.AsEnumerable();
+
+            return new PagedList<User>(users.ToList(), filters.ItemByPage, filters.CurrentPage);
+        }
+
+
+5) mostrar los propiedades de paginacion al usuario:
+-----------------------------------------
+los parametros de navegacion que ponga el usuario, vendran por el objeto UserQueryFilter
+
+namespace SocialMedia.Api.Controllers
+{
+    [ApiController]
+    [Route("api/[Controller]")]
+    public class UserController : ControllerBase
+    {
+
+        [HttpGet]
+        public  IActionResult GetUsers([FromQuery]UserQueryFilter filters)
+        {
+            var result = _service.GetByFilters(filters);                      
+            var response= new ApiResponse<IEnumerable<User>>(result,result.Pagination);            
+            return Ok(response);
+        }
+
+

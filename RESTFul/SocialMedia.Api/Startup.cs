@@ -9,9 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.Services;
-using SocialMedia.Infrastructure.Datas;
+using SocialMedia.Core.Datas;
 using SocialMedia.Infrastructure.Filters;
-using SocialMedia.Infrastructure.Repositories;
 
 namespace SocialMedia.Api
 {
@@ -35,11 +34,10 @@ namespace SocialMedia.Api
                 x.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             })  ;
 
-            services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
-            
+            services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            //definir en el startup, el repository que usara la interface. 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();           
+            //definir en el startup, el repository que usara la interface.           
             services.AddTransient<IUserService, UserService>(); 
                    
         }

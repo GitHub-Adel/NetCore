@@ -70,6 +70,11 @@ namespace SocialMedia.Infrastructure.Filters
 
 
 
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(x=>
@@ -87,12 +92,6 @@ namespace SocialMedia.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UserService(IUnitOfWork _unitOfWork)
-        {
-            this._unitOfWork = _unitOfWork;
-        }
-
         public async Task<User> AddUserAsync(User user)
         {
             try
@@ -107,8 +106,7 @@ namespace SocialMedia.Core.Services
             }
             catch (Exception ex )
             {
-                //registramos error en un log.
-                //le mostramos error al usuario.
+                //registramos error en un log. y mostramos al usuario.
                 if(ex.GetType()==typeof(CustomException))  
                     throw new CustomException($"{ex.Message}");
                 else

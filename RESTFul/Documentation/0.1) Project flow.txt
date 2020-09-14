@@ -6,20 +6,21 @@
 --CLEAN ARCHITECTURE
 5) create blank soluction SocialMedia
 6) create web api project  SocialMedia.Api  "presentation"
-	1) create Response directory  "para devolver un standard object al client"
+	1) create Responses directory  "para devolver un standard object al client"
 	.) add  "SocialMedia.Core" and "SocialMedia.Infrastructure"  references
 7) create class library project SocialMedia.Core  "Domain" (business logic)
-	1) create Entity directory     
-	2) create Enumeration directory
-	3) create Interface directory
-	4) create DTO directory  
-	5) create Exception
+	1) create Datas directory   "dbcontext"
+	2) create Entitys directory     
+	3) create Enumerations directory
+	4) create Interfaces directory
+	5) create Services directory   "business logic"
+	6) create DTOs directory  
+	7) create Exceptions directory
+	8) create QueryFilters directory
 8) create class library project SocialMedia.Infrastructure  "Data access" (Data access logic)
-	1) create Data directory   "dbcontext"
-	2) create Repository directory "interface methods"
-	3) create Filter directory  "global exceptions"
-	4) create Mapping directory "register Entity and DTO"
-	5) create Validator directory  "para los fluent validation"
+	1) create Filters directory  "global exceptions"
+	4) create Mappings directory "register Entity and DTO"
+	3) create Validators directory  "para los fluent validation"
 	.) add  "SocialMedia.Core" references
 9) create xUnit test project "SocialMedia.UnitTest"
 10) create xUnit test project "SocialMedia.IntegrationTest"

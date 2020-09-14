@@ -1,4 +1,5 @@
 using System;
+using SocialMedia.Core.CustomEntities;
 
 namespace SocialMedia.Api.Responses
 {
@@ -6,11 +7,13 @@ namespace SocialMedia.Api.Responses
     //debe crear un object y pasarlo ApiResponse<Object>    
     public class ApiResponse<T>
     {
-        public ApiResponse(T data)
+        public T Data { get; }
+        public Paged Pagination { get; }
+        public ApiResponse(T data, Paged pagination = null)
         {
-            this.Data=data;
+            this.Data = data;
+            this.Pagination = pagination == null ? default(Paged) : pagination;
         }
 
-        public T Data { get; set; }
     }
 }

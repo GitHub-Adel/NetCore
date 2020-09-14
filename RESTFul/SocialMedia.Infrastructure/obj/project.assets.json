@@ -29,15 +29,6 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
-      "C/2.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/C.dll": {}
-        },
-        "runtime": {
-          "lib/C.dll": {}
-        }
-      },
       "FluentValidation/8.6.2": {
         "type": "package",
         "dependencies": {
@@ -2845,6 +2836,10 @@
       "SocialMedia.Core/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "3.1.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "3.1.3"
+        },
         "compile": {
           "bin/placeholder/SocialMedia.Core.dll": {}
         },
@@ -2882,18 +2877,6 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
-      ]
-    },
-    "C/2.0.0": {
-      "sha512": "cUB7bbeEQRLA5zxJEPucXKyJym7Ol+RUtjXXdypxGV2bOz4e/v6gxqAzbllxcVimx99NFU3k+8QiusmMuz/yxQ==",
-      "type": "package",
-      "path": "c/2.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "c.2.0.0.nupkg.sha512",
-        "c.nuspec",
-        "lib/C.dll"
       ]
     },
     "FluentValidation/8.6.2": {
@@ -8837,11 +8820,8 @@
     ".NETStandard,Version=v2.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.0.1",
       "FluentValidation.AspNetCore >= 8.6.2",
-      "Microsoft.EntityFrameworkCore >= 3.1.3",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.3",
       "NETStandard.Library >= 2.0.3",
-      "SocialMedia.Core >= 1.0.0",
-      "c >= 2.0.0"
+      "SocialMedia.Core >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8897,23 +8877,11 @@
             "target": "Package",
             "version": "[8.6.2, )"
           },
-          "Microsoft.EntityFrameworkCore": {
-            "target": "Package",
-            "version": "[3.1.3, )"
-          },
-          "Microsoft.EntityFrameworkCore.SqlServer": {
-            "target": "Package",
-            "version": "[3.1.3, )"
-          },
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",
             "version": "[2.0.3, )",
             "autoReferenced": true
-          },
-          "c": {
-            "target": "Package",
-            "version": "[2.0.0, )"
           }
         },
         "imports": [
@@ -8929,17 +8897,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'C 2.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETStandard,Version=v2.0'. This package may not be fully compatible with your project.",
-      "libraryId": "C",
-      "targetGraphs": [
-        ".NETStandard,Version=v2.0"
-      ]
-    }
-  ]
+  }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SocialMedia.Core.Entities;
 
-namespace SocialMedia.Infrastructure.Datas
+namespace SocialMedia.Core.Datas
 {
     public partial class SocialmediaDBContext : DbContext
     {

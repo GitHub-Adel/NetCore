@@ -6,23 +6,28 @@ https://www.nuget.org/packages
 	dotnet-ef
         AutoMapper.Extensions.Microsoft.DependencyInjection
 	FluentValidation.AspNetCore
+	Newtonsoft.Json
 
-   tener instalado en SocialMedia.Infrastructure:
-        Microsoft.EntityFrameworkCore.SqlServer
+   tener instalado en SocialMedia.Core:
 	Microsoft.EntityFrameworkCore
+	Microsoft.EntityFrameworkCore.SqlServer	
+
+   tener instalado en SocialMedia.Infrastructure:        
 	AutoMapper.Extensions.Microsoft.DependencyInjection
 	FluentValidation.AspNetCore
 
+
+
 2) Asegurarse que el project compile sin error con: dotnet build
 
-3) run command: dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -context-dir CARPETA_DESTINO_CONTEXTO -o CARPETA_DESTINO_MODELOS
+3) correr: dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -context-dir CARPETA_DESTINO_CONTEXTO -o CARPETA_DESTINO_MODELOS
 
-4) to delete OnConfiguring method from dbcontext.
+4) quitar OnConfiguring method from dbcontext.
 
-5) to config. connectionString into appsettings.json
+5) configurar connectionString in appsettings.json
 
-6) to say al context que use la connectionString que esta en el appsetting.json, a traves del Startup.cs
-   services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
+6) inject la cadena de conexion al context in Startup.cs
+   services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));
 
 
 Nota:
@@ -43,16 +48,7 @@ solo valido en la version 5.0.0 de ef core en adelante, mientras tanto quitarlo 
 appsettings.json:
 -------------------
 {
-  "ConnectionStrings":{
-    "SocialMedia":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft": "Warning",
-      "Microsoft.Hosting.Lifetime": "Information"
-    }
-  },
-  "AllowedHosts": "*"
+  "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
+
 }
 

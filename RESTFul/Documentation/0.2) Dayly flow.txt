@@ -3,13 +3,13 @@ pasos:
 1) create database
 2) create database first
 3) create dependency injection
-4) create BaseRepository:IBaseRepository
-5) create UserRepository:IUserRepository
-6) create UnitOfWork:IUnitOfWork 
-7) create UserService:IUserService
-8) create Automapper and DTO(Data transfer object)
-9) create controller
-10) postman
-11) create Fluent validation
-12) create Standard response
-13) custom exception
+4) create UserService:IUserService
+5) create Automapper and DTO(Data transfer object)
+6) create controller
+7) create request from postman
+8) create Fluent validation
+9) create Standard response
+10) custom exception
+11) filtering data
+12) pagination
+13) Using appsettings.json

@@ -1,10 +1,15 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SocialMedia.Api.Responses;
 using SocialMedia.Core.DTOs;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Interfaces;
+using SocialMedia.Core.QueryFilters;
+
 
 namespace SocialMedia.Api.Controllers
 {
@@ -31,36 +36,14 @@ namespace SocialMedia.Api.Controllers
             return Ok(response);
         }
 
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
-        // {
-        //     //mapeo, actualizo y respondo
-        //     var user = mapper.Map<User>(userDTO);
-        //     user.UserId = id;
-        //     var result = await _service.UpdateUser(user);
-        //         userDTO=mapper.Map<UserDTO>(result);
-        //     var response = new ApiResponse<UserDTO>(userDTO);
-        //     return Ok(response);
-        // }
 
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> GetUser(int id)
-        // {
-        //     //recupero, mapeo y devuelvo
-        //     var result = await _service.GetUser(id);
-        //     var userDTO = mapper.Map<UserDTO>(result);
-        //     var response= new ApiResponse<UserDTO>(userDTO);
-        //     return Ok(response);
-        // }
-
-        // [HttpGet]
-        // public async Task<IActionResult> GetUsers()
-        // {
-        //     var result = await _service.GetUsers();
-        //     var usersDTO = mapper.Map<IEnumerable<UserDTO>>(result);
-        //     var response= new ApiResponse<IEnumerable<UserDTO>>(usersDTO);
-        //     return Ok(response);
-        // }
+        [HttpGet]
+        public  IActionResult GetUsers([FromQuery]UserQueryFilter filters)
+        {
+            var result = _service.GetByFilters(filters);                      
+            var response= new ApiResponse<IEnumerable<User>>(result,result.Pagination);            
+            return Ok(response);
+        }
 
 
 
