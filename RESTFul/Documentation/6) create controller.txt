@@ -1,5 +1,6 @@
 Los request del cliente llegan a un controller y este a traves de [HTTPGET],[HTTPPOST] etc.
-envia el request a un Metodo() del controller y este devulve una respuesta al cliente.
+envia el request a un Metodo() y este consume los service, pagina los datos, mapea los modelos 
+y devulve una respuesta al cliente.
 
 1) click en solution
 2) click derecho en controllers
@@ -13,13 +14,15 @@ envia el request a un Metodo() del controller y este devulve una respuesta al cl
     [Route("api/[Controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _service;
         private readonly IMapper mapper;
+        private readonly IUser _user;
+        private readonly IPagination<User> _pagination;
 
-        public UserController(IUserService _service, IMapper mapper)
+        public UserController(IMapper mapper, IUser _user, IPagination<User> _pagination)
         {
-            this._service = _service;
             this.mapper = mapper;
+            this._user = _user;
+            this._pagination = _pagination;
         }
 
         [HttpPost]
@@ -27,29 +30,57 @@ envia el request a un Metodo() del controller y este devulve una respuesta al cl
         {
             //mapeo, guardo, recupero, mapeo respuesta y la devuelvo
             var user = mapper.Map<User>(userDTO);
-            var result =  await _service.AddUserAsync(user);
-            var response = new ApiResponse<User>(result);
+                user =  await _user.AddUserAsync(user);
+            var response = new Dictionary<string,object>(){{"User",user}};
             return Ok(response);
         }
-}
-}
+
+
+        [HttpGet]
+        public  IActionResult GetUsers([FromQuery]UserQueryFilter filters)
+        {
+            //obtengo la collection de user
+            var users = _user.GetByFilters(filters); 
+            //obtengo el objeto de paginacion con hipermedia(next, previous etc.).
+            var paged=_pagination.Paged(users, filters.ItemByPage, filters.CurrentPage);
+            //obtengo la lista paginada de users
+            users=_pagination.List(users, filters.ItemByPage, filters.CurrentPage);             
+            //mapeo de users a usersDTO
+            var usersDTO= mapper.Map<IEnumerable<UserDTO>>(users);
+            //para ir listando la respuesta en formato clave,valor ej:     
+            var response = new Dictionary<string, object>(){
+                {"Users",usersDTO},
+                {"Pagination",paged}
+            };                          
+            return Ok(response);
+        }
+
+
 
 
 nota:
 ------------------------------------
-[ApiController] : valida los data anotations del modelo automaticamente. ya no hay que hacer esto
+[ApiController] : valida los dataAnotations del modelo automaticamente. ya no hay que hacer esto
 		if(modelstate.isvalid) en el metodo del controller.
 
-[Route("api/[Controller]")] : Indica la ruta por donde entrará el request api/User/Get/2, donde Get es el 
-metodo y 2 el parametro del metodo
+[Route("api/[Controller]")] : Indica el controlador por donde entrará el request api/User, donde user es
+el controlador
 
 [HttpPost]  : verbo que maneja el request:
 
-api/2
+api/user/2
 [HttpGet("{id}")]  : recibir parametro
 metodo(int id)
 
+recibir parametros
+-------------------------------
 api/?id=2&phone=8295295454
-[HttpGet]  : recibir parametro
+[HttpGet]  
 metodo(int? id,string phone)
+
+recibir parametros y mapearlo en una clase, UserQueryFilter debera contener la propiedad id y phone
+--------------------------------
+api/?id=2&phone=8295295454
+[HttpGet]
+Metodo([FromQuery]UserQueryFilter filters)
 

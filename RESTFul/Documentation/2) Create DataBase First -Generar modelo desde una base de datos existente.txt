@@ -24,10 +24,11 @@ https://www.nuget.org/packages
 
 4) quitar OnConfiguring method from dbcontext.
 
-5) configurar connectionString in appsettings.json
+5) crear connectionString in appsettings.json
 
-6) inject la cadena de conexion al context in Startup.cs
-   services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));
+6) inyectar IConfiguration in Startup.cs
+
+7) configurar la conexion del dbcontext en startup.cs   
 
 
 Nota:
@@ -45,10 +46,24 @@ dotnet ef dbcontext scaffold "Server=C2VYW72\SQLEXPRESS;Initial Catalog=Socialme
 agregar --no-onconfiguring al comando anterior, para que no agregue el metodo OnConfiguring en el context generado.
 solo valido en la version 5.0.0 de ef core en adelante, mientras tanto quitarlo manualmente.
 
-appsettings.json:
+5) crear connectionString in appsettings.json
 -------------------
 {
   "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
-
 }
 
+
+6) inyectar IConfiguration in Startup.cs
+---------------------------
+    public class Startup
+    {
+        private readonly IConfiguration configuration;
+        public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+
+7) configurar la conexion del dbcontext en startup.cs
+------------------------------
+services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));

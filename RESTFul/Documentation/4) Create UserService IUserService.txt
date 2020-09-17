@@ -11,18 +11,18 @@ interface: define los method, solo la firma. (abstraction), se utiliza para expo
 	
 
 1) create file
-2) IUserService.cs
+2) IUser.cs
 3) elegir interface
 
 
-namespace SocialMedia.Core.Interface
+namespace SocialMedia.Core.Interfaces
 {
-    public interface IUserService
+    public interface IUser
     {
         Task<User> AddUserAsync(User user);
+        IEnumerable<User> GetByFilters(UserQueryFilter filters);
     }
 }
-
 
 
 
@@ -33,7 +33,9 @@ namespace SocialMedia.Core.Interface
 3) elegir class
 
 
-    public class UserService : IUserService
+namespace SocialMedia.Core.Services
+{
+    public class UserService : IUser
     {
         private readonly SocialmediaDBContext _context;
         public UserService(SocialmediaDBContext _context)
@@ -46,8 +48,8 @@ namespace SocialMedia.Core.Interface
             try
             {
                 //logica de negocio: no se puede insertar un usuario si ya existe.
-                var _user = _context.User.FirstOrDefault(x=>x.Phone.Equals(user.Phone));
-                if(_user != null) throw new CustomException("Ya hay un User con ese Phone");
+                var _user = _context.User.FirstOrDefault(x => x.Phone.Equals(user.Phone));
+                if (_user != null) throw new CustomException("Ya hay un User con ese Phone");
 
                 _context.User.Add(user);
                 await _context.SaveChangesAsync();
@@ -56,7 +58,7 @@ namespace SocialMedia.Core.Interface
             catch (Exception ex)
             {
                 //registramos error en un log.
-                //le mostramos error al usuario.
+                //le retornamos error al usuario.
                 if (ex.GetType() == typeof(CustomException))
                     throw new CustomException($"{ex.Message}");
                 else
@@ -64,6 +66,26 @@ namespace SocialMedia.Core.Interface
             }
 
 
+        }
+
+
+        public IEnumerable<User> GetByFilters(UserQueryFilter filters)
+        {
+            
+            var users = _context.User.AsEnumerable();
+            if (users != null)
+            {
+                if (filters.UserId != null)
+                    users = users.Where(x => x.UserId.Equals(filters.UserId));
+                if (filters.Firstname != null)
+                    users = users.Where(x => x.Firstname.ToLower().Contains(filters.Firstname.ToLower()));
+                if (filters.Lastname != null)
+                    users = users.Where(x => x.Lastname.ToLower().Contains(filters.Lastname.ToLower()));
+                if (filters.Phone != null)
+                    users = users.Where(x => x.Phone.Equals(filters.Phone));
+            }            
+            return users;
+           
         }
 
     }

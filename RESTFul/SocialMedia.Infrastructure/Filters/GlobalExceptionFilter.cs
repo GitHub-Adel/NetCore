@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -10,23 +11,25 @@ namespace SocialMedia.Infrastructure.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            if(context.Exception.GetType()==typeof(CustomException)){
+            if (context.Exception.GetType() == typeof(CustomException))
+            {
                 var exception = (CustomException)context.Exception;
-                var validation=new{
-                    Status=400,
-                    Title="Bad Request",
-                    Detail=exception.Message
+                var validation = new
+                {
+                    Status =exception.StatusCode,
+                    Title = exception.StatusCode.ToString(),
+                    Message = exception.Message,
+                    InnerException=exception.InnerException?.Message,
+                    StackTrace=exception.StackTrace.Split(Environment.NewLine.ToCharArray())[0]
                 };
 
-                var json=new{
-                    Errors=new[]{validation}
-                };
+                var json=new Dictionary<string,object>(){{"Errors",validation}};
 
-                context.Result=new BadRequestObjectResult(json);
-                context.HttpContext.Response.StatusCode=(int)HttpStatusCode.BadRequest;
-                context.ExceptionHandled=true; //exception personalizada
-
+                context.Result = new ObjectResult(json);
+                context.HttpContext.Response.StatusCode = (int)exception.StatusCode;
+                context.ExceptionHandled = true; //exception personalizada
             }
+
         }
     }
 }

@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using SocialMedia.Core.CustomEntities;
 using SocialMedia.Core.Datas;
 using SocialMedia.Core.Entities;
 using SocialMedia.Core.Exceptions;
@@ -11,15 +12,12 @@ using SocialMedia.Core.QueryFilters;
 
 namespace SocialMedia.Core.Services
 {
-    public class UserService : IUserService
+    public class UserService : IUser
     {
         private readonly SocialmediaDBContext _context;
-        private readonly IConfiguration configuration;
-
-        public UserService(SocialmediaDBContext _context, IConfiguration configuration)
+        public UserService(SocialmediaDBContext _context)
         {
             this._context = _context;
-            this.configuration = configuration;
         }
 
         public async Task<User> AddUserAsync(User user)
@@ -28,30 +26,31 @@ namespace SocialMedia.Core.Services
             {
                 //logica de negocio: no se puede insertar un usuario si ya existe.
                 var _user = _context.User.FirstOrDefault(x => x.Phone.Equals(user.Phone));
-                if (_user != null) throw new CustomException("Ya hay un User con ese Phone");
+                if (_user != null) throw new CustomException($"Ya hay un User con ese Phone {user.Phone}",HttpStatusCode.NotFound);
 
                 _context.User.Add(user);
                 await _context.SaveChangesAsync();
                 return user;
             }
             catch (Exception ex)
-            {
+            { 
                 //registramos error en un log.
                 //le mostramos error al usuario.
-                if (ex.GetType() == typeof(CustomException))
-                    throw new CustomException($"{ex.Message}");
-                else
-                    throw new Exception($"{ex.Message}");
+                if(ex.GetType()==typeof(CustomException)){
+                    var a= (CustomException)ex;
+                   throw new CustomException(ex.Message,a.StatusCode,ex.InnerException);
+                } 
+                else { //sino no es un eror personalizado, muestro un internal error por default
+                    throw new CustomException(ex.Message,HttpStatusCode.InternalServerError,ex.InnerException);
+                }
+
+                throw new Exception();
             }
-
-
         }
 
 
-        public PagedList<User> GetByFilters(UserQueryFilter filters)
+        public IEnumerable<User> GetByFilters(UserQueryFilter filters)
         {
-            if(filters.ItemByPage == null) filters.ItemByPage = int.Parse(configuration["ItemByPage"]); 
-            if(filters.CurrentPage == null) filters.CurrentPage = int.Parse(configuration["CurrentPage"]); 
             
             var users = _context.User.AsEnumerable();
             if (users != null)
@@ -65,8 +64,8 @@ namespace SocialMedia.Core.Services
                 if (filters.Phone != null)
                     users = users.Where(x => x.Phone.Equals(filters.Phone));
             }            
-            
-            return new PagedList<User>(users.ToList(), filters.ItemByPage.Value, filters.CurrentPage.Value);
+            return users;
+           
         }
 
     }

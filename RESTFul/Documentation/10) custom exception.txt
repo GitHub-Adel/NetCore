@@ -1,43 +1,56 @@
-La utilizamos para generar exception personalizada, para que el cliente vea las exception con un mejor 
-formato y no con tantas cosas.
+La utilizamos para generar exception personalizada en UserService, para que el cliente 
+vea las exception con un mejor formato y no con tantas cosas.
 
 
 exception sin personalizar
 ---------------------------
-System.Exception: Error, no se pudo insertar el User System.Exception: Ya hay un User con ese Phone
-   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) in D:\NetCore\RESTFul\SocialMedia.Core\Services\UserService.cs:line 23
-   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) in D:\NetCore\RESTFul\SocialMedia.Core\Services\UserService.cs:line 31
-   at SocialMedia.Api.Controllers.UserController.Save(UserDTO userDTO) in D:\NetCore\RESTFul\SocialMedia.Api\Controllers\UserController.cs:line 31
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
-   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+System.Exception: Exception of type 'System.Exception' was thrown.
+   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) 
+   in D:\NetCore\RESTFul\SocialMedia.Core\Services\UserService.cs:line 39
+   at SocialMedia.Api.Controllers.UserController.Save(UserDTO userDTO) 
+   in D:\NetCore\RESTFul\SocialMedia.Api\Controllers\UserController.cs:line 33
 
 
 exception personalizada
 ----------------------
+las que validamos nosotros
+---------------------------
 {
-    "errors": [
-        {
-            "status": 400,
-            "title": "Bad Request",
-            "detail": "Ya hay un User con ese Phone"
-        }
-    ]
+    "Errors": {
+        "status": 400,
+        "title": "Bad Request",
+        "message": "Ya hay un User con ese Phone 8295295454",
+        "innerException": null
+        "stackTrace": null
+    }
 }
 
+todas las demas que no pudimos validar.
+-----------------------------
+{
+    "Errors": {
+        "status": 400,
+        "title": "Bad Request",
+        "message": "An error occurred while updating the entries. See the inner exception for details.",
+        "innerException": "SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM.",
+        "stackTrace": "   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) in D:\\NetCore\\RESTFul\\SocialMedia.Core\\Services\\UserService.cs:line 38"
+    }
+}
 
 
 
 solution:
 --------------------------------
-
 namespace SocialMedia.Core.Exceptions
 {
     public class CustomException : Exception
     {
-        public CustomException(string message) : base(message) { }
-    }
+        public HttpStatusCode StatusCode { get; }
+        public CustomException(string message,HttpStatusCode statusCode=default(HttpStatusCode), Exception innerException=null) : base(message,innerException)
+        {
+            StatusCode = statusCode;
+        }
 }
-
 
 
 namespace SocialMedia.Infrastructure.Filters
@@ -51,12 +64,12 @@ namespace SocialMedia.Infrastructure.Filters
                 var validation=new{
                     Status=400,
                     Title="Bad Request",
-                    Detail=exception.Message
+                    Detail=exception.Message,
+		    InnerException=exception.InnerException?.Message,
+		    StackTrace=exception.StackTrace.Split(Environment.NewLine.ToCharArray())[0]
                 };
 
-                var json=new{
-                    Errors=new[]{validation}
-                };
+                var json=new Dictionary<string,object>(){{"Errors",validation}}
 
                 context.Result=new BadRequestObjectResult(json);
                 context.HttpContext.Response.StatusCode=(int)HttpStatusCode.BadRequest;
@@ -66,7 +79,6 @@ namespace SocialMedia.Infrastructure.Filters
         }
     }
 }
-
 
 
 
@@ -85,6 +97,8 @@ namespace SocialMedia.Api
 
 
 
+
+
 ejemplo de uso:
 -------------------
 
@@ -97,23 +111,19 @@ namespace SocialMedia.Core.Services
             try
             {
                 //logica de negocio: no se puede insertar un usuario si ya existe.
-                var _user = _unitOfWork.UserRepo.GetByPhone(user.Phone);
-                if (_user != null) throw new CustomException("Ya hay un User con ese Phone");
+                var _user = _context.User.FirstOrDefault(x => x.Phone.Equals(user.Phone));
+                if (_user != null) throw new CustomException($"Ya hay un User con ese Phone {user.Phone}");
 
-                _unitOfWork.UserRepo.Add(user);
-                await _unitOfWork.SaveChangeAsync();
+                _context.User.Add(user);
+                await _context.SaveChangesAsync();
                 return user;
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
-                //registramos error en un log. y mostramos al usuario.
-                if(ex.GetType()==typeof(CustomException))  
-                    throw new CustomException($"{ex.Message}");
-                else
-                    throw new Exception($"{ex.Message}");
+                //registramos error en un log.
+                //disparamos un error al cliente.
+                   throw new CustomException(ex.Message,ex.InnerException);
             }
-
-
         }
     }
 }

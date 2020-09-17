@@ -3,43 +3,44 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.Services;
-using SocialMedia.Core.Datas;
 using SocialMedia.Infrastructure.Filters;
 
 namespace SocialMedia.Api
 {
     public class Startup
     {
+        private readonly IConfiguration configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(x=>
+
+            services.AddControllers(x =>
             {
                 x.Filters.Add<GlobalExceptionFilter>();
-            }).AddFluentValidation(x=>
+            }).AddFluentValidation(x =>
             {
                 x.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-            })  ;
-
-            services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));
+            });
+            
+            //services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(configuration["SocialMediaConnection"]));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            //definir en el startup, el repository que usara la interface.           
-            services.AddTransient<IUserService, UserService>(); 
-                   
+
+            //configurar los servicios para dependency injection
+            services.AddTransient<IAppsetting, AppsettingService>();
+            services.AddTransient<IUser, UserService>();
+            services.AddScoped(typeof(IPagination<>), typeof(PaginationService<>));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

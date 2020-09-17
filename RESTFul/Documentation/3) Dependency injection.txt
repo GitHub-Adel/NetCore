@@ -9,12 +9,17 @@ namespace SocialMedia.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
-	   services.AddTransient<IUserService, UserService>();                
+	   	//sin generic
+		services.AddTransient<IUserService, UserService>(); 
+		//con generic
+		services.AddScoped(typeof(IPagination<>),typeof(PaginationService<>));               
         }
 
-	imaginas que ahora te solicitan realizar algunos cambios a la implementacion de User
-	solo tienes que crear nuevas implementaciones UserService2 y hacer  
-	que la interface apunte a estas nuevas implementacion, sin tocar la ya existentes asi:
-	services.AddScoped( typeof(IUserService<>), typeof(UserService2<>) );
+	imaginas que ahora te solicitan realizar algunos cambios a la implementacion de UserService
+	solo tienes que crear una nueva implementacion eje: UserService2 y hacer  
+	que la interface IUserService apunte a esta, sin tocar la ya existentes asi:
+	services.AddTransient<IUserService, UserService2>();
+
+	
 	 
 		 

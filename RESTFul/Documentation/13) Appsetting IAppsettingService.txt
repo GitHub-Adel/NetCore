@@ -1,0 +1,87 @@
+aqui crearemos todas las variables globales de codigo halcodeado, por si luego queremos cambiar su valor,
+hacerlo desde este archivo de configuracion llamado appsettings.json 
+------------------------------------
+1) crear la variable.
+2) Inyectar por el constructor startup.cs
+3) usar la variable 
+4) creando una interface para inyectarla en todas las clases excepto en Startup.cs
+
+1) crear la variable.
+-----------------------------
+{    
+  "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"  
+}
+
+ESTO SOLO SE USARA  EN Startup.cs
+========================================
+2) Inyectar por el constructor startup.cs
+-----------------------------------------------
+	private readonly IConfiguration configuration;
+	public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }        
+
+3) usar la variable
+-----------------------------
+connection= configuration["SocialMediaConnection"];
+========================================
+
+
+4) creando una interface para inyectarla en todas las clases excepto en Startup.cs
+-----------------------------------------------------
+namespace SocialMedia.Core.Interfaces
+{
+    public interface IAppsetting
+    {
+        string SocialMediaConnection { get;}
+        int ItemByPage { get;}
+        int CurrentPage { get;}
+    }
+}
+
+
+
+namespace SocialMedia.Core.Services
+{
+    public class AppsettingService : IAppsetting
+    {
+        private readonly IConfiguration configuration;
+        public AppsettingService(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public string SocialMediaConnection => configuration["SocialMediaConnection"];
+
+        public int ItemByPage => int.Parse(configuration["ItemByPage"]);
+
+        public int CurrentPage => int.Parse(configuration["CurrentPage"]);
+    }
+}
+
+
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //configurar los servicios para dependency injection
+            services.AddTransient<IAppsetting, AppsettingService>();
+        }
+   }
+
+
+modo de uso:
+-------------------------
+ventaja: de esta forma con tienes que conocer el nombre de la variable en el appsetting.
+
+        private readonly IAppsetting appsetting;
+        public PaginationService(IAppsetting appsetting)
+        {
+            this.appsetting = appsetting;
+        }
+
+        var connection=appsetting.SocialMediaConnection;
+
+

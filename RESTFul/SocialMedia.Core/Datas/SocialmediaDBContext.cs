@@ -5,13 +5,8 @@ namespace SocialMedia.Core.Datas
 {
     public partial class SocialmediaDBContext : DbContext
     {
-        public SocialmediaDBContext()
-        {
-        }
-
-        public SocialmediaDBContext(DbContextOptions<SocialmediaDBContext> options)
-            : base(options)
-        {
+        public SocialmediaDBContext(DbContextOptions<SocialmediaDBContext> options) : base(options)
+        {            
         }
 
         public virtual DbSet<Comment> Comment { get; set; }
@@ -74,8 +69,6 @@ namespace SocialMedia.Core.Datas
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.UserId).HasColumnName("UserID");
-
-                entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
 
                 entity.Property(e => e.Email)
                     .IsRequired()

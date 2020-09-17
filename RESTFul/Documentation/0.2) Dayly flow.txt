@@ -8,7 +8,6 @@ pasos:
 6) create controller
 7) create request from postman
 8) create Fluent validation
-9) create Standard response
 10) custom exception
 11) filtering data
 12) pagination

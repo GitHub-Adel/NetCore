@@ -1,15 +1,18 @@
-Son los parametros que recibe un metodo de un controller desde el request.
-Es util para filtrar las facturas por cliente, cedula, telefono, id, fecha, etc.
+Lo utilizaremos para realizar busquedad por diferentes campos.
+ejemplo: cliente, cedula, telefono, id, fecha, etc.
 
-request: querystring
+filtrado con parametros
 ----------------------
+request: querystring
 api/User/?userId=2&phone=8295295454
 [HTTPGET]
 Metodo(int? userId, string phone)
 
+un metodo no debe recibir mas de 3 parametros, en su lugar utilice una class, y se mapea
+Metodo([FromQuery]UserQueryFilter filters)
 
-un metodo no puede recibir mas de 3 parametros, en su lugar se crea una class, y se recibe como parametro.
-
+filtrado con una clase
+-----------------------------------
 namespace SocialMedia.Core.QueryFilters
 {
     public class UserQueryFilter
@@ -18,8 +21,6 @@ namespace SocialMedia.Core.QueryFilters
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
-        public DateTime? DateOfBirth { get; set; }
-        public string Phone { get; set; }
         public int? ItemByPage { get; set; }
         public int? CurrentPage { get; set; }
     }
@@ -31,7 +32,6 @@ Metodo([FromQuery]UserQueryFilter filters)
 [FromQuery]: indica que viene por la URL, con el formato querystring y mapea el objeto con esos parametros.
 
 
-
 utilizamos IEnumerable para cargar la consulta en memoria, sin ejecutarla y asi poder ir 
 agregando los filtros sin ejecutar con el metodo Where().
 ----------------------------
@@ -40,11 +40,8 @@ namespace SocialMedia.Core.Services
 {
     public class UserService : IUserService
     {
-        public PagedList<User> GetByFilters(UserQueryFilter filters)
-        {
-            if(filters.ItemByPage == null) filters.ItemByPage = int.Parse(configuration["ItemByPage"]); 
-            if(filters.CurrentPage == null) filters.CurrentPage = int.Parse(configuration["CurrentPage"]); 
-            
+        public IEnumerable<User> GetByFilters(UserQueryFilter filters)
+        {            
             var users = _context.User.AsEnumerable();
             if (users != null)
             {
@@ -57,8 +54,8 @@ namespace SocialMedia.Core.Services
                 if (filters.Phone != null)
                     users = users.Where(x => x.Phone.Equals(filters.Phone));
             }            
-            
-            return new PagedList<User>(users.ToList(), filters.ItemByPage.Value, filters.CurrentPage.Value);
+            return users;
+           
         }
 
 
@@ -76,8 +73,6 @@ namespace SocialMedia.Api.Controllers
         public  IActionResult GetUsers([FromQuery]UserQueryFilter filters)
         {
             var result = _service.GetByFilters(filters);
-            var response= new ApiResponse<IEnumerable<User>>(result);
-            return Ok(response);
         }
 
 
