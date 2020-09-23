@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace SocialMedia.Core.DTOs
 {
@@ -11,5 +12,8 @@ namespace SocialMedia.Core.DTOs
         public DateTime DateOfBirth { get; set; }
         public string Phone { get; set; }
         public bool Active { get; set; }
+        public Dictionary<string, object> Links { get; set; }=new Dictionary<string, object>();
+
+        
     }
 }

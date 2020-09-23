@@ -3,9 +3,14 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SocialMedia.Core.Datas;
 using SocialMedia.Core.Interfaces;
 using SocialMedia.Core.Services;
 using SocialMedia.Infrastructure.Filters;
@@ -22,8 +27,7 @@ namespace SocialMedia.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-
+        {            
             services.AddControllers(x =>
             {
                 x.Filters.Add<GlobalExceptionFilter>();
@@ -32,7 +36,7 @@ namespace SocialMedia.Api
                 x.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             });
             
-            //services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(configuration["SocialMediaConnection"]));
+            services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(configuration["SocialMediaConnection"]));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

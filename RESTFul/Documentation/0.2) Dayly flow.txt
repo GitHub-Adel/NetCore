@@ -12,3 +12,4 @@ pasos:
 11) filtering data
 12) pagination
 13) Using appsettings.json
+14) HATEOAS o Hypermedia

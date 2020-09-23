@@ -10,5 +10,6 @@ namespace SocialMedia.Core.Interfaces
     {
         Task<User> AddUserAsync(User user);
         IEnumerable<User> GetByFilters(UserQueryFilter filters);
+        Task<User> GetByIdAsync(int id);
     }
 }

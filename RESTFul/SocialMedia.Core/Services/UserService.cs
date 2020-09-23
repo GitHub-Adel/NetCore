@@ -50,8 +50,7 @@ namespace SocialMedia.Core.Services
 
 
         public IEnumerable<User> GetByFilters(UserQueryFilter filters)
-        {
-            
+        {            
             var users = _context.User.AsEnumerable();
             if (users != null)
             {
@@ -68,5 +67,13 @@ namespace SocialMedia.Core.Services
            
         }
 
+        public async Task<User> GetByIdAsync(int id)
+        {
+            var user =await _context.User.FindAsync(id);
+            
+            if(user== null) user=default(User);
+
+            return user;
+        }
     }
 }

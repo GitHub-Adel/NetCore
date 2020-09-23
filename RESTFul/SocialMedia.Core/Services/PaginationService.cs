@@ -22,7 +22,7 @@ namespace SocialMedia.Core.Services
             return list.Skip((currentPage.Value - 1) * itemByPage.Value).Take(itemByPage.Value).ToList();
         }
 
-        //retorna el paginado(next=3, previeus=1 etc.) con hipermedia
+        //retorna la naavegation del paginado(next=3, previeus=1 etc.)
         public object GetNavegation(IEnumerable<T> list, int? itemByPage = null, int? currentPage = null)
         {
             var pages = list.Count() / itemByPage;
@@ -34,9 +34,9 @@ namespace SocialMedia.Core.Services
             return new
             {
                 TotalItem = list.Count(),
-                //ItemByPage = itemByPage.Value,
+                ItemByPage = itemByPage.Value,
                 Pages = pages,
-               // Current = current,
+                Current = current,
                 Next = next,
                 Previous = previous
             };
