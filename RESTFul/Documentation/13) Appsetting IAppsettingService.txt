@@ -2,11 +2,6 @@ aqui crearemos todas las variables globales de codigo halcodeado, por si luego q
 hacerlo desde este archivo de configuracion llamado appsettings.json 
 ------------------------------------
 1) crear la variable.
-2) Inyectar por el constructor startup.cs
-3) usar la variable 
-4) creando una interface para inyectarla en todas las clases excepto en Startup.cs
-
-1) crear la variable.
 -----------------------------
 {    
   "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"  
@@ -30,9 +25,9 @@ connection= configuration["SocialMediaConnection"];
 
 4) creando una interface para inyectarla en todas las clases excepto en Startup.cs
 -----------------------------------------------------
-namespace SocialMedia.Core.Interfaces
+namespace SocialMedia.Api.Interfaces
 {
-    public interface IAppsetting
+    public interface IAppsettingService
     {
         string SocialMediaConnection { get;}
         int ItemByPage { get;}
@@ -42,9 +37,9 @@ namespace SocialMedia.Core.Interfaces
 
 
 
-namespace SocialMedia.Core.Services
+namespace SocialMedia.Api.Services
 {
-    public class AppsettingService : IAppsetting
+    public class AppsettingService : IAppsettingService
     {
         private readonly IConfiguration configuration;
         public AppsettingService(IConfiguration configuration)
@@ -67,17 +62,17 @@ namespace SocialMedia.Core.Services
         public void ConfigureServices(IServiceCollection services)
         {
             //configurar los servicios para dependency injection
-            services.AddTransient<IAppsetting, AppsettingService>();
+            services.AddTransient<IAppsettingService, AppsettingService>();
         }
    }
 
 
 modo de uso:
 -------------------------
-ventaja: de esta forma con tienes que conocer el nombre de la variable en el appsetting.
+ventaja: de esta forma no tienes que conocer el nombre de la variable con al usar IConfiguration.
 
-        private readonly IAppsetting appsetting;
-        public PaginationService(IAppsetting appsetting)
+        private readonly IAppsettingService appsetting;
+        public PaginationService(IAppsettingService appsetting)
         {
             this.appsetting = appsetting;
         }

@@ -3,64 +3,61 @@ tenemos que paginar, dandole la opcion al usuario, de que pueda indicar el numer
 y la pagina que quiere ver. 
 ------------------------------------
 
-1) crear IPagination
-2) crear PaginationService
-3) configurar IPagination en startup.cs
-4) utilizar en el controller cuando se tenga que retornar una collection
-
------------------------------------------------
-
-
-1) crear IPaginatio
+1) crear IPaginationService
 -----------------------------
-namespace SocialMedia.Core.Interfaces
+namespace SocialMedia.Api.Interfaces
 {
-    public interface IPagination<T>  where T : class
+    public interface IPaginationService<T>  where T : class
     {
-        IEnumerable<T> GetPagedList(IEnumerable<T> list, int? itemByPage=null, int? currentPage=null);
-       object GetNavegation(IEnumerable<T> list, int? itemByPage = null, int? currentPage = null);
+        IList<T> GetPagedList(IList<T> list, BaseQueryFilter filter=null);
+        Navegation GetNavegation(IList<T> list, BaseQueryFilter filter=null);
     }
 }
 
 
+
 2) crear PaginationService
 ------------------------------
-namespace SocialMedia.Core.Services
+namespace SocialMedia.Api.Services
 {
-    public class PaginationService<T>: IPagination<T>   where T : class
+    public class PaginationService<T>: IPaginationService<T>   where T : class
     {
-        private readonly IAppsetting appsetting;
+        private readonly IAppsettingService appsetting;
 
-        public PaginationService(IAppsetting appsetting)
+        public PaginationService(IAppsettingService appsetting)
         {
             this.appsetting = appsetting;
         }
 
         //retorna la lista paginada.  //skip=omitir, take=tomar  
-        public IEnumerable<T> GetPagedList(IEnumerable<T> list, int? itemByPage = null, int? currentPage = null)
+        public IList<T> GetPagedList(IList<T> list, BaseQueryFilter filter=null)
         {
-            if (itemByPage == null) itemByPage = appsetting.ItemByPage;
-            if (currentPage == null) currentPage = appsetting.CurrentPage;
+            if (filter.ItemByPage == null) filter.ItemByPage = appsetting.ItemByPage;
+            if (filter.CurrentPage == null) filter.CurrentPage = appsetting.CurrentPage;
 
-            return list.Skip((currentPage.Value - 1) * itemByPage.Value).Take(itemByPage.Value).ToList();
+            return list.Skip( ((filter.CurrentPage - 1) * filter.ItemByPage).Value).Take(filter.ItemByPage.Value).ToList();
         }
 
-        //retorna el paginado(next=3, previeus=1 etc.)
-        public object GetNavegation(IEnumerable<T> list, int? itemByPage = null, int? currentPage = null)
+        //retorna la filter del paginado(next=3, previeus=1 etc.)
+        public Navegation GetNavegation(IList<T> list, BaseQueryFilter filter=null)
         {
-            var pages = list.Count() / itemByPage;
+            if ( (list.Count()==0) || (filter==null) ) return default(Navegation);
+
+            if (filter.ItemByPage == null) filter.ItemByPage = appsetting.ItemByPage;
+            if (filter.CurrentPage == null) filter.CurrentPage = appsetting.CurrentPage;
+
+            var pages = list.Count() / filter.ItemByPage;
             pages = pages > 1 ? pages : 1;
-            var current = currentPage > pages ? pages : currentPage;
+            var current = filter.CurrentPage > pages ? pages : filter.CurrentPage;
             var next = current < pages ? current + 1 : current;
             var previous = current > 1 ? current - 1 : current;
 
-	    //propiedades de paginacion que retornara al cliente
-            return new
+            return new Navegation
             {
                 TotalItem = list.Count(),
-                //ItemByPage = itemByPage.Value,
+                ItemByPage = filter.ItemByPage,
                 Pages = pages,
-               // Current = current,
+                CurrentPage = current,
                 Next = next,
                 Previous = previous
             };
@@ -72,7 +69,7 @@ namespace SocialMedia.Core.Services
 
 
 
-3) configurar IPagination en startup.cs
+3) configurar IPaginationService en startup.cs
 ---------------------------------
 namespace SocialMedia.Api
 {
@@ -81,7 +78,7 @@ namespace SocialMedia.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped(typeof(IPagination<>), typeof(PaginationService<>));
+            services.AddScoped(typeof(IPaginationService<>), typeof(PaginationService<>));
         }
 
 
@@ -90,42 +87,30 @@ namespace SocialMedia.Api
 
 4) utilizar en el controller cuando se tenga que retornar una collection
 ------------------------------------------
-namespace SocialMedia.Api.Controllers
+namespace SocialMedia.Api.Services
 {
-    [ApiController]
-    [Route("api/[Controller]")]
-    public class UserController : ControllerBase
+    public abstract class BaseService<TEntity, TDTO> where TEntity : class where TDTO : class
     {
-        private readonly IUser _user;
-        private readonly IPagination<User> _pagination;
-
-        public UserController(IUser _user, IPagination<User> _pagination)
+        internal readonly IPaginationService<TEntity> _pagination;
+        public BaseService(IPaginationService<TEntity> _pagination)
         {
-            this._user = _user;
             this._pagination = _pagination;
         }
 
-        [HttpGet]
-        public  IActionResult GetUsers([FromQuery]UserQueryFilter filters)
-        {  
-            //obtengo la collection de user
-            var users = _user.GetByFilters(filters); 
-            //pagino la lista y retorno una pagina
-            var usersPagedList=_pagination.GetPagedList(users, filters.ItemByPage, filters.CurrentPage); 
-            //creo la navegacion para el paginado de una lista(next=3, previous=1, TotalItem=20 etc.).
-            var navegation=_pagination.GetNavegation(users, filters.ItemByPage, filters.CurrentPage);                        
-            //mapeo usersPagedList al usersDTO
-            var usersDTO= mapper.Map<IEnumerable<UserDTO>>(usersPagedList);
-               
-            //para ir listando la respuesta en formato clave,valor ej:  
-            var response = new Dictionary<string, object>()   
-            {
-                {"Users",usersDTO},
-                {"Navegacion",navegation},
-               // {"Save user",Url.Link() }
-            };                          
-            return Ok(response);
+
+        internal ResponseApi<List<TDTO>> GetPagedList(IEnumerable<TEntity> lista, BaseQueryFilter filter=null)
+        {
+            var list = lista.ToList();
+            //aplicamos logica de negocio
+            if (list.Count() == 0)
+                _exception.CustomException($"No se encontro resultado", HttpStatusCode.NotFound);
+            //aplicamos navegacion de la lista
+            var navegation = _pagination.GetNavegation(list, filter);
+            //aplicamos paginado
+            var pagedList = _pagination.GetPagedList(list, filter);
+            //mapeamos la lista paginada a un DTOs
+            var dTOs = _mapper.Map<List<TDTO>>(pagedList);
+            //retornamos nuestra repuesta personalizada.
+            return new ResponseApi<List<TDTO>>(dTOs, navegation);
         }
-
-
 

@@ -1,0 +1,70 @@
+(OAS - Open API Specification) pakage Swashbuckle
+Esto nos generara de manera automatica al compilar el proyecto, la documentacion de nuestra api.
+a traves de los comentarios xml de los metodos.
+
+Documente los metodos que considere necesario, 
+	/// <summary>
+        /// Obtiene la lista de User
+        /// </summary>
+esta parte del comentario es mostrada al lado del metodo en swagger
+------------------------------------
+
+1) descargar el nuget packege https://www.nuget.org/packages/Swashbuckle.AspNetCore/
+2) registrar el servicio en startup.cs/ConfigureServices
+---------------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {            
+            services.AddSwaggerGen(x=>{
+                x.SwaggerDoc("v1",new OpenApiInfo{Title="Social Media Api",Version="v1"});
+                var xmlfile=$"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlpath=Path.Combine(AppContext.BaseDirectory,xmlfile);
+                x.IncludeXmlComments(xmlpath);
+            });
+
+3) agregar a socialmedia.api.csproj(click derecho al proyecto y open)
+-------------------------------------
+<Project Sdk="Microsoft.NET.Sdk.Web">
+ //debe ir aqui , al principio, para que funcione.
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+4) instalar la extension (C# XML Documentation Comments)
+---------------------------------------------
+modo de uso en el controller
+	/// <summary>
+        /// Obtiene la lista de User
+        /// </summary>
+        /// <param name="filters">Mapea todos las propiedades de UserQueryFilter que le envie desde query string</param>
+        /// <returns>Retorna una respuesta</returns>
+        [HttpGet(Name =nameof(GetUsers))]   
+        public IActionResult GetUsers([FromQuery] UserQueryFilter filters)
+
+5) llamar a app.UseSwagger(); en el startup.cs/Configure
+6) llamar a app.UseSwaggerUI(, en el startup.cs/Configure
+---------------------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(x=>{
+                x.SwaggerEndpoint( "/swagger/v1/swagger.json","Social Media Api v1");
+                x.RoutePrefix=string.Empty;
+            });
+                  
+
+-----------------------------------------------
+
+
+
+
+

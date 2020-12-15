@@ -2,14 +2,19 @@ pasos:
 --------------------
 1) create database
 2) create database first
-3) create dependency injection
-4) create UserService:IUserService
-5) create Automapper and DTO(Data transfer object)
-6) create controller
-7) create request from postman
-8) create Fluent validation
+3) agregar nuget packeges
+4) create dependency injection
+5) create UserService:IUserService
+6) create Automapper and DTO(Data transfer object)
+7) create controller
+8) create request from postman
+9) create Fluent validation
 10) custom exception
 11) filtering data
 12) pagination
 13) Using appsettings.json
 14) HATEOAS o Hypermedia
+15) Documenting API with Swagger
+16) JWT(Json Web Token) Security
+17) ResponseApi (respuesta personalizada)
+

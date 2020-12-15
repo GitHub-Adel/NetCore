@@ -1,0 +1,203 @@
+﻿https://jwt.io/ JSON Web Token (JWT) es un est�ndar abierto (RFC 7519) que define una forma 
+de transmitir informaci�n de forma segura entre las partes como un objeto JSON.
+
+Autorizaci�n: este es el escenario m�s com�n para usar JWT. Una vez que el usuario haya iniciado sesi�n, 
+cada solicitud posterior incluir� el JWT, lo que permitir� al usuario acceder a rutas, 
+servicios y recursos que est�n permitidos con ese token.
+
+Esta compuesto de 3 parte separada por punto(hhhhh.pppppp.ssssss):
+1. HEADER
+2. PAYLOAD
+3. SIGNATURE
+------------------------------------
+
+1) agregar propiedades al appsettings.json
+---------------------------------------------
+{  
+  "SecretKey":"6656454545dssdsdsdsd",
+  "Issuer":"https://localhost:5001/", 
+  "Audience":"https://localhost:5001/",
+  "TokenMinuteExpires":"2"
+}
+
+
+2) agregar propiedades a la IAppsettingService
+--------------------------------------
+namespace SocialMedia.Api.Interfaces
+{
+    public interface IAppsettingService
+    {
+        byte[] SecretKey { get;}
+        string Issuer { get;}
+        string Audience { get;}
+	public double TokenMinuteExpires { get;}
+    }
+
+
+namespace SocialMedia.Api.Services
+{
+    public class AppsettingService : IAppsettingService
+    {
+        public byte[] SecretKey => Encoding.UTF8.GetBytes(configuration["SecretKey"]);
+
+        public string Issuer => configuration["Issuer"];
+
+        public string Audience => configuration["Audience"];
+
+	public double TokenMinuteExpires => double.Parse(configuration["TokenMinuteExpires"]);
+    }
+  
+
+3) Configurar y registrarlo en Startup.cs 
+-----------------------------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {            
+            services.AddAuthentication(x=>{
+               x.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;     
+               x.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x=>{
+                x.TokenValidationParameters=new TokenValidationParameters
+                {
+                    ValidateIssuer=true,
+                    ValidateAudience=true,
+                    ValidateLifetime=true,
+                    ValidateIssuerSigningKey=true,
+                    ValidIssuer=configuration["Issuer"],
+                    ValidAudience=configuration["Audience"],
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecretKey"]))
+                };
+            });  
+
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseRouting();
+	    app.UseAuthentication();
+            app.UseAuthorization();
+         
+
+4) crear un modulo Security, para crear los usuarios que manejaran el api.
+---------------------------------------------------------------------------------
+
+
+5) crear un modulo Rol, para asignar un rol al usuario.
+---------------------------------------------------------------------------------
+
+6) crear un modulo Token, con un metodo Authentication especial, para obtener el token
+----------------------------------------------------
+namespace SocialMedia.Api.Services
+{
+    public class TokenService : BaseService<Security, CredentialDTO>, ITokenService
+    {
+        private readonly IAppsettingService _appsetting;
+        public TokenService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<Security> _pagination, IAppsettingService _appsetting) : base(_context, _exception, _mapper, _pagination)
+        {
+            this._appsetting = _appsetting;
+        }
+
+        public string Get(CredentialDTO credentialDTO)
+        {
+            //logica de negocio
+            ExceptionIfNoExist(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password);   
+
+            //Header
+            var a = new SymmetricSecurityKey(_appsetting.SecretKey);
+            var b = new SigningCredentials(a, SecurityAlgorithms.HmacSha256);
+            var header = new JwtHeader(b);
+
+            //Claims
+            var security = _context.Security
+                           .Include(x=>x.Role)
+                           .Where(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password)
+                           .FirstOrDefault();                     
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name,security.Name),
+                new Claim("User",security.User),
+                new Claim(ClaimTypes.Role, security.Role?.Name)
+            };
+
+            //Payload
+            var payload = new JwtPayload
+            (
+                _appsetting.Issuer,
+                _appsetting.Audience,
+                claims,
+                DateTime.Now,
+                DateTime.UtcNow.AddMinutes(_appsetting.TokenMinuteExpires)
+            );
+
+            var token = new JwtSecurityToken(header, payload);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
+}
+
+ 
+7) agregar atributo de authorize al controller, al que se desea dar permiso.
+----------------------------------
+namespace SocialMedia.Api.Controllers
+{
+    //esto indica que solo los administradores pueden usar este controller
+    //Authorize tambien se puede usar a nivel de metodo.
+    [Authorize(Roles="Administrator")]
+    [ApiController]
+    [Route("api/[Controller]")]
+    public class SecurityController : ControllerBase
+    {
+
+ 
+
+
+8) Debe haber una clase de CredentialDTO con dos propiedades User y Password
+----------------------------------------------------
+namespace SocialMedia.Api.Models
+{
+    public class CredentialDTO
+    {
+        public string User { get; set; }
+        public string Password { get; set; }
+    }
+}
+
+
+
+
+8) modo de uso:
+-----------------------------------
+1. generar token por postman https://localhost:5001/api/Token/ usando method POST
+   esto llama el metodo Authentication del controlador TokenController pasandole las credenciales
+   por querybody que seran mapeada en el objeto CredentialDTO.
+
+{
+    "User":"xxxxx",
+    "Password":"yyyyy"
+}
+
+si es correcto el usuario y contrasena, devolvera un token, copiarlo.
+
+ahora crearemos un request para consumir el metodo get de user.
+
+method GET:  https://localhost:5001/api/User?ItemByPage=50&CurrentPage=1
+Hearders.Authorization=bearer pegartokencopiado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

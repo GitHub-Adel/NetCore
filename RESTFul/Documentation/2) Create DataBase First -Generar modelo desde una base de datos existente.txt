@@ -1,60 +1,47 @@
-https://www.nuget.org/packages
-----------------------------
-1) tener instalado en SocialMedia.Api:
-	Microsoft.EntityFrameworkCore.SqlServer
-	Microsoft.EntityFrameworkCore.Design
-	dotnet-ef
-        AutoMapper.Extensions.Microsoft.DependencyInjection
-	FluentValidation.AspNetCore
-	Newtonsoft.Json
+traer la base de datos de sql para c#
+-------------------------------------
 
-   tener instalado en SocialMedia.Core:
-	Microsoft.EntityFrameworkCore
-	Microsoft.EntityFrameworkCore.SqlServer	
+2) Asegurarse que el project compile sin error con: 
+----------------------------------------
+	dotnet build
 
-   tener instalado en SocialMedia.Infrastructure:        
-	AutoMapper.Extensions.Microsoft.DependencyInjection
-	FluentValidation.AspNetCore
+3) correr: dotnet ef dbcontext scaffold
+--------------------------------------------
+	dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -o CARPETA_DESTINO_MODELOS --project NOMBRE_PROYECTO --force
+	EJE:
+	TO CONFIG CONNECTIONSTRING WITH SQL credentialDTODTOS:
+	**********
+	dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer --project SocialMedia.Api -o Models --force
 
+	TO CONFIG CONNECTIONSTRING WITH WINDOWS credentialDTODTOS:
+	*********
+	dotnet ef dbcontext scaffold "Server=C2VYW72\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true;" Microsoft.EntityFrameworkCore.SqlServer --project SocialMedia.Api -o Models --force
 
+	agregar --no-onconfiguring al comando anterior, para que no agregue el metodo OnConfiguring en el context generado.
+	solo valido en la version 5.0.0 de ef core en adelante, mientras tanto quitarlo manualmente.
 
-2) Asegurarse que el project compile sin error con: dotnet build
-
-3) correr: dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -context-dir CARPETA_DESTINO_CONTEXTO -o CARPETA_DESTINO_MODELOS
 
 4) quitar OnConfiguring method from dbcontext.
+------------------------------------------------
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true;");
+            }
+        }
 
-5) crear connectionString in appsettings.json
 
-6) inyectar IConfiguration in Startup.cs
-
-7) configurar la conexion del dbcontext en startup.cs   
-
-
-Nota:
------------------------
-https://docs.microsoft.com/es-es/ef/core/miscellaneous/cli/dotnet 
-
-TO CONFIG CONNECTIONSTRING WITH SQL CREDENTIALS:
-------------------------
-dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o ..\SocialMedia.Core\Entity  --context-dir ..\SocialMedia.Infrastructure\Data
-
-TO CONFIG CONNECTIONSTRING WITH WINDOWS CREDENTIALS:
------------------------
-dotnet ef dbcontext scaffold "Server=C2VYW72\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true;" Microsoft.EntityFrameworkCore.SqlServer -o ..\SocialMedia.Core\Entity  --context-dir ..\SocialMedia.Infrastructure\Data
-
-agregar --no-onconfiguring al comando anterior, para que no agregue el metodo OnConfiguring en el context generado.
-solo valido en la version 5.0.0 de ef core en adelante, mientras tanto quitarlo manualmente.
-
-5) crear connectionString in appsettings.json
--------------------
+5) crear propiedad connectionString in appsettings.json
+---------------------------------------------------
 {
-  "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
+"SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
 }
 
 
 6) inyectar IConfiguration in Startup.cs
----------------------------
+-----------------------------------------
     public class Startup
     {
         private readonly IConfiguration configuration;
@@ -64,6 +51,25 @@ solo valido en la version 5.0.0 de ef core en adelante, mientras tanto quitarlo 
         }
 
 
+
+7) configurar la conexion del dbcontext en startup.cs
+---------------------------------------------------   
+
+
+Nota:
+-----------------------
+https://docs.microsoft.com/es-es/ef/core/miscellaneous/cli/dotnet 
+
+
+
+
 7) configurar la conexion del dbcontext en startup.cs
 ------------------------------
-services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {  
+		services.AddDbContext<SocialmediaDBContext>(x => x.UseSqlServer(Configuration["SocialMediaConnection"]));
+
+

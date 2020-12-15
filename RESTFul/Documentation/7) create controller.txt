@@ -1,0 +1,81 @@
+﻿sirve de intermediario para intercambiar los datos entre la vista y el modelo.
+
+es aqui donse se inyectan los servicios, se realizan los mapping de automaper, se usan los DTOS, 
+-------------------------
+
+1) click en solution
+2) click derecho en controllers
+3) create file
+4) NameController.cs
+
+
+namespace SocialMedia.Api.Controllers
+{
+   // [Authorize]
+    [ApiController]
+    [Route("api/[Controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _user;
+        public UserController(IUserService _user)
+        {
+            this._user = _user;
+        }
+
+        [HttpPost(Name=nameof(AddUser))]
+        public async Task<IActionResult> AddUser(UserDTO userDTO)
+        {            
+            userDTO.UserId=0;
+            var response = await _user.AddAsync(userDTO);            
+            return Ok(response);
+        }
+
+        [HttpPut("{id}",Name=nameof(UpdateUser))]
+        public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
+        {            
+            userDTO.UserId=id;
+            var response = await _user.UpdateAsync(userDTO);            
+            return Ok(response);
+        }
+
+        [HttpGet(Name=nameof(GetUsers))]
+        public  IActionResult GetUsers([FromQuery] UserQueryFilter filters)
+        {                        
+            var response =  _user.Get(filters);            
+            return Ok(response);
+        }
+
+    }
+
+}
+
+
+
+
+
+nota:
+------------------------------------
+[ApiController] : valida los dataAnotations del modelo automaticamente. ya no hay que hacer esto
+		if(modelstate.isvalid) en el metodo del controller.
+
+[Route("api/[Controller]")] : Indica el controlador por donde entrar� el request api/User, donde user es
+el controlador
+
+[HttpPost]  : verbo que maneja el request:
+
+api/user/2
+[HttpGet("{id}")]  : recibir parametro
+metodo(int id)
+
+recibir parametros
+-------------------------------
+api/?id=2&phone=8295295454
+[HttpGet]  
+metodo(int? id,string phone)
+
+recibir parametros y mapearlo en una clase, UserQueryFilter debera contener la propiedad id y phone
+--------------------------------
+api/?id=2&phone=8295295454
+[HttpGet]
+Metodo([FromQuery]UserQueryFilter filters)
+

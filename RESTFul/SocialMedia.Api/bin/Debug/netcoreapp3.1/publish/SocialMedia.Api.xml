@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SocialMedia.Api</name>
+    </assembly>
+    <members>
+        <member name="M:SocialMedia.Api.Controllers.UserController.GetUsers(QueryFilters.UserQueryFilter)">
+            <summary>
+            Obtiene la lista de User
+            </summary>
+            <param name="filters">Mapea todos las propiedades de UserQueryFilter que le envie desde query string</param>
+            <returns>Retorna una respuesta</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,73 @@
+Es devolver una respuesta por el controlador que no solo contenga el objeto sino tambien los enlaces
+para manipular ese recurso y las relacionesm, la idea es que el links contenga el endpoint,description
+y method(GET, POST,PUT,DELETE), para que el programador sepa. 
+------------------------------------
+
+-----------------------------------------------
+
+
+1) Ponerle un nombre al metodo a llamar
+-----------------------------------------------
+        [HttpPost(Name=nameof(SaveUser))]
+        public Metodo()
+        {
+
+        }
+
+
+2) crear una clase BaseLinkDTO
+-----------------------------------------------
+namespace SocialMedia.Api.DTOs
+{
+    public abstract class BaseLinkDTO
+    {
+       public IList<Link> Links { get; set; } = new List<Link>();
+    }
+}
+
+
+3) heredarla en UserDTO
+--------------------------
+namespace SocialMedia.Api.DTOs
+{
+    public class UserDTO:BaseLinkDTO
+    {
+        public int UserId { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public bool Active { get; set; }
+              
+    }
+}
+ 
+
+
+3) modo de uso en el controller
+-----------------------------------------------
+            
+            [HttpGet(Name = nameof(GetRoles))]
+            public IActionResult GetRoles([FromQuery] RoleQueryFilter filters)
+            {
+                //obtengo la collection de role
+                var response = _role.Get(filters);
+                //HATEOAS AND HYPERMEDIA
+                response.Data.ForEach(x =>
+                {                        
+                    x.Links=new List<Link>(){
+                        new Link{Rel="Update-role",Method="PUT",Href=Url.Link(nameof(UpdateRole), new { id = x.RoleId })}
+                    };
+                });
+
+                response.Links=new List<Link>(){
+                     new Link{Rel="Create-role",Method="POST",Href=Url.Link(nameof(AddRole), new { })},
+                     new Link{Rel="Next",Method="GET",Href=Url.Link(nameof(GetRoles), new {CurrentPage=response.Navegation.Next})},
+                     new Link{Rel="Previeus",Method="GET",Href=Url.Link(nameof(GetRoles), new { CurrentPage=response.Navegation.Previous})}
+                };
+
+                return Ok(response);
+            }
+
+
+

@@ -1,9 +1,0 @@
-D:\NetCore\RESTFul\SocialMedia.Core\bin\Debug\netstandard2.0\SocialMedia.Core.deps.json
-D:\NetCore\RESTFul\SocialMedia.Core\bin\Debug\netstandard2.0\SocialMedia.Core.dll
-D:\NetCore\RESTFul\SocialMedia.Core\bin\Debug\netstandard2.0\SocialMedia.Core.pdb
-D:\NetCore\RESTFul\SocialMedia.Core\obj\Debug\netstandard2.0\SocialMedia.Core.csprojAssemblyReference.cache
-D:\NetCore\RESTFul\SocialMedia.Core\obj\Debug\netstandard2.0\SocialMedia.Core.AssemblyInfoInputs.cache
-D:\NetCore\RESTFul\SocialMedia.Core\obj\Debug\netstandard2.0\SocialMedia.Core.AssemblyInfo.cs
-D:\NetCore\RESTFul\SocialMedia.Core\obj\Debug\netstandard2.0\SocialMedia.Core.csproj.CoreCompileInputs.cache
-D:\NetCore\RESTFul\SocialMedia.Core\obj\Debug\netstandard2.0\SocialMedia.Core.dll
-D:\NetCore\RESTFul\SocialMedia.Core\obj\Debug\netstandard2.0\SocialMedia.Core.pdb

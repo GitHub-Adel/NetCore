@@ -1,0 +1,177 @@
+﻿esta interface es para la logica de negocio, sera inyectada por startup en los controller 
+y se utilizara en los controllers, pueden ser inyectada en otros services.
+
+como ya entity framework core  incluye el patron repository y unit of work. lo utilizaremos
+directamente en nuestra capa de dominio o core. para eso necesitamos instalar entity framework core 
+en esta capa.
+
+-------------------------------------------------------
+interface: define los method, solo la firma. (abstraction), se utiliza para exponer solo los metodos 
+	   al controller, sin la implementacion.
+	
+
+1) crear interface
+------------------------------
+
+namespace SocialMedia.Api.Interfaces
+{
+    public interface IUserService
+    {
+        Task<ResponseApi<UserDTO>> AddAsync(UserDTO user);
+        Task<ResponseApi<UserDTO>> UpdateAsync(UserDTO userDTO);
+        ResponseApi<List<UserDTO>> Get(UserQueryFilter filters);
+    }
+}
+
+
+
+2) crear un BaseService
+------------------------------
+namespace SocialMedia.Api.Services
+{
+    public abstract class BaseService<TEntity, TDTO> where TEntity : class where TDTO : class
+    {
+        internal readonly SocialmediaDBContext _context;
+        internal readonly DbSet<TEntity> _entity;
+        internal readonly IGlobalExceptionService _exception;
+        internal readonly IMapper _mapper;
+        internal readonly IPaginationService<TEntity> _pagination;
+        public BaseService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<TEntity> _pagination)
+        {
+            this._pagination = _pagination;
+            this._mapper = _mapper;
+            this._exception = _exception;
+            this._context = _context;
+            _entity = _context.Set<TEntity>();
+        }
+
+
+        internal ResponseApi<List<TDTO>> GetPagedList(IEnumerable<TEntity> lista, BaseQueryFilter filter=null)
+        {
+            var list = lista.ToList();
+            //aplicamos logica de negocio
+            if (list.Count() == 0)
+                _exception.CustomException($"No se encontro resultado", HttpStatusCode.NotFound);
+            //aplicamos navegacion de la lista
+            var navegation = _pagination.GetNavegation(list, filter);
+            //aplicamos paginado
+            var pagedList = _pagination.GetPagedList(list, filter);
+            //mapeamos la lista paginada a un DTOs
+            var dTOs = _mapper.Map<List<TDTO>>(pagedList);
+            //retornamos nuestra repuesta personalizada.
+            return new ResponseApi<List<TDTO>>(dTOs, navegation);
+        }
+
+        internal async Task<TDTO> UpdateEntityAsync(TDTO dTO)
+        {
+            //mapeo el DTO a una entidad
+            var entity = _mapper.Map<TEntity>(dTO);
+            _entity.Update(entity);
+            await _context.SaveChangesAsync();
+            //mapeo a un DTO
+            dTO = _mapper.Map<TDTO>(entity);
+            return dTO;
+        }
+        internal async Task<TDTO> AddEntityAsync(TDTO dTO)
+        {
+            //mapeo el DTO a una entidad
+            var entity = _mapper.Map<TEntity>(dTO);
+            _entity.Add(entity);
+            await _context.SaveChangesAsync();
+            //mapeo a un DTO
+            dTO = _mapper.Map<TDTO>(entity);
+            return dTO;
+        }
+        
+        internal void ExceptionIfExist(Func<TEntity, bool> predicate)
+        {
+            //AsNoTracking() : es para dejar de seguir la entidad y que no me de error 
+            //al llamar el update(entitty)
+            var entity = _entity.AsNoTracking().FirstOrDefault(predicate);
+            if (entity != null) _exception.CustomException($"{entity.GetType().Name} ya existe", HttpStatusCode.Conflict);
+        }
+        internal void ExceptionIfNoExist(Func<TEntity, bool> predicate)
+        {
+            //AsNoTracking() : es para dejar de seguir la entidad y que no me de error 
+            //al llamar el update(entitty)
+            var entity = _entity.AsNoTracking().FirstOrDefault(predicate);
+            if (entity == null) _exception.CustomException($"{entity.GetType().Name} no existe", HttpStatusCode.NotFound);
+        }
+    }
+}
+
+
+
+namespace SocialMedia.Api.Services
+{
+    public class UserService :BaseService<User,UserDTO>, IUserService
+    {
+        public UserService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<User> _pagination) : base(_context, _exception, _mapper, _pagination)
+        {
+        }
+
+        public async Task<ResponseApi<UserDTO>> AddAsync(UserDTO userDTO)
+        {            
+            try
+            {
+              //logica de negocio
+              ExceptionIfExist(x=>x.Email==userDTO.Email && x.Active==true);
+              ExceptionIfExist(x=>x.Phone==userDTO.Phone && x.Active==true);
+              //inserto la entidad
+              userDTO =  await AddEntityAsync(userDTO);
+            }
+            catch (Exception ex)
+            {
+                _exception.CatchException(ex);
+            }
+            //retorno DTO con respuesta personalizaa
+            return new ResponseApi<UserDTO>(userDTO);
+        }
+
+        public async Task<ResponseApi<UserDTO>> UpdateAsync(UserDTO userDTO)
+        {            
+            try
+            {
+                //logica de negocio
+                ExceptionIfNoExist(x=>x.UserId==userDTO.UserId);
+                //actualizo la entidad
+                userDTO =  await UpdateEntityAsync(userDTO);
+            }
+            catch (Exception ex)
+            {
+                _exception.CatchException(ex);
+            }
+            //retorno DTO con respuesta personalizada
+            return new ResponseApi<UserDTO>(userDTO);
+        }
+
+
+        public ResponseApi<List<UserDTO>> Get(UserQueryFilter filters)
+        {
+            //obtenemos IEnumerable
+            var list = _entity.AsEnumerable();
+            //aplicamos filtros
+            if (filters.UserId != null)
+                list = list.Where(x => x.UserId.Equals(filters.UserId));
+            if (filters.Firstname != null)
+                list = list.Where(x => x.Firstname.ToLower().Contains(filters.Firstname.ToLower()));
+            if (filters.Lastname != null)
+                list = list.Where(x => x.Lastname.ToLower().Contains(filters.Lastname.ToLower()));
+            if (filters.Phone != null)
+                list = list.Where(x => x.Phone.Equals(filters.Phone));
+
+            return GetPagedList(list,filters);
+        }
+
+
+
+    }
+}
+
+
+
+
+registrar la interface en el startup.cs:
+---------------------------
+ver paso 4) 
+

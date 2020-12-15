@@ -1,0 +1,32 @@
+﻿Esto es para validar los modelos o entidades.
+---------------------------------
+
+
+1) register in Startup.cs
+---------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {  
+            services.AddControllers().AddFluentValidation(x=>{
+                x.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            })  ;
+
+
+2) create UserValidator class
+------------------------------------
+namespace SocialMedia.Api.Validators
+{
+    public class UserValidator : AbstractValidator<UserDTO>
+    {
+        public UserValidator()
+        {
+            RuleFor(p => p.Firstname).NotEmpty().WithMessage("El Firstname no puede quedar vacío");           
+        }
+    }
+}
+
+

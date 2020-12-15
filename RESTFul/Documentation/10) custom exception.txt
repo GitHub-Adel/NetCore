@@ -5,8 +5,8 @@ vea las exception con un mejor formato y no con tantas cosas.
 exception sin personalizar
 ---------------------------
 System.Exception: Exception of type 'System.Exception' was thrown.
-   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) 
-   in D:\NetCore\RESTFul\SocialMedia.Core\Services\UserService.cs:line 39
+   at Services.UserService.AddUserAsync(User user) 
+   in D:\NetCore\RESTFul\\Services\UserService.cs:line 39
    at SocialMedia.Api.Controllers.UserController.Save(UserDTO userDTO) 
    in D:\NetCore\RESTFul\SocialMedia.Api\Controllers\UserController.cs:line 33
 
@@ -33,15 +33,17 @@ todas las demas que no pudimos validar.
         "title": "Bad Request",
         "message": "An error occurred while updating the entries. See the inner exception for details.",
         "innerException": "SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM.",
-        "stackTrace": "   at SocialMedia.Core.Services.UserService.AddUserAsync(User user) in D:\\NetCore\\RESTFul\\SocialMedia.Core\\Services\\UserService.cs:line 38"
+        "stackTrace": "   at Services.UserService.AddUserAsync(User user) in D:\\NetCore\\RESTFul\\\\Services\\UserService.cs:line 38"
     }
 }
 
 
 
 solution:
+
+1) crear CustomException 
 --------------------------------
-namespace SocialMedia.Core.Exceptions
+namespace SocialMedia.Api.Exceptions
 {
     public class CustomException : Exception
     {
@@ -49,39 +51,87 @@ namespace SocialMedia.Core.Exceptions
         public CustomException(string message,HttpStatusCode statusCode=default(HttpStatusCode), Exception innerException=null) : base(message,innerException)
         {
             StatusCode = statusCode;
-        }
+        }        
+    }
 }
 
 
-namespace SocialMedia.Infrastructure.Filters
+2) crear filtro
+-----------------------------------
+namespace SocialMedia.Api.Filters
 {
     public class GlobalExceptionFilter : IExceptionFilter
     {
         public void OnException(ExceptionContext context)
         {
-            if(context.Exception.GetType()==typeof(CustomException)){
+            if (context.Exception.GetType() == typeof(CustomException))
+            {
                 var exception = (CustomException)context.Exception;
-                var validation=new{
-                    Status=400,
-                    Title="Bad Request",
-                    Detail=exception.Message,
-		    InnerException=exception.InnerException?.Message,
-		    StackTrace=exception.StackTrace.Split(Environment.NewLine.ToCharArray())[0]
+                var validation = new
+                {
+                    Status =exception.StatusCode,
+                    Title = exception.StatusCode.ToString(),
+                    Message = exception.Message,
+                    InnerException=exception.InnerException?.Message,
+                    StackTrace=exception.StackTrace.Split(Environment.NewLine.ToCharArray())[0]
                 };
 
-                var json=new Dictionary<string,object>(){{"Errors",validation}}
+                var json=new Dictionary<string,object>(){{"Errors",validation}};
 
-                context.Result=new BadRequestObjectResult(json);
-                context.HttpContext.Response.StatusCode=(int)HttpStatusCode.BadRequest;
-                context.ExceptionHandled=true; //exception personalizada
-
+                context.Result = new ObjectResult(json);
+                context.HttpContext.Response.StatusCode = (int)exception.StatusCode;
+                context.ExceptionHandled = true; //exception personalizada
             }
+
         }
     }
 }
 
 
+3) crear interface IGlobalExceptionService
+------------------------------------
+namespace SocialMedia.Api.Interfaces
+{
+    public interface IGlobalExceptionService    
+    {
+        void CatchException(Exception ex);
+        void CustomException(string message,HttpStatusCode statusCode=default(HttpStatusCode), Exception innerException=null);
+    }
+}
 
+
+4) crear clase GlobalExceptionService
+------------------------------------
+namespace SocialMedia.Api.Services
+{
+    public class GlobalExceptionService:IGlobalExceptionService
+    {        
+        //se pone en el cuerpo de un catch de un try catch 
+        public void CatchException(Exception ex)
+        {
+            //registramos error en un log.
+            //le mostramos error al usuario.
+            if(ex.GetType()==typeof(CustomException)){
+                var a= (CustomException)ex;
+               throw new CustomException(ex.Message,a.StatusCode,ex.InnerException);
+            } 
+            else { //si no es un eror personalizado, muestro un internal error por default
+                throw new CustomException(ex.Message,HttpStatusCode.InternalServerError,ex.InnerException);
+            } 
+        }
+
+        //dispara una exception personalizada, puesta por nosotros mismo
+	//se pone el el cuerpo de un metodo	
+        public void CustomException(string message,HttpStatusCode statusCode=default(HttpStatusCode), Exception innerException=null){
+            throw new CustomException(message,statusCode,innerException);
+        }
+
+    }
+}
+
+
+5) registrar filtro e inteface
+-------------------------------
 namespace SocialMedia.Api
 {
     public class Startup
@@ -94,37 +144,53 @@ namespace SocialMedia.Api
                 x.Filters.Add<GlobalExceptionFilter>();
             })
 
+	    services.AddTransient<IGlobalExceptionService, GlobalExceptionService>();
 
 
-
-
-
-ejemplo de uso:
+modo de uso:
 -------------------
 
-namespace SocialMedia.Core.Services
+namespace SocialMedia.Api.Services
 {
-    public class UserService : IUserService
+    public abstract class BaseService<TEntity, TDTO> where TEntity : class where TDTO : class
     {
-        public async Task<User> AddUserAsync(User user)
+        internal readonly IGlobalExceptionService _exception;
+        public BaseService(IGlobalExceptionService _exception)
         {
+            this._exception = _exception;
+        }
+
+        internal void ExceptionIfExist(Func<TEntity, bool> predicate)
+        {
+            //AsNoTracking() : es para dejar de seguir la entidad y que no me de error 
+            //al llamar el update(entitty)
+            var entity = _entity.AsNoTracking().FirstOrDefault(predicate);
+            if (entity != null) _exception.CustomException($"{entity.GetType().Name} ya existe", HttpStatusCode.Conflict);
+        }
+
+
+
+
+
+namespace SocialMedia.Api.Services
+{
+    public class UserService :BaseService<User,UserDTO>, IUserService
+    {
+        public UserService(IGlobalExceptionService _exception) : base(_exception)
+        {
+        }
+
+        public async Task<ResponseApi<UserDTO>> AddAsync(UserDTO userDTO)
+        {            
             try
             {
-                //logica de negocio: no se puede insertar un usuario si ya existe.
-                var _user = _context.User.FirstOrDefault(x => x.Phone.Equals(user.Phone));
-                if (_user != null) throw new CustomException($"Ya hay un User con ese Phone {user.Phone}");
-
-                _context.User.Add(user);
-                await _context.SaveChangesAsync();
-                return user;
+              //logica de negocio
+              ExceptionIfExist(x=>x.Email==userDTO.Email && x.Active==true);
             }
             catch (Exception ex)
             {
-                //registramos error en un log.
-                //disparamos un error al cliente.
-                   throw new CustomException(ex.Message,ex.InnerException);
+                _exception.CatchException(ex);
             }
         }
-    }
-}
+
 
