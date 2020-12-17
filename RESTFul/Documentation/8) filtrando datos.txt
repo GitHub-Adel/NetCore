@@ -1,18 +1,19 @@
-﻿Se utiliza en el controller para realizar busquedad por diferentes campos.
+﻿Se utiliza para realizar busquedad por diferentes campos.
 ejemplo: cliente, cedula, telefono, id, fecha, etc.
 
-filtrado con parametros
-----------------------
-request: querystring
-api/User/?userId=2&phone=8295295454
-[HTTPGET]
-Metodo(int? userId, string phone)
-
-un metodo no debe recibir mas de 3 parametros, en su lugar utilice una class, y se mapea
-Metodo([FromQuery]UserQueryFilter filters)
 
 filtrado con una clase
 -----------------------------------
+namespace SocialMedia.Api.QueryFilters
+{
+    public abstract class BaseQueryFilter
+    {
+        public int? ItemByPage { get; set; }
+        public int? CurrentPage { get; set; }
+    }
+}
+
+
 namespace SocialMedia.Api.QueryFilters
 {
    
@@ -28,22 +29,7 @@ namespace SocialMedia.Api.QueryFilters
 }
 
 
-namespace SocialMedia.Api.QueryFilters
-{
-    public abstract class BaseQueryFilter
-    {
-        public int? ItemByPage { get; set; }
-        public int? CurrentPage { get; set; }
-    }
-}
 
-
-
-
-api/User/?userId=2&phone=8295295454
-[HTTPGET]
-Metodo([FromQuery]UserQueryFilter filters)
-[FromQuery]: indica que viene por la URL, con el formato querystring y mapea el objeto con esos parametros.
 
 
 utilizamos IEnumerable para cargar la consulta en memoria, sin ejecutarla y asi poder ir 
@@ -54,10 +40,10 @@ namespace SocialMedia.Api.Services
 {
     public class UserService : IUserService
     {
-        public ResponseApi<List<UserDTO>> Get(UserQueryFilter filters)
+        public List<UserDTO>> GetByFilters(UserQueryFilter filters)
         {
             //obtenemos IEnumerable
-            var list = _entity.AsEnumerable();
+            var list = _context.User.AsEnumerable();
             //aplicamos filtros
             if (filters.UserId != null)
                 list = list.Where(x => x.UserId.Equals(filters.UserId));
@@ -67,20 +53,43 @@ namespace SocialMedia.Api.Services
                 list = list.Where(x => x.Lastname.ToLower().Contains(filters.Lastname.ToLower()));
             if (filters.Phone != null)
                 list = list.Where(x => x.Phone.Equals(filters.Phone));
+	    
+	    return list;	
 
-            return GetPagedList(list,filters);
+           //si queremos retornar la lista paginada, este es el lugar 
+	   //return GetPagedList(list,filters);
         }
 
 
 
 
+modo de uso:
+----------------------------
 
-        [HttpGet(Name=nameof(GetUsers))]
+        [HttpGet]
         public  IActionResult GetUsers([FromQuery] UserQueryFilter filters)
         {                        
-            var response =  _user.Get(filters);            
+            var response =  _user.GetByFilters(filters);            
             return Ok(response);
         }
+
+
+
+nota:
+---------------
+
+filtrado con parametros
+----------------------
+request: querystring
+api/User/?userId=2&phone=8295295454
+[HTTPGET]
+Metodo(int? userId, string phone)
+
+un metodo no debe recibir mas de 3 parametros, en su lugar utilice una class, y se mapea
+api/User/?userId=2&phone=8295295454&name="jauan"&edad=25
+[HTTPGET]
+Metodo([FromQuery]UserQueryFilter filters)
+[FromQuery]: indica que viene por la URL, con el formato querystring y mapea el objeto con esos parametros.
 
 
 

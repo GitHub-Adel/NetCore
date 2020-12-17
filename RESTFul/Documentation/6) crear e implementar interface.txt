@@ -1,0 +1,61 @@
+﻿Una interface es utilizada para la logica de negocio, se inyecta en el constructor de un controller o en
+el constructor de otra implementacion.
+
+la interfaces solo contiene firmas de metodos.
+
+porque usar interfaces?: para facilitar el mantenimiento, imagina que tienes implementacion1:Interface1 
+si en un futuro necesitas modificar la implementacion de la interface1, solo tienes que implementar la interface1
+en otra clase asi: implementacion2:interface1 y dejar la implementacion1 sin tocar, por si acaso hay que 
+darle patra al cambio. como lo que se inyecta en los controller es la interfaces ahora esta estará apuntando 
+a implementacion2.
+-------------------------------------------------------
+
+1) crear interface
+------------------------------
+
+namespace SocialMedia.Api.Interfaces
+{
+    public interface IClienteService
+    {
+        ClienteDTO Add(ClienteDTO cliente);
+    }
+}
+
+
+
+2) crear implementacion
+------------------------
+	public ClienteDTO Add(ClienteDTO cliente)
+        {
+            try
+            {
+              //logica de negocio, generando exception
+	      //mapeo de DTO a entidad modelo
+              //inserto la entidad de modelo
+            }
+            catch (Exception ex)
+            {
+                generar CatchException
+            }
+            //retorno DTO con respuesta personalizada
+            return clienteDTO;
+        }
+
+
+
+
+
+3) registrar la interface en el startup.cs (injection de dependencia):
+---------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+	   	//sin generic
+		services.AddTransient<IUserService, UserService>(); 
+		//con generic
+		services.AddScoped(typeof(IPaginationService<>),typeof(PaginationService<>));               
+        }
+

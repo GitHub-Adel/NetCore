@@ -1,7 +1,7 @@
 pasos:
 --------------------
-1) create database
-2) create database first
+1) crear database
+2) migrar database a nuestro proyecto
 3) agregar nuget packeges
 4) create dependency injection
 5) create UserService:IUserService

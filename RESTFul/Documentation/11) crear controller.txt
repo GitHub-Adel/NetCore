@@ -1,6 +1,6 @@
 ﻿sirve de intermediario para intercambiar los datos entre la vista y el modelo.
 
-es aqui donse se inyectan los servicios, se realizan los mapping de automaper, se usan los DTOS, 
+es aqui donde se inyectan las interfaces o servicios.
 -------------------------
 
 1) click en solution
@@ -11,39 +11,24 @@ es aqui donse se inyectan los servicios, se realizan los mapping de automaper, s
 
 namespace SocialMedia.Api.Controllers
 {
-   // [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _user;
+        readonly IUserService _user;
         public UserController(IUserService _user)
         {
             this._user = _user;
         }
 
-        [HttpPost(Name=nameof(AddUser))]
-        public async Task<IActionResult> AddUser(UserDTO userDTO)
+        [HttpPost]
+        public async Task<IActionResult> CrearUsuario(UserDTO userDTO)
         {            
             userDTO.UserId=0;
             var response = await _user.AddAsync(userDTO);            
             return Ok(response);
         }
 
-        [HttpPut("{id}",Name=nameof(UpdateUser))]
-        public async Task<IActionResult> UpdateUser(int id, UserDTO userDTO)
-        {            
-            userDTO.UserId=id;
-            var response = await _user.UpdateAsync(userDTO);            
-            return Ok(response);
-        }
-
-        [HttpGet(Name=nameof(GetUsers))]
-        public  IActionResult GetUsers([FromQuery] UserQueryFilter filters)
-        {                        
-            var response =  _user.Get(filters);            
-            return Ok(response);
-        }
 
     }
 
@@ -58,8 +43,8 @@ nota:
 [ApiController] : valida los dataAnotations del modelo automaticamente. ya no hay que hacer esto
 		if(modelstate.isvalid) en el metodo del controller.
 
-[Route("api/[Controller]")] : Indica el controlador por donde entrar� el request api/User, donde user es
-el controlador
+[Route("api/[Controller]")] : Indica el controlador por donde entrara el request api/User, donde user es
+				el controlador
 
 [HttpPost]  : verbo que maneja el request:
 

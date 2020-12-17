@@ -1,8 +1,8 @@
-La utilizamos para generar exception personalizada en UserService, para que el cliente 
+Las utilizamos en la logica de negocio en la implementaciones de las interfaces, para que el cliente 
 vea las exception con un mejor formato y no con tantas cosas.
 
 
-exception sin personalizar
+exception sin formato
 ---------------------------
 System.Exception: Exception of type 'System.Exception' was thrown.
    at Services.UserService.AddUserAsync(User user) 
@@ -11,7 +11,7 @@ System.Exception: Exception of type 'System.Exception' was thrown.
    in D:\NetCore\RESTFul\SocialMedia.Api\Controllers\UserController.cs:line 33
 
 
-exception personalizada
+exception con formato (lo que veremos en postman)
 ----------------------
 las que validamos nosotros
 ---------------------------
@@ -19,7 +19,7 @@ las que validamos nosotros
     "Errors": {
         "status": 400,
         "title": "Bad Request",
-        "message": "Ya hay un User con ese Phone 8295295454",
+        "message": "El cliente ya existe",
         "innerException": null
         "stackTrace": null
     }
@@ -41,7 +41,7 @@ todas las demas que no pudimos validar.
 
 solution:
 
-1) crear CustomException 
+1) crear clase CustomException 
 --------------------------------
 namespace SocialMedia.Api.Exceptions
 {
@@ -100,13 +100,20 @@ namespace SocialMedia.Api.Interfaces
 }
 
 
-4) crear clase GlobalExceptionService
+4) implementar interface IGlobalExceptionService
 ------------------------------------
 namespace SocialMedia.Api.Services
 {
     public class GlobalExceptionService:IGlobalExceptionService
     {        
-        //se pone en el cuerpo de un catch de un try catch 
+
+	//dispara una exception personalizada, puesta por nosotros mismo
+	//se pone el el cuerpo de un metodo	
+        public void CustomException(string message,HttpStatusCode statusCode=default(HttpStatusCode), Exception innerException=null){
+            throw new CustomException(message,statusCode,innerException);
+        }        
+
+	//se pone en el cuerpo de un catch en un try catch 
         public void CatchException(Exception ex)
         {
             //registramos error en un log.
@@ -119,12 +126,7 @@ namespace SocialMedia.Api.Services
                 throw new CustomException(ex.Message,HttpStatusCode.InternalServerError,ex.InnerException);
             } 
         }
-
-        //dispara una exception personalizada, puesta por nosotros mismo
-	//se pone el el cuerpo de un metodo	
-        public void CustomException(string message,HttpStatusCode statusCode=default(HttpStatusCode), Exception innerException=null){
-            throw new CustomException(message,statusCode,innerException);
-        }
+        
 
     }
 }
@@ -147,50 +149,19 @@ namespace SocialMedia.Api
 	    services.AddTransient<IGlobalExceptionService, GlobalExceptionService>();
 
 
+
 modo de uso:
 -------------------
-
-namespace SocialMedia.Api.Services
-{
-    public abstract class BaseService<TEntity, TDTO> where TEntity : class where TDTO : class
-    {
-        internal readonly IGlobalExceptionService _exception;
-        public BaseService(IGlobalExceptionService _exception)
-        {
-            this._exception = _exception;
-        }
-
-        internal void ExceptionIfExist(Func<TEntity, bool> predicate)
-        {
-            //AsNoTracking() : es para dejar de seguir la entidad y que no me de error 
-            //al llamar el update(entitty)
-            var entity = _entity.AsNoTracking().FirstOrDefault(predicate);
-            if (entity != null) _exception.CustomException($"{entity.GetType().Name} ya existe", HttpStatusCode.Conflict);
-        }
-
-
-
-
-
-namespace SocialMedia.Api.Services
-{
-    public class UserService :BaseService<User,UserDTO>, IUserService
-    {
-        public UserService(IGlobalExceptionService _exception) : base(_exception)
-        {
-        }
-
-        public async Task<ResponseApi<UserDTO>> AddAsync(UserDTO userDTO)
+        public Metodo()
         {            
             try
             {
               //logica de negocio
-              ExceptionIfExist(x=>x.Email==userDTO.Email && x.Active==true);
+              if(cliente != null) _exception.CustomException("El cliente ya existe",HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
-            {
-                _exception.CatchException(ex);
+            {   
+            	_exception.CatchException(ex);
             }
         }
-
 

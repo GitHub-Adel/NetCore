@@ -1,0 +1,57 @@
+es una clase para respuesta estandar que devolveremos al cliente, esta tendrá la sig. propiedades:
+Data: que contendrá el objeto o la lista de objeto a devolver.
+
+tambien podemos agregar otras propiedadescomo:
+------------------
+Navegation:  que contendrá la navegation(Current:1, Next:2) etc.
+Links: que contendrá la hypermedia, para navegar por los metodos
+------------------------------------
+
+namespace SocialMedia.Api.CustomEntities
+{
+    public class ResponseApi<T> where T : class
+    {
+        public T Data { get; set; }
+        //public Navegation Navegation { get; set; }
+       // public List<Link> Links { get; set; } 
+        public ResponseApi(T data)
+        {                     
+            this.Data=data;        
+        }
+
+         este constructor es en caso de que tambien queramos agregar la navegacion y la hypermedia
+	// public ResponseApi(T data, Navegation  navegation=null)
+        {                     
+            this.Data=data;
+            this.Navegation=navegation; 
+            this.Links= new List<Link>();        
+        }
+
+
+    }
+
+}
+
+
+4) modo de uso
+-------------------------------
+        //retorna una lista de usuario
+	internal ResponseApi<List<User>> GetPagedList()
+        {
+            	return new ResponseApi<List<User>>(userDTOs);
+		//return new ResponseApi<List<User>>(userDTOs, navegation);
+        }
+
+
+            [HttpGet(Name = nameof(GetRoles))]
+            public IActionResult GetRoles([FromQuery] RoleQueryFilter filters)
+            {
+                //obtengo la collection de role
+                var response = _role.GetByFilters(filters);
+                return Ok(response);
+            }
+
+
+
+
+

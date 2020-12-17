@@ -1,0 +1,94 @@
+﻿Se utiliza para mapear solo aquellas propiedades que necesitemos.
+
+queremos crear un cliente, para ello consumimos el metodo CrearCliente, el cual recibe el objeto Cliente.
+
+{
+    "Nombre": "Adelson",
+    "Compras": {
+        "Id":"1",
+        "Monto":500,
+        "Fecha":"01-02-2020"
+    }
+}
+
+creamos el objeto anterior en el body de postman, si observas la clase cliente en c# tiene una propiedad
+Compras la cual es una relacion y el usuario decide llenarla por postman, el problema aqui es, que al 
+hacer el SaveChanges() se crearía tambien una compra, pero solo queremos crear un cliente, para eso usamos
+automaper y DTO.
+----------------------------------------------------------
+
+
+1) crear clase DTO sin la propiedad Compras
+-----------------------------------
+namespace SocialMedia.Api.DTO
+{
+    public class ClienteDTO
+    {
+        public string Nombre { get; set; }
+    }
+}
+
+
+
+2) crear clase AutomapperProfile
+------------------------------
+namespace SocialMedia.Api.Mappings
+{
+public class AutomapperProfile:Profile
+{
+	public AutomapperProfile()
+	{
+		CreateMap<Cliente,ClienteDTO>(); 
+		CreateMap<ClienteDTO,Cliente>(); 
+	}	
+}
+}
+
+
+
+3) registrar automapper en startup.cs
+-------------------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {        
+        public void ConfigureServices(IServiceCollection services)
+        {  
+		services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+4) modo de uso
+------------------------------
+namespace SocialMedia.Api.Services
+{
+    public class ClienteService
+    {
+        readonly IMapper _mapper;
+        public ClienteService(IMapper _mapper)
+        {
+            this._mapper = _mapper;
+        }
+
+
+        public ClienteDTO Update(ClienteDTO clienteDTO)
+        {
+            //mapeo el DTO a un modelo
+	    //lo que hace esto es que asigna la propiedad Nombre a Cliente, pero la propiedad Compras
+	   //queda nula, por tanto al guardar no se crea la compra.
+            var cliente = _mapper.Map<Cliente>(clienteDTO);	   
+            _entity.Update(cliente);
+            await _context.SaveChanges();
+	   
+	    //luego de guardar, entity framework refresca el id por lo que vuelvo y
+            //mapeo el modelo a un DTO, para devolverlo al usuario.
+            clienteDTO = _mapper.Map<ClienteDTO>(cliente);
+            return clienteDTO;
+        }
+
+
+Nota:
+-----------------------------------------------
+ClienteDTO: clase hecha por nosotros con solo las propiedades que necesitamos.
+Cliente : Modelo del dbcontext autogenerado por entity framework.
+
+
+

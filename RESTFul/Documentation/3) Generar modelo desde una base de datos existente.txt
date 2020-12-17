@@ -1,27 +1,21 @@
-traer la base de datos de sql para c#
+trae la base de datos desde sql hacia c#
 -------------------------------------
 
-2) Asegurarse que el project compile sin error con: 
+1) Asegurarse que el project compile sin error con: 
 ----------------------------------------
 	dotnet build
 
-3) correr: dotnet ef dbcontext scaffold
+2) correr comando:
 --------------------------------------------
-	dotnet ef dbcontext scaffold "CONNECTION_STRING" Microsoft.EntityFrameworkCore.SqlServer -o CARPETA_DESTINO_MODELOS --project NOMBRE_PROYECTO --force
-	EJE:
-	TO CONFIG CONNECTIONSTRING WITH SQL credentialDTODTOS:
-	**********
+	CONFIGURAR CONEXION CON CREDENCIALES DE SQL
+	**************
 	dotnet ef dbcontext scaffold "Server=tcp:adelson-server.database.windows.net,1433;Initial Catalog=PruebaDB;Persist Security Info=False;User ID=adel809;Password=Amauris809;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer --project SocialMedia.Api -o Models --force
 
-	TO CONFIG CONNECTIONSTRING WITH WINDOWS credentialDTODTOS:
-	*********
+	CONFIGURAR CONEXION CON CREDENCIALES DE WINDOWS
+	**************
 	dotnet ef dbcontext scaffold "Server=C2VYW72\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true;" Microsoft.EntityFrameworkCore.SqlServer --project SocialMedia.Api -o Models --force
 
-	agregar --no-onconfiguring al comando anterior, para que no agregue el metodo OnConfiguring en el context generado.
-	solo valido en la version 5.0.0 de ef core en adelante, mientras tanto quitarlo manualmente.
-
-
-4) quitar OnConfiguring method from dbcontext.
+3) quitar metodo OnConfiguring del dbcontext.
 ------------------------------------------------
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,14 +27,14 @@ traer la base de datos de sql para c#
         }
 
 
-5) crear propiedad connectionString in appsettings.json
+4) crear propiedad connectionString in appsettings.json
 ---------------------------------------------------
 {
 "SocialMediaConnection":"Server=C2VYW72\\SQLEXPRESS;Initial Catalog=SocialmediaDB;integrated security=true"
 }
 
 
-6) inyectar IConfiguration in Startup.cs
+6) inyectar IConfiguration en Startup.cs
 -----------------------------------------
     public class Startup
     {
@@ -49,17 +43,6 @@ traer la base de datos de sql para c#
         {
             this.configuration = configuration;
         }
-
-
-
-7) configurar la conexion del dbcontext en startup.cs
----------------------------------------------------   
-
-
-Nota:
------------------------
-https://docs.microsoft.com/es-es/ef/core/miscellaneous/cli/dotnet 
-
 
 
 

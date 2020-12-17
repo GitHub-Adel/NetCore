@@ -3,6 +3,33 @@ tenemos que paginar, dandole la opcion al usuario, de que pueda indicar el numer
 y la pagina que quiere ver. 
 ------------------------------------
 
+namespace SocialMedia.Api.QueryFilters
+{
+    public abstract class BaseQueryFilter
+    {
+        public int? ItemByPage { get; set; }
+        public int? CurrentPage { get; set; }
+    }
+}
+
+
+
+1) crear class Navegation
+-------------------------------------
+namespace SocialMedia.Api.CustomEntities
+{
+    public class Navegation:BaseQueryFilter
+    {
+        public int TotalItem { get; set; }
+        public int? Pages { get; set; }
+        public int? Next { get; set; }
+        public int? Previous { get; set; }
+    }
+}
+
+
+
+
 1) crear IPaginationService
 -----------------------------
 namespace SocialMedia.Api.Interfaces

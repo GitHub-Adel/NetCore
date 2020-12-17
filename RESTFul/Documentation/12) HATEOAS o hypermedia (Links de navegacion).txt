@@ -15,6 +15,20 @@ y method(GET, POST,PUT,DELETE), para que el programador sepa.
         }
 
 
+2) crear class Link
+------------------------------
+namespace SocialMedia.Api.CustomEntities
+{
+    public class Link
+    {
+        public string Href { get; set; }
+        public string Rel { get; set; }
+        public string Method { get; set; }
+    }
+}
+
+
+
 2) crear una clase BaseLinkDTO
 -----------------------------------------------
 namespace SocialMedia.Api.DTOs

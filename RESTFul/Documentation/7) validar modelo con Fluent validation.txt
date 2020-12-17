@@ -1,8 +1,7 @@
 ﻿Esto es para validar los modelos o entidades.
 ---------------------------------
 
-
-1) register in Startup.cs
+1) registrar el fluent validation
 ---------------------------
 namespace SocialMedia.Api
 {
@@ -16,15 +15,15 @@ namespace SocialMedia.Api
             })  ;
 
 
-2) create UserValidator class
+2) crear clase ClienteValidator
 ------------------------------------
 namespace SocialMedia.Api.Validators
 {
-    public class UserValidator : AbstractValidator<UserDTO>
+    public class ClienteValidator : AbstractValidator<ClienteDTO>
     {
-        public UserValidator()
+        public ClienteValidator()
         {
-            RuleFor(p => p.Firstname).NotEmpty().WithMessage("El Firstname no puede quedar vacío");           
+            RuleFor(x => x.Nombre).NotEmpty().WithMessage("El nombre no puede quedar vacío");           
         }
     }
 }
