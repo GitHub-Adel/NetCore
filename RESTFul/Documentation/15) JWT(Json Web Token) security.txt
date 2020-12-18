@@ -1,15 +1,11 @@
-﻿https://jwt.io/ JSON Web Token (JWT) es un est�ndar abierto (RFC 7519) que define una forma 
-de transmitir informaci�n de forma segura entre las partes como un objeto JSON.
+﻿https://jwt.io/ JSON Web Token (JWT) 
 
-Autorizaci�n: este es el escenario m�s com�n para usar JWT. Una vez que el usuario haya iniciado sesi�n, 
-cada solicitud posterior incluir� el JWT, lo que permitir� al usuario acceder a rutas, 
-servicios y recursos que est�n permitidos con ese token.
+se utiliza para intercambiar informacion de forma segura entre las parte(un objeto json etc).
 
-Esta compuesto de 3 parte separada por punto(hhhhh.pppppp.ssssss):
-1. HEADER
-2. PAYLOAD
-3. SIGNATURE
-------------------------------------
+Autorizacion: este es el escenario mas comun para usar JWT. Una vez que el usuario haya iniciado sesion, 
+cada solicitud posterior incluira el JWT hasta que expire, lo que permitira al usuario acceder a controllers y 
+metodos que estan permitidos con ese token.
+
 
 1) agregar propiedades al appsettings.json
 ---------------------------------------------
@@ -21,34 +17,7 @@ Esta compuesto de 3 parte separada por punto(hhhhh.pppppp.ssssss):
 }
 
 
-2) agregar propiedades a la IAppsettingService
---------------------------------------
-namespace SocialMedia.Api.Interfaces
-{
-    public interface IAppsettingService
-    {
-        byte[] SecretKey { get;}
-        string Issuer { get;}
-        string Audience { get;}
-	public double TokenMinuteExpires { get;}
-    }
-
-
-namespace SocialMedia.Api.Services
-{
-    public class AppsettingService : IAppsettingService
-    {
-        public byte[] SecretKey => Encoding.UTF8.GetBytes(configuration["SecretKey"]);
-
-        public string Issuer => configuration["Issuer"];
-
-        public string Audience => configuration["Audience"];
-
-	public double TokenMinuteExpires => double.Parse(configuration["TokenMinuteExpires"]);
-    }
-  
-
-3) Configurar y registrarlo en Startup.cs 
+2) Configurar y registrar en Startup.cs 
 -----------------------------------------------
 namespace SocialMedia.Api
 {
@@ -79,41 +48,60 @@ namespace SocialMedia.Api
 	    app.UseAuthentication();
             app.UseAuthorization();
          
-
-4) crear un modulo Security, para crear los usuarios que manejaran el api.
+4) crear un modulo Rol, para asignar un rol a la secutiry.
+   debe tener: RolID,Name
 ---------------------------------------------------------------------------------
 
-
-5) crear un modulo Rol, para asignar un rol al usuario.
+5) crear un modulo Security, para la seguridad del api.
+   debe tener: SecurityID,RolID,Name,User,Password
 ---------------------------------------------------------------------------------
 
-6) crear un modulo Token, con un metodo Authentication especial, para obtener el token
+6) Debe haber una clase CredentialDTO con dos propiedades User y Password
+   para authentificarse y poder generar el token
+----------------------------------------------------
+namespace SocialMedia.Api.DTOs
+{
+    public class CredentialDTO
+    {
+        public string User { get; set; }
+        public string Password { get; set; }
+    }
+}
+
+
+
+7) crear un modulo Token, con un metodo Get, para obtener el token
 ----------------------------------------------------
 namespace SocialMedia.Api.Services
 {
-    public class TokenService : BaseService<Security, CredentialDTO>, ITokenService
+    public class TokenService : ITokenService
     {
-        private readonly IAppsettingService _appsetting;
-        public TokenService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<Security> _pagination, IAppsettingService _appsetting) : base(_context, _exception, _mapper, _pagination)
+        readonly IConfiguration _configuration;
+	readonly SocialmediaDBContext _context;
+	readonly IGlobalExceptionService _exception;
+        public TokenService(SocialmediaDBContext _context,IConfiguration _configuration, IGlobalExceptionService _exception)
         {
-            this._appsetting = _appsetting;
+            	this._configuration = _configuration;
+		this._context=_context;
+		this._exception=_exception;
         }
 
         public string Get(CredentialDTO credentialDTO)
         {
             //logica de negocio
-            ExceptionIfNoExist(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password);   
-
-            //Header
-            var a = new SymmetricSecurityKey(_appsetting.SecretKey);
-            var b = new SigningCredentials(a, SecurityAlgorithms.HmacSha256);
-            var header = new JwtHeader(b);
-
-            //Claims
             var security = _context.Security
                            .Include(x=>x.Role)
                            .Where(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password)
-                           .FirstOrDefault();                     
+                           .FirstOrDefault();  
+
+	    if (security==null) _exception.CustomException("Usuario o contraseña invalido",HttpStatusCode.BadRequest);  
+
+            //Header
+            var a = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_configuration["SecretKey"]) );
+            var b = new SigningCredentials(a, SecurityAlgorithms.HmacSha256);
+            var header = new JwtHeader(b);
+
+            //Claims                   
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name,security.Name),
@@ -124,11 +112,11 @@ namespace SocialMedia.Api.Services
             //Payload
             var payload = new JwtPayload
             (
-                _appsetting.Issuer,
-                _appsetting.Audience,
+                _configuration["Issuer"],
+                _configuration["Audience"],
                 claims,
                 DateTime.Now,
-                DateTime.UtcNow.AddMinutes(_appsetting.TokenMinuteExpires)
+                DateTime.UtcNow.AddMinutes(double.Parse(_configuration["TokenMinuteExpires"]))
             );
 
             var token = new JwtSecurityToken(header, payload);
@@ -137,6 +125,8 @@ namespace SocialMedia.Api.Services
         }
     }
 }
+
+
 
  
 7) agregar atributo de authorize al controller, al que se desea dar permiso.
@@ -148,22 +138,9 @@ namespace SocialMedia.Api.Controllers
     [Authorize(Roles="Administrator")]
     [ApiController]
     [Route("api/[Controller]")]
-    public class SecurityController : ControllerBase
+    public class UserController : ControllerBase
     {
 
- 
-
-
-8) Debe haber una clase de CredentialDTO con dos propiedades User y Password
-----------------------------------------------------
-namespace SocialMedia.Api.Models
-{
-    public class CredentialDTO
-    {
-        public string User { get; set; }
-        public string Password { get; set; }
-    }
-}
 
 
 

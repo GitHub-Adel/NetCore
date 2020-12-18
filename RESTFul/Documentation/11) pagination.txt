@@ -49,7 +49,7 @@ namespace SocialMedia.Api.Services
 {
     public class PaginationService<T>: IPaginationService<T>   where T : class
     {
-        private readonly IAppsettingService appsetting;
+        readonly IAppsettingService appsetting;
 
         public PaginationService(IAppsettingService appsetting)
         {

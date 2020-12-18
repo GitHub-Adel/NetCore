@@ -26,7 +26,7 @@ public class HomeController  : Controller
 2) IActionResult: interface para devolver diferente tipo de datos, uselo siempre
 3) Index(): Cada vista tiene un metodo, ambos se llaman igual, quien muestra la vista al usuario es el 
                    controlador.
-4) view(): este metodo devuelve una vista que tenga el mismo nombre del metodo, 
+4) view(): este metodo devuelve una vista que contenga el mismo nombre del metodo, 
 	use View("vista") en caso que ponga un nombre al controlador que sea diferente al de la vista
 
 

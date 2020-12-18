@@ -1,20 +1,21 @@
 pasos:
 --------------------
 1) crear database
-2) migrar database a nuestro proyecto
-3) agregar nuget packeges
-4) create dependency injection
-5) create UserService:IUserService
-6) create Automapper and DTO(Data transfer object)
-7) create controller
-8) create request from postman
-9) create Fluent validation
-10) custom exception
-11) filtering data
-12) pagination
-13) Using appsettings.json
-14) HATEOAS o Hypermedia
-15) Documenting API with Swagger
-16) JWT(Json Web Token) Security
-17) ResponseApi (respuesta personalizada)
+2) agregar nuget packeges
+3) Appsettings.json
+4) Generar modelo desde una base de datos existente
+5) Automapper and DTO(Data transfer object)
+6) custom exception
+7) crear e implementar interface
+8) validar modelo con Fluent validation
+9) filtrando datos
+10) ResponseApi (respuesta personalizada)
+11) pagination
+12) crear controller
+13) HATEOAS o Hypermedia(Links de navegacion)
+14) crear request from postman
+15) JWT(Json Web Token) Security
+16) Documenting API with Swagger
+
+
 

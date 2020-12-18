@@ -3,7 +3,7 @@ vscode, sdk, c# extension
 ----------------------------------
 https://www.campusmvp.es/recursos/post/visual-studio-code-como-preparar-un-entorno-de-trabajo-para-net-core.aspx
 
-Solution exprorer:
+Solution exprorer: para incorporarlo en vscode
 --------------------------
 https://marketplace.visualstudio.com/items?itemName=fernandoescolar.vscode-solution-explorer
 
@@ -11,7 +11,7 @@ otro metodo
 ---------------------
 1) VISUAL STUDIO CODE: https://code.visualstudio.com/
 
-2) SDK : 	https://dotnet.microsoft.com/download/dotnet-core
+2) SDK :https://dotnet.microsoft.com/download/dotnet-core
    	elegir la version recomendada eje: .NET Core 3.1
 	3) Ir a os:windows  installers: x86 si procesador es de 32bits.    
 
