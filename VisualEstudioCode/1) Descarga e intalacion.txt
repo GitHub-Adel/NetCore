@@ -1,5 +1,5 @@
 
-vscode, sdk, c# extension
+vscode, sdk
 ----------------------------------
 https://www.campusmvp.es/recursos/post/visual-studio-code-como-preparar-un-entorno-de-trabajo-para-net-core.aspx
 
@@ -14,6 +14,7 @@ otro metodo
 2) SDK :https://dotnet.microsoft.com/download/dotnet-core
    	elegir la version recomendada eje: .NET Core 3.1
 	3) Ir a os:windows  installers: x86 si procesador es de 32bits.    
+
 
 3) C# Y C# EXTENSION:  esto muestra la opcion crear clase cuando da click 
     derecho por eje: ensima del modelo.

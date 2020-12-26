@@ -17,14 +17,12 @@ namespace SocialMedia.Api.Services
     {
         internal readonly SocialmediaDBContext _context;
         internal readonly DbSet<TEntity> _entity;
-        internal readonly IGlobalExceptionService _exception;
         internal readonly IMapper _mapper;
         internal readonly IPaginationService<TEntity> _pagination;
-        public BaseService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<TEntity> _pagination)
+        public BaseService(SocialmediaDBContext _context, IMapper _mapper, IPaginationService<TEntity> _pagination)
         {
             this._pagination = _pagination;
             this._mapper = _mapper;
-            this._exception = _exception;
             this._context = _context;
             _entity = _context.Set<TEntity>();
         }
@@ -35,15 +33,15 @@ namespace SocialMedia.Api.Services
             var list = lista.ToList();
             //aplicamos logica de negocio
             if (list.Count() == 0)
-                _exception.CustomException($"No se encontro resultado", HttpStatusCode.NotFound);
+                throw new CustomException($"No se encontro resultado", HttpStatusCode.NotFound);
             //aplicamos navegacion de la lista
-            var navegation = _pagination.GetNavegation(list, filter);
+           // var navegation =  _pagination.GetNavegation(list, filter);
             //aplicamos paginado
             var pagedList = _pagination.GetPagedList(list, filter);
             //mapeamos la lista paginada a un DTOs
             var dTOs = _mapper.Map<List<TDTO>>(pagedList);
             //retornamos nuestra repuesta personalizada.
-            return new ResponseApi<List<TDTO>>(dTOs, navegation);
+            return new ResponseApi<List<TDTO>>(dTOs);
         }
 
         internal async Task<TDTO> UpdateEntityAsync(TDTO dTO)
@@ -56,6 +54,7 @@ namespace SocialMedia.Api.Services
             dTO = _mapper.Map<TDTO>(entity);
             return dTO;
         }
+
         internal async Task<TDTO> AddEntityAsync(TDTO dTO)
         {
             //mapeo el DTO a una entidad
@@ -72,14 +71,14 @@ namespace SocialMedia.Api.Services
             //AsNoTracking() : es para dejar de seguir la entidad y que no me de error 
             //al llamar el update(entitty)
             var entity = _entity.AsNoTracking().FirstOrDefault(predicate);
-            if (entity != null) _exception.CustomException($"{entity.GetType().Name} ya existe", HttpStatusCode.Conflict);
+            if (entity != null) throw new CustomException($"{entity.GetType().Name} ya existe", HttpStatusCode.Conflict);
         }
         internal void ExceptionIfNoExist(Func<TEntity, bool> predicate)
         {
             //AsNoTracking() : es para dejar de seguir la entidad y que no me de error 
             //al llamar el update(entitty)
             var entity = _entity.AsNoTracking().FirstOrDefault(predicate);
-            if (entity == null) _exception.CustomException($"{entity.GetType().Name} no existe", HttpStatusCode.NotFound);
+            if (entity == null) throw new CustomException($"{entity.GetType().Name} no existe", HttpStatusCode.NotFound);
         }
     }
 }

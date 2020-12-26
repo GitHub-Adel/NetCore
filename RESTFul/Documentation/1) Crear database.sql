@@ -1,77 +1,100 @@
 
 --SQL DOCUMENT https://www.w3schools.com/sql/sql_foreignkey.asp
 
--- USE [master]; DROP DATABASE [SocialmediaDB];
--- CREATE DATABASE [SocialmediaDB];
+--esto es para registrar las ventas que se le hace a los clientes incluyendo los productos
 
-USE [SocialmediaDB];
+--las 2 sig. lineas se deben correr primero
+-- USE [master]; DROP DATABASE [VentaDB];
+--CREATE DATABASE [VentaDB];
+
+USE [VentaDB];
 
 --DROP CONSTRAINTS 'F'=FORREIGN KEY
-IF OBJECT_ID('FK_PostUser','F') IS NOT NULL ALTER TABLE [Post] DROP CONSTRAINT [FK_PostUser];
-IF OBJECT_ID('FK_CommentPost','F') IS NOT NULL ALTER TABLE [Comment] DROP CONSTRAINT [FK_CommentPost];
-IF OBJECT_ID('FK_CommentUser','F') IS NOT NULL ALTER TABLE [Comment] DROP CONSTRAINT [FK_CommentUser];
-IF OBJECT_ID('FK_SecurityRole','F') IS NOT NULL ALTER TABLE [Security] DROP CONSTRAINT [FK_SecurityRole];
+IF OBJECT_ID('FK_VentaCliente','F') IS NOT NULL ALTER TABLE [Venta] DROP CONSTRAINT [FK_VentaCliente];
+IF OBJECT_ID('FK_VentaDetalleVenta','F') IS NOT NULL ALTER TABLE [VentaDetalle] DROP CONSTRAINT [FK_VentaDetalleVenta];
+IF OBJECT_ID('FK_VentaDetalleProducto','F') IS NOT NULL ALTER TABLE [VentaDetalle] DROP CONSTRAINT [FK_VentaDetalleProducto];
+IF OBJECT_ID('FK_SeguridadUsuario','F') IS NOT NULL ALTER TABLE [Seguridad] DROP CONSTRAINT [FK_SeguridadUsuario];
+IF OBJECT_ID('FK_SeguridadRol','F') IS NOT NULL ALTER TABLE [Seguridad] DROP CONSTRAINT [FK_SeguridadRol];
 
 --DROP TABLE  'U'= TABLE
-IF OBJECT_ID('User','U') IS NOT NULL DROP TABLE [User];
-IF OBJECT_ID('Post','U') IS NOT NULL DROP TABLE [Post];
-IF OBJECT_ID('Comment','U') IS NOT NULL DROP TABLE [Comment];
-IF OBJECT_ID('Security','U') IS NOT NULL DROP TABLE [Security];
-IF OBJECT_ID('Role','U') IS NOT NULL DROP TABLE [Role];
+IF OBJECT_ID('Cliente','U') IS NOT NULL DROP TABLE [Cliente];
+IF OBJECT_ID('Producto','U') IS NOT NULL DROP TABLE [Producto];
+IF OBJECT_ID('Venta','U') IS NOT NULL DROP TABLE [Venta];
+IF OBJECT_ID('VentaDetalle','U') IS NOT NULL DROP TABLE [VentaDetalle];
+IF OBJECT_ID('Usuario','U') IS NOT NULL DROP TABLE [Usuario];
+IF OBJECT_ID('Rol','U') IS NOT NULL DROP TABLE [Rol];
+IF OBJECT_ID('Seguridad','U') IS NOT NULL DROP TABLE [Seguridad];
 
-
-CREATE TABLE [User]
+--para crear el cliente que va a realizar la compra
+CREATE TABLE [Cliente]
 (
-	 [UserID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	,[Firstname] VARCHAR(50) NOT NULL
-	,[Lastname] VARCHAR(50) NOT NULL
-	,[Email] VARCHAR(30) NOT NULL
-	,[DateOfBirth] DATETIME NOT NULL
-	,[Phone] VARCHAR(10)
-	,[Active] BIT NOT NULL
+	 [ClienteID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[Nombre] VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE [Post]
+--para crear el producto que se le va a vender al cliente
+CREATE TABLE [Producto]
 (
-	 [PostID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	,[UserID] INT NOT NULL
-	,[Date] DATETIME NOT NULL
-	,[Description] VARCHAR(1000) NOT NULL
-	,[Image] VARCHAR(500)  
+	 [ProductoID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[Descripcion] VARCHAR(100) NOT NULL
+	,[Precio] float not null
+);
+
+--para crear las ventas de los clientes
+CREATE TABLE [Venta]
+(
+	 [VentaID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[ClienteID] INT NOT NULL
+	,[Fecha] DATETIME NOT NULL
+	,[Monto] float not null
+);
+
+--para crear el detalle de las ventas
+CREATE TABLE [VentaDetalle]
+(
+	 [VentaDetalleID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[VentaID] INT NOT NULL
+	,[ProductoID] INT NOT NULL
+	,[Precio] float not null
+	,[Cantidad] float not null
+	,[Total] float not null
 );
 
 
-CREATE TABLE [Comment]
+--para la seguridad de nuestra API
+
+--para los usuarios que consumiran el api
+CREATE TABLE [Usuario]
 (
-	 [CommentID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	,[PostID] INT NOT NULL
-	,[UserID] INT NOT NULL
-	,[Description] VARCHAR(500) NOT NULL
-	,[Date] DATETIME NOT NULL
-	,[Active] BIT NOT NULL
+	 [UsuarioID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[Nombre] varchar(40) NOT NULL
+	,[Usuario] varchar(40) NOT NULL
+	,[Clave] varchar(40) NOT NULL
 );
 
-CREATE TABLE [Security]
+--para agrupar los acceso a los usuarios (Administrador,Supervisor,Cajero)
+CREATE TABLE [Rol]
 (
-	 [SecurityId] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	,[RoleID] INT NOT NULL
-	,[User] varchar(100) NOT NULL
-	,[Password] varchar(100) NOT NULL
-	,[Name] VARCHAR(100) NOT NULL
-	,[Active] BIT NOT NULL
+	 [RolID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[Descripcion] varchar(40) NOT NULL
 );
 
-CREATE TABLE [Role]
+--para asignar rol a los usuarios
+CREATE TABLE [Seguridad]
 (
-	 [RoleID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	,[Description] varchar(40) NOT NULL
-	,[Active] BIT NOT NULL
+	 [SeguridadID] INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+	,[UsuarioID] INT NOT NULL
+	,[RolID] INT NOT NULL
 );
 
---CONSTRAINTS
-ALTER TABLE [Post]  ADD CONSTRAINT [FK_PostUser] FOREIGN KEY (UserID) REFERENCES [User](UserID);
-ALTER TABLE [Comment] ADD CONSTRAINT [FK_CommentPost] FOREIGN KEY (PostID) REFERENCES [Post](PostID)
-ALTER TABLE [Comment] ADD CONSTRAINT [FK_CommentUser] FOREIGN KEY (UserID) REFERENCES [User](UserID);
-ALTER TABLE [Security] ADD CONSTRAINT [FK_SecurityRole] FOREIGN KEY (RoleID) REFERENCES [Role](RoleID);
+
+
+--CONSTRAINTS agregamos relaciones
+ALTER TABLE [Venta]  ADD CONSTRAINT [FK_VentaCliente] FOREIGN KEY (ClienteID) REFERENCES [Cliente](ClienteID);
+ALTER TABLE [VentaDetalle] ADD CONSTRAINT [FK_VentaDetalleVenta] FOREIGN KEY (VentaID) REFERENCES [Venta](VentaID)
+ALTER TABLE [VentaDetalle] ADD CONSTRAINT [FK_VentaDetalleProducto] FOREIGN KEY (ProductoID) REFERENCES [Producto](ProductoID);
+ALTER TABLE [Seguridad] ADD CONSTRAINT [FK_SeguridadUsuario] FOREIGN KEY (UsuarioID) REFERENCES [Usuario](UsuarioID);
+ALTER TABLE [Seguridad] ADD CONSTRAINT [FK_SeguridadRol] FOREIGN KEY (RolID) REFERENCES [Rol](RolID);
+
 
 

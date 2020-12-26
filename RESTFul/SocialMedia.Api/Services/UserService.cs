@@ -15,7 +15,7 @@ namespace SocialMedia.Api.Services
 {
     public class UserService :BaseService<User,UserDTO>, IUserService
     {
-        public UserService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<User> _pagination) : base(_context, _exception, _mapper, _pagination)
+        public UserService(SocialmediaDBContext _context,  IMapper _mapper, IPaginationService<User> _pagination) : base(_context, _mapper, _pagination)
         {
         }
 
@@ -23,16 +23,18 @@ namespace SocialMedia.Api.Services
         {            
             try
             {
-              //logica de negocio
-              userDTO.UserId=0;
-              ExceptionIfExist(x=>x.Email==userDTO.Email && x.Active==true);
-              ExceptionIfExist(x=>x.Phone==userDTO.Phone && x.Active==true);
-              //inserto la entidad
-              userDTO =  await AddEntityAsync(userDTO);
+            //   //logica de negocio
+            //   userDTO.UserId=0;
+            //   ExceptionIfExist(x=>x.Email==userDTO.Email && x.Active==true);
+            //   ExceptionIfExist(x=>x.Phone==userDTO.Phone && x.Active==true);
+            //   //inserto la entidad
+               throw new CustomException("Error creado por Adelson",HttpStatusCode.BadRequest);
+               userDTO =  await AddEntityAsync(userDTO);
+               
             }
             catch (Exception ex)
             {
-                _exception.CatchException(ex);
+                new CustomException(ex);
             }
             //retorno DTO con respuesta personalizaa
             return new ResponseApi<UserDTO>(userDTO);
@@ -49,7 +51,7 @@ namespace SocialMedia.Api.Services
             }
             catch (Exception ex)
             {
-                _exception.CatchException(ex);
+                new CustomException(ex);
             }
             //retorno DTO con respuesta personalizada
             return new ResponseApi<UserDTO>(userDTO);

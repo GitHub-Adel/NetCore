@@ -1,86 +1,59 @@
-Es devolver una respuesta por el controlador que no solo contenga el objeto sino tambien los enlaces
-para manipular ese recurso y las relacionesm, la idea es que el links contenga el endpoint,description
-y method(GET, POST,PUT,DELETE), para que el programador sepa. 
+Es una clase llamada Link con 3 propiedades, el objetivo es que el objeto a devolver, contenga
+los enlaces necesarios para la navegacion de ese objeto y los relacionados.
 ------------------------------------
 
------------------------------------------------
-
-
-1) Ponerle un nombre al metodo a llamar
------------------------------------------------
-        [HttpPost(Name=nameof(SaveUser))]
-        public Metodo()
-        {
-
-        }
-
-
-2) crear class Link
+1) crear class Link
 ------------------------------
-namespace SocialMedia.Api.CustomEntities
-{
-    public class Link
-    {
-        public string Href { get; set; }
-        public string Rel { get; set; }
-        public string Method { get; set; }
-    }
-}
-
-
-
-2) crear una clase BaseLinkDTO
------------------------------------------------
 namespace SocialMedia.Api.DTOs
 {
-    public abstract class BaseLinkDTO
+    public class LinkDTO
     {
-       public IList<Link> Links { get; set; } = new List<Link>();
+        public string Href { get; set; } //Ruta o endpoint ej: https://localhost:5001/api/User
+        public string Rel { get; set; }  //lo que hace el endpoint ej: Actualizar
+        public string Method { get; set; } //verbo http ej: POST,GET ETC.
     }
 }
 
 
-3) heredarla en UserDTO
+
+2) agregar una propiedad links a las clases DTOs que queramos y un constructor
+   para crear los links de navegacion
 --------------------------
 namespace SocialMedia.Api.DTOs
 {
-    public class UserDTO:BaseLinkDTO
-    {
-        public int UserId { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public bool Active { get; set; }
-              
-    }
-}
- 
+        public class UsuarioDTO
+        {
+            public int UsuarioId { get; set; }
+            public string Nombre { get; set; }
+            public IList<Link2> Links { get; set; } = new List<Link2>();
+        }
 
 
 3) modo de uso en el controller
 -----------------------------------------------
-            
+            //le pongo un nombre al metodo para poder generar el link con Url.Link(nameof(metodo
             [HttpGet(Name = nameof(GetRoles))]
             public IActionResult GetRoles([FromQuery] RoleQueryFilter filters)
             {
-                //obtengo la collection de role
-                var response = _role.Get(filters);
+                //obtengo la collection de usuarios
+                var usuarioDTOs = _usuario.Get(filters);
                 //HATEOAS AND HYPERMEDIA
-                response.Data.ForEach(x =>
+                usuarioDTOs.ForEach(x =>
                 {                        
-                    x.Links=new List<Link>(){
-                        new Link{Rel="Update-role",Method="PUT",Href=Url.Link(nameof(UpdateRole), new { id = x.RoleId })}
+                    //a cada item le pongo un link, para actualizarlo o eliminarlo
+		    x.Links=new List<Link>(){
+                        new Link{Rel="Actualizar",Method="PUT",Href=Url.Link(nameof(UpdateRole), new { id = x.RoleId })}
                     };
                 });
 
-                response.Links=new List<Link>(){
-                     new Link{Rel="Create-role",Method="POST",Href=Url.Link(nameof(AddRole), new { })},
-                     new Link{Rel="Next",Method="GET",Href=Url.Link(nameof(GetRoles), new {CurrentPage=response.Navegation.Next})},
-                     new Link{Rel="Previeus",Method="GET",Href=Url.Link(nameof(GetRoles), new { CurrentPage=response.Navegation.Previous})}
+		//lleno los links general, para crear, ver el usuario proximo o el anterior etc.
+                usuarioDTOs.Links=new List<Link>(){
+                     new Link{Rel="Crear",Method="POST",Href=Url.Link(nameof(AddRole), new { })},
+                     new Link{Rel="Proximo",Method="GET",Href=Url.Link(nameof(GetRoles), new {CurrentPage=response.Navegation.Next})},
+                     new Link{Rel="Anterior",Method="GET",Href=Url.Link(nameof(GetRoles), new { CurrentPage=response.Navegation.Previous})}
                 };
 
-                return Ok(response);
+                return Ok(usuarioDTOs);
             }
 
 

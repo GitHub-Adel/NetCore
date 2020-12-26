@@ -1,55 +1,59 @@
-es una clase para respuesta estandar que devolveremos al cliente, esta tendrá la sig. propiedades:
-Data: que contendrá el objeto o la lista de objeto a devolver.
+Es una respuesta standard que utilizamos para facilitar el consumo del api, recibiendo el objeto devuelto
+siempre en una clase con una unica propiedad llamada Dato.
 
-tambien podemos agregar otras propiedadescomo:
-------------------
-Navegation:  que contendrá la navegation(Current:1, Next:2) etc.
-Links: que contendrá la hypermedia, para navegar por los metodos
-------------------------------------
+class Respuesta<Tipo> where T:class
+{
+	public Tipo Dato {get; set;}
+	public Respuesta(T Dato)
+	{
+		this.Dato=Dato;	
+	}
+}
+
+public Respuesta<ClienteDTO> Metodo(ClienteDTO clienteDTO)
+{
+	//hago algo
+	return new Respuesta<ClienteDTO>(clienteDTO);
+} 
+
+
+
+
+Si nos piden devolver diferentes objetos, los agrupamos en uno solo:
+imagina que tienes que devolver un cliente y las ventas de ese cliente
+--------------
+1) creamos la clase ClienteDTO
+2) creamos la clase VentaDTO
+3) creamo la clase VentasClienteDTO que agrupará las dos anteriores
 
 namespace SocialMedia.Api.CustomEntities
 {
-    public class ResponseApi<T> where T : class
-    {
-        public T Data { get; set; }
-        //public Navegation Navegation { get; set; }
-       // public List<Link> Links { get; set; } 
-        public ResponseApi(T data)
-        {                     
-            this.Data=data;        
-        }
-
-         este constructor es en caso de que tambien queramos agregar la navegacion y la hypermedia
-	// public ResponseApi(T data, Navegation  navegation=null)
-        {                     
-            this.Data=data;
-            this.Navegation=navegation; 
-            this.Links= new List<Link>();        
-        }
+	clase VentasClienteDTO
+	{
+		ClienteDTO Cliente,
+		VentaDTO> Ventas,
+		Double Monto_total
+        	!!! si necesitamos devolver otro tipo, lo ponemos aqui. !!!
 
 
-    }
+        //creamos un constructor para VentasClienteDTO que nos permita pasar por parametros los valores necesarios
+	public VentasClienteDTO(ClienteDTO clienteDTO, List<VentaDTO> ventaDTOs)
+	{
+		this.Cliente=clienteDTO;
+		this.Ventas=ventaDTOs;
+		Monto_total= ventaDTOs.Sum(x=>x.Cant*x.Precio);
+		...
+	}
 
 }
+
+fin
 
 
 4) modo de uso
 -------------------------------
-        //retorna una lista de usuario
-	internal ResponseApi<List<User>> GetPagedList()
-        {
-            	return new ResponseApi<List<User>>(userDTOs);
-		//return new ResponseApi<List<User>>(userDTOs, navegation);
-        }
 
-
-            [HttpGet(Name = nameof(GetRoles))]
-            public IActionResult GetRoles([FromQuery] RoleQueryFilter filters)
-            {
-                //obtengo la collection de role
-                var response = _role.GetByFilters(filters);
-                return Ok(response);
-            }
+var ventasClienteDTO= new VentasClienteDTO(cliente, ventas...
 
 
 

@@ -1,10 +1,8 @@
-esto es para dividir una lista muy grande en varias pequeñas,y asi no cargar mucho el front-end, 
-retornando unicamente la pagina indicada de una listaPaginada y la cantidad de elementos indicado
-asi como las propiedades de navegacion, para navegar a la siguiente o anterior pagina..
-
-paginaActual:pagina a mostrar
-itemsPorPagina: cantidad de elementos a mostrar por pagina
-------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
+using SocialMedia.Api.QueryFilters;
 
 namespace SocialMedia.Api.CustomEntities
 {
@@ -20,7 +18,8 @@ namespace SocialMedia.Api.CustomEntities
         public Pagination(IList<Tipo> lista, int paginaActual, int itemsPorPagina)
         {
             ListaPaginada= lista.Skip( ((paginaActual- 1) * itemsPorPagina)).Take(itemsPorPagina).ToList();
-            TotalPaginas = (lista.Count() / itemsPorPagina) > 1 ? (lista.Count() / itemsPorPagina) : 1;  
+            TotalPaginas = lista.Count() / itemsPorPagina;            
+            TotalPaginas = TotalPaginas > 1 ? TotalPaginas : 1;
             TotalItems = lista.Count();
             ItemsPorPagina=itemsPorPagina;
             PaginaActual = paginaActual > TotalPaginas ? TotalPaginas : PaginaActual;
@@ -28,12 +27,6 @@ namespace SocialMedia.Api.CustomEntities
             PaginaAnterior = PaginaActual > 1 ? PaginaActual - 1 : PaginaActual;
         }
 
+
     }
-
-
-modo de uso:
--------------------------
-var pagination = new Pagination<Tipo>(lista,paginaActual,itemsPorPagina);
-
-
-
+}

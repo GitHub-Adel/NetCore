@@ -1,27 +1,29 @@
-﻿sirve de intermediario para intercambiar los datos entre la vista y el modelo.
+﻿Cuando el usuario necesita una informacion, se la solicita al controlador a traves de endpoint o rutas
+el controlador busca la informacion via servicios o interfaces y se la retorna al usuario.
 
-es aqui donde se inyectan las interfaces o servicios.
--------------------------
-
-1) click en solution
-2) click derecho en controllers
-3) create file
-4) NameController.cs
+aqui es donde se: 
+------------------
+1) aplica la seguridad
+2) definen las rutas de acceso a los controladores
+3) inyectan los services o interfaces
+4) la comunicacion se realiza en clases DTO
 
 
 namespace SocialMedia.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[Controller]")]
+    [Authorize(Roles="Administrator")] //seguridad por Rol
+    [ApiController] //validacion de modelos
+    [Route("api/[Controller]")] //rutas o endpoint
     public class UserController : ControllerBase
     {
         readonly IUserService _user;
-        public UserController(IUserService _user)
+        public UserController(IUserService _user)  //inyecion del servicio o interface
         {
             this._user = _user;
         }
 
-        [HttpPost]
+	[Route("api/User/CrearUsuario")]  //ruta o endpoint por metodo
+        [HttpPost] 	
         public async Task<IActionResult> CrearUsuario(UserDTO userDTO)
         {            
             userDTO.UserId=0;

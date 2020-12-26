@@ -1,10 +1,6 @@
-aqui crearemos todas las variables globales de codigo halcodeado, por si luego queremos cambiar su valor,
-hacerlo desde este archivo de configuracion llamado appsettings.json 
+Todas las variables a la que algun dia necesitemos cambiar su valor, debemos ponerla aqui, con un
+valor por default, en este archivo de configuracion llamado appsettings.json 
 ------------------------------------
-
-INYECTAR INTERFACE IConfiguration
-========================================
-
 
 1) crear la variable.
 -----------------------------
@@ -14,7 +10,7 @@ INYECTAR INTERFACE IConfiguration
 
 
 
-3) Inyectar por el constructor startup.cs
+3) Inyectar la interface donde la utilizaremos
 -----------------------------------------------
 	private readonly IConfiguration configuration;
 	public Startup(IConfiguration configuration)

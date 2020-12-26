@@ -14,7 +14,7 @@ namespace SocialMedia.Api.Services
 
     public class RoleService :BaseService<Role,RoleDTO>, IRoleService
     {
-        public RoleService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<Role> _pagination) : base(_context, _exception, _mapper, _pagination)
+        public RoleService(SocialmediaDBContext _context,  IMapper _mapper, IPaginationService<Role> _pagination) : base(_context, _mapper, _pagination)
         {
         }
 
@@ -30,7 +30,7 @@ namespace SocialMedia.Api.Services
             }
             catch (Exception ex)
             {
-               _exception.CatchException(ex);
+               new CustomException(ex);
             }
             //retorno DTO con respuesta personalizaa
             return new ResponseApi<RoleDTO>(roleDTO);
@@ -47,7 +47,7 @@ namespace SocialMedia.Api.Services
             }
             catch (Exception ex)
             {
-                _exception.CatchException(ex);
+               new CustomException(ex);
             }
             //retorno DTO con respuesta personalizada
             return new ResponseApi<RoleDTO>(roleDTO);

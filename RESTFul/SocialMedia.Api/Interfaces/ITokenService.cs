@@ -4,7 +4,7 @@ namespace SocialMedia.Api.Interfaces
 {
     public interface ITokenService
     {
-        string Get(CredentialDTO credentialDTO);
+        string Get(CredencialDTO credencialDTO);
     }
 
 }

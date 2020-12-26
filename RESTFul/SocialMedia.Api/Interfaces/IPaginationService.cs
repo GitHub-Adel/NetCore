@@ -8,6 +8,6 @@ namespace SocialMedia.Api.Interfaces
     public interface IPaginationService<T>  where T : class
     {
         IList<T> GetPagedList(IList<T> list, BaseQueryFilter filter=null);
-        Navegation GetNavegation(IList<T> list, BaseQueryFilter filter=null);
+        //Navegation GetNavegation(IList<T> list, BaseQueryFilter filter=null);
     }
 }

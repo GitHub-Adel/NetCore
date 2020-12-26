@@ -14,9 +14,9 @@ namespace SocialMedia.Api.Controllers
         }
 
         [HttpGet(Name = nameof(Authentication))]
-        public IActionResult Authentication(CredentialDTO credentialDTO)
+        public IActionResult Authentication(CredencialDTO credencialDTO)
         {
-            var response = _token.Get(credentialDTO);
+            var response = _token.Get(credencialDTO);
             return Ok(response);
         }
 

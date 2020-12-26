@@ -5,25 +5,24 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SocialMedia.Api.CustomEntities;
 using SocialMedia.Api.DTOs;
 using SocialMedia.Api.Interfaces;
 using SocialMedia.Api.Models;
 
 namespace SocialMedia.Api.Services
 {
-    public class TokenService : BaseService<Security, CredentialDTO>, ITokenService
+    public class TokenService : BaseService<Security, CredencialDTO>, ITokenService
     {
         private readonly IAppsettingService _appsetting;
-        public TokenService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<Security> _pagination, IAppsettingService _appsetting) : base(_context, _exception, _mapper, _pagination)
+        public TokenService(SocialmediaDBContext _context, IMapper _mapper, IPaginationService<Security> _pagination, IAppsettingService _appsetting) : base(_context, _mapper, _pagination)
         {
             this._appsetting = _appsetting;
         }
 
-        public string Get(CredentialDTO credentialDTO)
+        public string Get(CredencialDTO credentialDTO)
         {
             //logica de negocio
-            ExceptionIfNoExist(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password);   
+            ExceptionIfNoExist(x => x.User == credentialDTO.Usuario && x.Password == credentialDTO.Clave);   
 
             //Header
             var a = new SymmetricSecurityKey(_appsetting.SecretKey);
@@ -33,12 +32,12 @@ namespace SocialMedia.Api.Services
             //Claims
             var security = _context.Security
                            .Include(x=>x.Role)
-                           .Where(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password)
+                           .Where(x => x.User == credentialDTO.Usuario && x.Password == credentialDTO.Clave)
                            .FirstOrDefault();                     
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name,security.Name),
-                new Claim("User",security.User),
+                new Claim("Usuario",security.User),
                 new Claim(ClaimTypes.Role, security.Role?.Name)
             };
 

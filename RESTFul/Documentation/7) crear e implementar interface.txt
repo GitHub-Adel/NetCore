@@ -1,13 +1,14 @@
-﻿Una interface es utilizada para la logica de negocio, se inyecta en el constructor de un controller o en
-el constructor de otra implementacion.
+﻿Una interface es utilizada para la logica de negocio(validaciones), se inyecta en el constructor 
+de la clase donse se utilizara.
 
 la interfaces solo contiene firmas de metodos.
 
-porque usar interfaces?: para facilitar el mantenimiento, imagina que tienes implementacion1:Interface1 
-si en un futuro necesitas modificar la implementacion de la interface1, solo tienes que implementar la interface1
-en otra clase asi: implementacion2:interface1 y dejar la implementacion1 sin tocar, por si acaso hay que 
-darle patra al cambio. como lo que se inyecta en los controller es la interfaces ahora esta estará apuntando 
-a implementacion2.
+porque usar interfaces?: 
+----------------------------
+Facilitar el mantenimiento, imagina que tienes Implementacion1:Interface
+si en un futuro necesitas modificar la implementacion1, solo tienes que crear implementacion2:interface 
+y poner la configuracion en la clase startup.cs. haciendo que la interface apunte a implementacion2.
+si hay que darle patra al cambio solo hay que hacer que la interface apunte a implementacion1 de nuevo.
 -------------------------------------------------------
 
 1) crear interface
@@ -25,19 +26,20 @@ namespace SocialMedia.Api.Interfaces
 
 2) crear implementacion
 ------------------------
+	//recibo un DTO y retorno un DTO siempre.
 	public ClienteDTO Add(ClienteDTO cliente)
         {
             try
             {
               //logica de negocio, generando exception
-	      //mapeo de DTO a entidad modelo
-              //inserto la entidad de modelo
+	      //mapeo de DTO a modelo
+              //inserto el modelo
             }
-            catch (Exception ex)
+            catch (Exception ex
             {
-                generar CatchException
+                generar Exception
             }
-            //retorno DTO con respuesta personalizada
+            //retorno DTO
             return clienteDTO;
         }
 
@@ -56,6 +58,6 @@ namespace SocialMedia.Api
 	   	//sin generic
 		services.AddTransient<IUserService, UserService>(); 
 		//con generic
-		services.AddScoped(typeof(IPaginationService<>),typeof(PaginationService<>));               
+		services.AddScoped(typeof(IBaseService<>),typeof(BaseService<>));               
         }
 

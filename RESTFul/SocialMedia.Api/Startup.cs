@@ -73,7 +73,6 @@ namespace SocialMedia.Api
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ISecurityService, SecurityService>();
             services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IGlobalExceptionService, GlobalExceptionService>();
             services.AddScoped(typeof(IPaginationService<>), typeof(PaginationService<>));
 
         }

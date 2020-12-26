@@ -2,7 +2,7 @@
 
 se utiliza para intercambiar informacion de forma segura entre las parte(un objeto json etc).
 
-Autorizacion: este es el escenario mas comun para usar JWT. Una vez que el usuario haya iniciado sesion, 
+Autorizacion: este es el escenario mas comun para usar JWT. Una vez que el usuario ha iniciado sesion, 
 cada solicitud posterior incluira el JWT hasta que expire, lo que permitira al usuario acceder a controllers y 
 metodos que estan permitidos con ese token.
 
@@ -48,30 +48,37 @@ namespace SocialMedia.Api
 	    app.UseAuthentication();
             app.UseAuthorization();
          
-4) crear un modulo Rol, para asignar un rol a la secutiry.
-   debe tener: RolID,Name
+4) crear un modulo Rol, para asignar un rol a la seguridad.
+   debe tener: RolID, Descripcion
 ---------------------------------------------------------------------------------
 
-5) crear un modulo Security, para la seguridad del api.
-   debe tener: SecurityID,RolID,Name,User,Password
+5) crear un modulo Seguridad para la seguridad del api.
+   debe tener: UsuarioID,RolID,Usuario,Clave
 ---------------------------------------------------------------------------------
 
-6) Debe haber una clase CredentialDTO con dos propiedades User y Password
+6) Debe haber una clase CredencialDTO con dos propiedades Usuario y Clave
    para authentificarse y poder generar el token
 ----------------------------------------------------
 namespace SocialMedia.Api.DTOs
 {
-    public class CredentialDTO
+    public class CredencialDTO
     {
-        public string User { get; set; }
-        public string Password { get; set; }
+        public string Usuario { get; set; }
+        public string Clave { get; set; }
     }
 }
 
 
-
 7) crear un modulo Token, con un metodo Get, para obtener el token
 ----------------------------------------------------
+namespace SocialMedia.Api.Interfaces
+{
+    public interface ITokenService
+    {
+        string Get(CredentialDTO credentialDTO);
+    }
+
+
 namespace SocialMedia.Api.Services
 {
     public class TokenService : ITokenService
@@ -89,12 +96,13 @@ namespace SocialMedia.Api.Services
         public string Get(CredentialDTO credentialDTO)
         {
             //logica de negocio
-            var security = _context.Security
-                           .Include(x=>x.Role)
-                           .Where(x => x.User == credentialDTO.User && x.Password == credentialDTO.Password)
+            var seguridad = _context.Seguridad
+                           .Include(x=>x.Rol)
+			   .Include(x=>x.Usuario)
+                           .Where(x => x.Usuario == credencialDTO.Usuarior && x.Clave == credencialDTO.Clave)
                            .FirstOrDefault();  
 
-	    if (security==null) _exception.CustomException("Usuario o contraseña invalido",HttpStatusCode.BadRequest);  
+	    if (seguridad==null) throw new CustomException("Usuario o contraseña invalido",HttpStatusCode.BadRequest);  
 
             //Header
             var a = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_configuration["SecretKey"]) );
@@ -104,9 +112,9 @@ namespace SocialMedia.Api.Services
             //Claims                   
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name,security.Name),
-                new Claim("User",security.User),
-                new Claim(ClaimTypes.Role, security.Role?.Name)
+                new Claim(ClaimTypes.Name,seguridad.Usuario?.Nombre),
+                new Claim("User",seguridad.Usuario?.Usuario),
+                new Claim(ClaimTypes.Role, seguridad.Rol?.Descripcion)
             };
 
             //Payload
@@ -127,6 +135,26 @@ namespace SocialMedia.Api.Services
 }
 
 
+namespace SocialMedia.Api.Controllers
+{
+    [ApiController]
+    [Route("api/[Controller]")]
+    public class TokenController : ControllerBase
+    {
+        private readonly ITokenService _token;
+        public TokenController(ITokenService _token)
+        {
+            this._token = _token;
+        }
+
+        [HttpGet(Name = nameof(Authentication))]
+        public IActionResult Authentication(CredencialDTO credencialDTO)
+        {
+            var response = _token.Get(credencialDTO);
+            return Ok(response);
+        }
+
+
 
  
 7) agregar atributo de authorize al controller, al que se desea dar permiso.
@@ -135,7 +163,7 @@ namespace SocialMedia.Api.Controllers
 {
     //esto indica que solo los administradores pueden usar este controller
     //Authorize tambien se puede usar a nivel de metodo.
-    [Authorize(Roles="Administrator")]
+    [Authorize(Roles="Administrador")]
     [ApiController]
     [Route("api/[Controller]")]
     public class UserController : ControllerBase
@@ -149,19 +177,19 @@ namespace SocialMedia.Api.Controllers
 -----------------------------------
 1. generar token por postman https://localhost:5001/api/Token/ usando method POST
    esto llama el metodo Authentication del controlador TokenController pasandole las credenciales
-   por querybody que seran mapeada en el objeto CredentialDTO.
+   por querybody que seran mapeada en el objeto CredencialDTO.
 
 {
-    "User":"xxxxx",
-    "Password":"yyyyy"
+    "Usuario":"xxxxx",
+    "Clave":"yyyyy"
 }
 
-si es correcto el usuario y contrasena, devolvera un token, copiarlo.
+si el usuario y clave son correcto, devolvera un token, copiarlo.
 
-ahora crearemos un request para consumir el metodo get de user.
+ahora crearemos un request para consumir el metodo Get de user.
 
-method GET:  https://localhost:5001/api/User?ItemByPage=50&CurrentPage=1
-Hearders.Authorization=bearer pegartokencopiado
+method GET:  https://localhost:5001/api/User?ItemsPorPagina=10&PaginaActual=1
+Authorization.Type=bearer token, Toekn= pegartokencopiado
 
 
 

@@ -1,1 +1,8 @@
 1) crear una carpeta con el nombre del programa(ApiRestfull)
+2) click derecho, open with vscode
+3) click en solution, click derecho y create new solution, poner el mismo
+   nombre del proyecto.
+4) y ya es solo click derecho y hacer lo que se necesite, ya sea
+   crear proyecto, carpeta etc.
+5) si sale la opcion agregar C# EXTENSION dile que si.
+6) sigue la documentacion para crear el api

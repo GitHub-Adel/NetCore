@@ -1,7 +1,10 @@
-﻿Se utiliza para mapear solo aquellas propiedades que necesitemos.
+﻿Automaper:Se utiliza para convertir un objeto en otro, las propiedades deben ser identica y del mismo tipo,
+	pero pueden tener diferentes numeros de propiedades.
 
-queremos crear un cliente, para ello consumimos el metodo CrearCliente, el cual recibe el objeto Cliente.
+DTO: se utiliza para definir en ella las propiedades que necesitamos y asi no tocar el modelo original.
 
+crear un cliente desde postman:
+--------------------------------------
 {
     "Nombre": "Adelson",
     "Compras": {
@@ -11,14 +14,23 @@ queremos crear un cliente, para ello consumimos el metodo CrearCliente, el cual 
     }
 }
 
-creamos el objeto anterior en el body de postman, si observas la clase cliente en c# tiene una propiedad
-Compras la cual es una relacion y el usuario decide llenarla por postman, el problema aqui es, que al 
-hacer el SaveChanges() se crearía tambien una compra, pero solo queremos crear un cliente, para eso usamos
-automaper y DTO.
+al recibir este objeto en c# y guardarlo en sql, se crearia un cliente y una compra, pero solo queremos 
+crear un cliente, para eso usamos una clase DTO que contenga unicamente los datos del cliente sin la compras.
 ----------------------------------------------------------
 
+1) registrar automapper en startup.cs
+-------------------------------------
+namespace SocialMedia.Api
+{
+    public class Startup
+    {        
+        public void ConfigureServices(IServiceCollection services)
+        {  
+		services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-1) crear clase DTO sin la propiedad Compras
+
+
+2) crear clase DTO sin la propiedad Compras
 -----------------------------------
 namespace SocialMedia.Api.DTO
 {
@@ -30,7 +42,7 @@ namespace SocialMedia.Api.DTO
 
 
 
-2) crear clase AutomapperProfile
+3) crear clase AutomapperProfile en donde configuraremos todos los modelos con sus respectivo DTO a mapear
 ------------------------------
 namespace SocialMedia.Api.Mappings
 {
@@ -45,16 +57,6 @@ public class AutomapperProfile:Profile
 }
 
 
-
-3) registrar automapper en startup.cs
--------------------------------------
-namespace SocialMedia.Api
-{
-    public class Startup
-    {        
-        public void ConfigureServices(IServiceCollection services)
-        {  
-		services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 4) modo de uso
 ------------------------------
@@ -71,15 +73,13 @@ namespace SocialMedia.Api.Services
 
         public ClienteDTO Update(ClienteDTO clienteDTO)
         {
-            //mapeo el DTO a un modelo
-	    //lo que hace esto es que asigna la propiedad Nombre a Cliente, pero la propiedad Compras
-	   //queda nula, por tanto al guardar no se crea la compra.
+            //mapeo
+	    //convierto ClienteDTO en Cliente, es como convertir un int en un string
             var cliente = _mapper.Map<Cliente>(clienteDTO);	   
             _entity.Update(cliente);
-            await _context.SaveChanges();
+            await _context.SaveChangesAsync();
 	   
-	    //luego de guardar, entity framework refresca el id por lo que vuelvo y
-            //mapeo el modelo a un DTO, para devolverlo al usuario.
+	    //luego de actualizar, vuelvo y convierto Cliente a ClienteDTO, para devolverlo al usuario.
             clienteDTO = _mapper.Map<ClienteDTO>(cliente);
             return clienteDTO;
         }

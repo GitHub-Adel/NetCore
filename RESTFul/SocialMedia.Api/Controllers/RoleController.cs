@@ -23,7 +23,7 @@ namespace SocialMedia.Api.Controllers
             private readonly IRoleService _role;
             public RoleController(IRoleService _role)
             {
-                this._role = _role;
+                this._role = _role;            
             }
 
             [HttpPost(Name = nameof(AddRole))]
@@ -66,11 +66,11 @@ namespace SocialMedia.Api.Controllers
                     };
                 });
 
-                response.Links=new List<Link>(){
-                     new Link{Rel="Create-role",Method="POST",Href=Url.Link(nameof(AddRole), new { })},
-                     new Link{Rel="Next",Method="GET",Href=Url.Link(nameof(GetRoles), new {CurrentPage=response.Navegation.Next})},
-                     new Link{Rel="Previeus",Method="GET",Href=Url.Link(nameof(GetRoles), new { CurrentPage=response.Navegation.Previous})}
-                };
+                // response.Links=new List<Link>(){
+                //      new Link{Rel="Create-role",Method="POST",Href=Url.Link(nameof(AddRole), new { })},
+                //      new Link{Rel="Next",Method="GET",Href=Url.Link(nameof(GetRoles), new {CurrentPage=response.Navegation.Next})},
+                //      new Link{Rel="Previeus",Method="GET",Href=Url.Link(nameof(GetRoles), new { CurrentPage=response.Navegation.Previous})}
+                // };
 
                 return Ok(response);
             }

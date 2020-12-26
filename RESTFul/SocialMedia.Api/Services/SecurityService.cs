@@ -17,7 +17,7 @@ namespace SocialMedia.Api.Services
     public class SecurityService : BaseService<Security, SecurityDTO>, ISecurityService
     {
         private readonly IAppsettingService _appsetting;
-        public SecurityService(SocialmediaDBContext _context, IGlobalExceptionService _exception, IMapper _mapper, IPaginationService<Security> _pagination, IAppsettingService _appsetting) : base(_context, _exception, _mapper, _pagination)
+        public SecurityService(SocialmediaDBContext _context, IMapper _mapper, IPaginationService<Security> _pagination, IAppsettingService _appsetting) : base(_context, _mapper, _pagination)
         {
             this._appsetting = _appsetting;
         }
@@ -35,7 +35,7 @@ namespace SocialMedia.Api.Services
             }
             catch (Exception ex)
             {
-                _exception.CatchException(ex);
+               //_exception.CatchException(ex);
             }
             //retorno DTO con respuesta personalizaa
             return new ResponseApi<SecurityDTO>(SecurityDTO);
@@ -52,7 +52,7 @@ namespace SocialMedia.Api.Services
             }
             catch (Exception ex)
             {
-                _exception.CatchException(ex);
+               // _exception.CatchException(ex);
             }
             //retorno DTO con respuesta personalizada
             return new ResponseApi<SecurityDTO>(SecurityDTO);

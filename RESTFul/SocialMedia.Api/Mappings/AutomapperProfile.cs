@@ -2,6 +2,7 @@ using System;
 using AutoMapper;
 using SocialMedia.Api.DTOs;
 using SocialMedia.Api.Models;
+using static SocialMedia.Api.Controllers.UserController;
 
 namespace SocialMedia.Api.Mappings
 {
