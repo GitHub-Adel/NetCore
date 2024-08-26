@@ -2,7 +2,7 @@ https://www.nuget.org/packages
 ----------------------------
 1) tener instalado los tools globales:
    ---------------------------------
-        tool install --global dotnet-ef  / dotnet tool update --global dotnet-ef
+        dotnet tool install --global dotnet-ef  / dotnet tool update --global dotnet-ef
 
 2) tener instalado los packages:
    -----------------------------------
